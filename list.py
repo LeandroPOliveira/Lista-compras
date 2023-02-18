@@ -1,3 +1,4 @@
+import math
 import sqlite3
 
 from kivy.config import Config
@@ -6,7 +7,7 @@ from kivy.uix.screenmanager import Screen
 
 Config.set('graphics', 'resizable', '1')
 Config.set('graphics', 'width', '389')
-Config.set('graphics', 'height', '800')
+Config.set('graphics', 'height', '700')
 from kivy.lang import Builder
 from kivymd.uix.textfield import MDTextField
 from kivy.properties import StringProperty, Clock
@@ -42,32 +43,42 @@ class Principal(Screen):
         # self.completos = []
         for item in self.lista:
             self.produtos.append(item[1])
-        self.completos = list(zip(self.produtos))
-        self.dados_listagem = MDDataTable(pos_hint={'center_x': 0, 'center_y': 0},
-                                          size_hint=(1, 1),
+        self.icones = ['X'] * len(self.produtos)
+        self.completos = list(zip(self.produtos, self.icones))
+        self.dados_listagem = MDDataTable(pos_hint={'x': 0.1, 'y': 0.2},
+                                          size_hint=(.8, .7),
                                           rows_num=len(self.completos),
                                           background_color_header=get_color_from_hex("#0bbd6d"),
                                           background_color_selected_cell=get_color_from_hex("#d2f7e7"),
-                                          check=True, pagination_menu_height='140dp',
+                                          check=True,
                                           column_data=[("[color=#ffffff]Produto[/color]", dp(50)),
-                                                       ],
+                                                       ("[color=#FFA07A][/color]", dp(10))],
                                           row_data=self.completos, elevation=1)
 
         self.ids.scroll.add_widget(self.dados_listagem)
+        self.dados_listagem.bind(on_row_press=self.on_row_press)
+        self.dados_listagem.bind(on_check_press=self.on_check_press)
+    def on_row_press(self, current_row, instance_row):
+        '''Called when a table row is clicked.'''
+        print(instance_row.index)
 
-    def pegar_check(self):  # Selecionar notas a serem editadas
-        self.lista.clear()
-        for item in self.dados_listagem.get_row_checks():
-            self.lista.append(item)
-        self.manager.current = 'principal'
+        if instance_row.index % 2 != 0:
+            self.remover(instance_row.index)
+        else:
+            pass
+
+    def on_check_press(self, instance_table, current_row):
+        '''Called when the check box in the table row is checked.'''
+
+        print(instance_table, current_row)
 
     def novo_item(self):
         conn = sqlite3.connect('lista_compras')
         cursor = conn.cursor()
 
-        self.entrada = MDTextField(hint_text="City",)
+        self.entrada = MDTextField()
         self.dialog = MDDialog(
-            title="Address:",
+            title="Novo item:",
             type="custom",
             content_cls=MDBoxLayout(
                 self.entrada,
@@ -78,7 +89,7 @@ class Principal(Screen):
             ),
             buttons=[
                 MDFlatButton(
-                    text="CANCEL",
+                    text="CANCELAR",
                     theme_text_color="Custom",
                     on_press=lambda x:self.dialog.dismiss()
 
@@ -86,7 +97,7 @@ class Principal(Screen):
                 MDFlatButton(
                     text="OK",
                     theme_text_color="Custom",
-                    on_press=lambda x:self.adicionar(self.entrada)
+                    on_press=lambda x:(self.adicionar(self.entrada), self.dialog.dismiss())
                 ),
             ],
         )
@@ -103,14 +114,12 @@ class Principal(Screen):
         self.ids.scroll.clear_widgets()
         self.carregar_lista(dt=None)
 
-    def remover(self, item):
+    def remover(self, row):
         conn = sqlite3.connect('lista_compras')
         cursor = conn.cursor()
-        print(item)
-        print(self.lista[item][1])
-        cursor.execute('DELETE FROM lista WHERE produto = (?)', (self.lista[item][1],))
+        cursor.execute('DELETE FROM lista WHERE produto = (?)', (self.lista[math.floor(row/2)][1],))
         conn.commit()
-        self.ids.grid_teste.clear_widgets()
+        self.ids.scroll.clear_widgets()
         self.carregar_lista(dt=None)
 
 

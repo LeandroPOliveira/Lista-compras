@@ -2,15 +2,13 @@ Principal:
     name: 'inicio'
 
     FloatLayout:
+        size_hint: (1, 1)
 
-        MDScrollView:
-            id: scroll
-
-
-
-
+        id: scroll
 
         MDFloatingActionButton:
+            pos_hint: {'x': 0.4, 'y': 0.02}
+            size_hint: 0.2, 0.1
             icon: "android"
             md_bg_color: app.theme_cls.primary_color
             on_press:
