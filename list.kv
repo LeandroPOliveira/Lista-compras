@@ -4,12 +4,22 @@ Principal:
     FloatLayout:
         size_hint: (1, 1)
 
-        id: scroll
+        Image:
+            source: 'foto.jpg'
+            allow_stretch: True
+            keep_ratio: False
 
-        MDFloatingActionButton:
-            pos_hint: {'x': 0.4, 'y': 0.02}
-            size_hint: 0.2, 0.1
-            icon: "android"
-            md_bg_color: app.theme_cls.primary_color
-            on_press:
-                root.novo_item()
+
+
+        FloatLayout:
+            size_hint: (1, 1)
+            id: scroll
+
+    MDFloatingActionButton:
+        pos_hint: {'x': 0.42, 'y': 0.05}
+        md_bg_color: "yellow"
+        icon: "plus"
+        text_color: "black"
+
+        on_press:
+            root.novo_item()
