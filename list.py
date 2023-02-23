@@ -45,7 +45,7 @@ class Principal(Screen):
                                           background_color_header=get_color_from_hex("#ebf52a"),
                                           background_color_selected_cell=get_color_from_hex("#f5f7cd"),
                                           check=True,
-                                          column_data=[("[color=#0d0d0d]Produto[/color]", dp(40)),
+                                          column_data=[("[color=#0d0d0d]Produto[/color]", dp(35)),
                                                        ("[color=#0d0d0d][/color]", dp(10))],
                                           row_data=self.completos, elevation=1)
 
@@ -75,7 +75,7 @@ class Principal(Screen):
         cursor = conn.cursor()
         self.entrada = MDTextField()
         self.dialog = MDDialog(
-            title="Novo item:",
+            title="Novo produto:",
             type="custom",
             content_cls=MDBoxLayout(
                 self.entrada,
@@ -116,6 +116,9 @@ class Principal(Screen):
         conn.commit()
         self.ids.scroll.clear_widgets()
         self.carregar_lista(dt=None)
+
+    def teste(self):
+        print('teste')
 
 
 class Example(MDApp):

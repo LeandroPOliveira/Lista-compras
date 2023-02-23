@@ -1,25 +1,73 @@
+<Image>
+    source: 'foto.jpg'
+    allow_stretch: True
+    keep_ratio: False
+
 Principal:
     name: 'inicio'
 
-    FloatLayout:
-        size_hint: (1, 1)
+    MDBottomNavigation:
+        #panel_color: "yellow"
+        selected_color_background: 0, 0, 1, .4
+        text_color_active: "lightgrey"
 
-        Image:
-            source: 'foto.jpg'
-            allow_stretch: True
-            keep_ratio: False
+        MDBottomNavigationItem:
+            name: 'screen 1'
+            text: 'Em exibição'
+            icon: 'list-box'
+
+
+            FloatLayout:
+                size_hint: (1, 1)
+
+                Image:
+
+                FloatLayout:
+                    size_hint: (1, 1)
+                    id: scroll
+
+                MDFloatingActionButton:
+                    pos_hint: {'x': 0.42, 'y': 0.025}
+                    md_bg_color: "yellow"
+                    icon: "plus"
+                    text_color: "black"
+
+                    on_press:
+                        root.novo_item()
+
+        MDBottomNavigationItem:
+            name: 'screen 2'
+            text: 'Minhas listas'
+            icon: 'database-plus'
+            Image:
+
+            GridLayout:
+                cols: 1
+                rows: 5
+                padding: [100, 150, 100, 150]
+                spacing: 10, 20
+
+
+                MDRectangleFlatButton:
+                    text: 'Visualizar listas'
+                    halign: 'center'
+
+                MDRectangleFlatButton:
+                    text: 'Criar lista'
+                    halign: 'center'
 
 
 
-        FloatLayout:
-            size_hint: (1, 1)
-            id: scroll
 
-    MDFloatingActionButton:
-        pos_hint: {'x': 0.42, 'y': 0.05}
-        md_bg_color: "yellow"
-        icon: "plus"
-        text_color: "black"
+        MDBottomNavigationItem:
+            name: 'screen 3'
+            text: 'Configurações'
+            icon: 'cog'
 
-        on_press:
-            root.novo_item()
+
+            MDFloatingActionButton:
+                pos_hint: {'x': 0.42, 'y': 0.05}
+                text: 'Configurações'
+                halign: 'center'
+                on_press:
+                    root.teste()
