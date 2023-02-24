@@ -61,13 +61,55 @@ Principal:
 
         MDBottomNavigationItem:
             name: 'screen 3'
-            text: 'Configurações'
-            icon: 'cog'
+            text: 'Pesquisar'
+            icon: 'store-search'
 
+            ScrollView:
 
-            MDFloatingActionButton:
-                pos_hint: {'x': 0.42, 'y': 0.05}
-                text: 'Configurações'
-                halign: 'center'
-                on_press:
-                    root.teste()
+                FloatLayout:
+                    MDCard:
+                        padding: 4
+                        size_hint: 0.35, 0.3
+                        pos_hint: {'x': 0.1, 'y': 0.5}
+
+                        md_bg_color: "#f4dedc"
+                        on_touch_down:
+                            root.teste()
+
+                        MDRelativeLayout:
+
+                            MDIconButton:
+                                icon: "fruit-watermelon"
+
+                                pos_hint: {"x": 0.5, "y": 0.5}
+
+                            MDLabel:
+                                id: label
+                                text: 'Hortifruti'
+                                adaptive_size: True
+                                color: "grey"
+                                pos: "12dp", "12dp"
+                                bold: True
+
+                    MDCard:
+                        padding: 4
+                        size_hint: 0.35, 0.3
+                        pos_hint: {'x': 0.55, 'y': 0.5}
+
+                        md_bg_color: "#f4dedc"
+                        on_press:
+                            root.teste()
+
+                        MDRelativeLayout:
+
+                            MDIconButton:
+                                icon: "fruit-watermelon"
+                                pos_hint: {"top": 0.5, "right": 0.5}
+
+                            MDLabel:
+                                id: label
+                                text: 'Hortifruti'
+                                adaptive_size: True
+                                color: "grey"
+                                pos: "12dp", "12dp"
+                                bold: True
