@@ -66,7 +66,18 @@ Principal:
 
             ScrollView:
 
-                FloatLayout:
+                GridLayout:
+                    id: grid_teste
+                    size_hint_y: None
+                    height: self.minimum_height
+                    row_default_height: 150
+                    cols: 2
+                    rows: 3
+                    bar_width: 50
+                    padding: [50, 100, 50, 50]
+                    spacing: 20, 20
+
+
                     MDCard:
                         padding: 4
                         size_hint: 0.35, 0.3
@@ -74,18 +85,48 @@ Principal:
 
                         md_bg_color: "#f4dedc"
                         on_touch_down:
-                            root.teste()
+                            root.teste(self, hortifruti)
 
                         MDRelativeLayout:
 
                             MDIconButton:
-                                icon: "fruit-watermelon"
+                                icon: "fruit.ico"
+                                color: 'grey'
+                                icon_size: '80sp'
 
-                                pos_hint: {"x": 0.5, "y": 0.5}
+                                pos_hint: {"x": 0.1, "y": 0.2}
 
                             MDLabel:
-                                id: label
+                                id: hortifruti
                                 text: 'Hortifruti'
+                                adaptive_size: True
+                                color: "grey"
+                                pos: "12dp", "12dp"
+                                bold: True
+
+                    MDCard:
+
+                        padding: 4
+                        size_hint: 0.35, 0.3
+                        pos_hint: {'x': 0.55, 'y': 0.5}
+
+                        md_bg_color: "#f4dedc"
+                        on_touch_down:
+                            root.teste(self, padaria)
+
+
+                        MDRelativeLayout:
+
+                            MDIconButton:
+                                icon: "bread.ico"
+                                color: 'grey'
+                                icon_size: '80sp'
+
+                                pos_hint: {"x": 0.1, "y": 0.2}
+
+                            MDLabel:
+                                id: padaria
+                                text: 'Padaria'
                                 adaptive_size: True
                                 color: "grey"
                                 pos: "12dp", "12dp"
@@ -97,18 +138,100 @@ Principal:
                         pos_hint: {'x': 0.55, 'y': 0.5}
 
                         md_bg_color: "#f4dedc"
-                        on_press:
-                            root.teste()
+                        on_touch_down:
+                            root.teste(self, bebidas)
 
                         MDRelativeLayout:
 
                             MDIconButton:
-                                icon: "fruit-watermelon"
-                                pos_hint: {"top": 0.5, "right": 0.5}
+                                icon: "milk.ico"
+                                color: 'grey'
+                                icon_size: '80sp'
+
+                                pos_hint: {"x": 0.1, "y": 0.2}
 
                             MDLabel:
-                                id: label
-                                text: 'Hortifruti'
+                                id: bebidas
+                                text: 'Bebidas'
+                                adaptive_size: True
+                                color: "grey"
+                                pos: "12dp", "12dp"
+                                bold: True
+
+                    MDCard:
+                        padding: 4
+                        size_hint: 0.35, 0.3
+                        pos_hint: {'x': 0.55, 'y': 0.5}
+
+                        md_bg_color: "#f4dedc"
+                        on_touch_down:
+                            root.teste(self, açougue)
+
+
+                        MDRelativeLayout:
+
+                            MDIconButton:
+                                icon: "meat.ico"
+                                color: 'grey'
+                                icon_size: '80sp'
+
+                                pos_hint: {"x": 0.1, "y": 0.2}
+
+                            MDLabel:
+                                id: açougue
+                                text: 'Açougue'
+                                adaptive_size: True
+                                color: "grey"
+                                pos: "12dp", "12dp"
+                                bold: True
+
+                    MDCard:
+                        padding: 4
+                        size_hint: 0.35, 0.3
+                        pos_hint: {'x': 0.55, 'y': 0.5}
+
+                        md_bg_color: "#f4dedc"
+                        on_touch_down:
+                            root.teste(self, higiene)
+
+                        MDRelativeLayout:
+
+                            MDIconButton:
+                                icon: "mouthwash.ico"
+                                color: 'grey'
+                                icon_size: '80sp'
+
+                                pos_hint: {"x": 0.1, "y": 0.2}
+
+                            MDLabel:
+                                id: higiene
+                                text: 'Higiene'
+                                adaptive_size: True
+                                color: "grey"
+                                pos: "12dp", "12dp"
+                                bold: True
+
+                    MDCard:
+                        padding: 4
+                        size_hint: 0.35, 0.3
+                        pos_hint: {'x': 0.55, 'y': 0.5}
+
+                        md_bg_color: "#f4dedc"
+                        on_touch_down:
+                            root.teste(self, limpeza)
+
+                        MDRelativeLayout:
+
+                            MDIconButton:
+                                icon: "garbage-cleaning.ico"
+                                color: 'grey'
+                                icon_size: '80sp'
+
+                                pos_hint: {"x": 0.1, "y": 0.2}
+
+                            MDLabel:
+                                id: limpeza
+                                text: 'Limpeza'
                                 adaptive_size: True
                                 color: "grey"
                                 pos: "12dp", "12dp"

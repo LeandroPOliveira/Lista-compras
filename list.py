@@ -117,8 +117,8 @@ class Principal(Screen):
         self.ids.scroll.clear_widgets()
         self.carregar_lista(dt=None)
 
-    def teste(self):
-        print('teste')
+    def teste(self, instance, item):
+        print('teste', item.text)
 
 
 class Example(MDApp):
