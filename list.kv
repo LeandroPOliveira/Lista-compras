@@ -82,10 +82,7 @@ Principal:
                         padding: 4
                         size_hint: 0.35, 0.3
                         pos_hint: {'x': 0.1, 'y': 0.5}
-
                         md_bg_color: "#f4dedc"
-                        on_touch_down:
-                            root.teste(self, hortifruti)
 
                         MDRelativeLayout:
 
@@ -95,6 +92,8 @@ Principal:
                                 icon_size: '80sp'
 
                                 pos_hint: {"x": 0.1, "y": 0.2}
+                                on_press:
+                                    root.teste(self, hortifruti)
 
                             MDLabel:
                                 id: hortifruti
@@ -109,11 +108,7 @@ Principal:
                         padding: 4
                         size_hint: 0.35, 0.3
                         pos_hint: {'x': 0.55, 'y': 0.5}
-
                         md_bg_color: "#f4dedc"
-                        on_touch_down:
-                            root.teste(self, padaria)
-
 
                         MDRelativeLayout:
 
@@ -121,8 +116,9 @@ Principal:
                                 icon: "bread.ico"
                                 color: 'grey'
                                 icon_size: '80sp'
-
                                 pos_hint: {"x": 0.1, "y": 0.2}
+                                on_press:
+                                    root.teste(self, padaria)
 
                             MDLabel:
                                 id: padaria
@@ -136,10 +132,7 @@ Principal:
                         padding: 4
                         size_hint: 0.35, 0.3
                         pos_hint: {'x': 0.55, 'y': 0.5}
-
                         md_bg_color: "#f4dedc"
-                        on_touch_down:
-                            root.teste(self, bebidas)
 
                         MDRelativeLayout:
 
@@ -147,8 +140,9 @@ Principal:
                                 icon: "milk.ico"
                                 color: 'grey'
                                 icon_size: '80sp'
-
                                 pos_hint: {"x": 0.1, "y": 0.2}
+                                on_press:
+                                    root.teste(self, bebidas)
 
                             MDLabel:
                                 id: bebidas
@@ -162,11 +156,7 @@ Principal:
                         padding: 4
                         size_hint: 0.35, 0.3
                         pos_hint: {'x': 0.55, 'y': 0.5}
-
                         md_bg_color: "#f4dedc"
-                        on_touch_down:
-                            root.teste(self, açougue)
-
 
                         MDRelativeLayout:
 
@@ -174,8 +164,9 @@ Principal:
                                 icon: "meat.ico"
                                 color: 'grey'
                                 icon_size: '80sp'
-
                                 pos_hint: {"x": 0.1, "y": 0.2}
+                                on_press:
+                                    root.teste(self, açougue)
 
                             MDLabel:
                                 id: açougue
@@ -189,10 +180,7 @@ Principal:
                         padding: 4
                         size_hint: 0.35, 0.3
                         pos_hint: {'x': 0.55, 'y': 0.5}
-
                         md_bg_color: "#f4dedc"
-                        on_touch_down:
-                            root.teste(self, higiene)
 
                         MDRelativeLayout:
 
@@ -200,8 +188,9 @@ Principal:
                                 icon: "mouthwash.ico"
                                 color: 'grey'
                                 icon_size: '80sp'
-
                                 pos_hint: {"x": 0.1, "y": 0.2}
+                                on_press:
+                                    root.teste(self, higiene)
 
                             MDLabel:
                                 id: higiene
@@ -215,10 +204,7 @@ Principal:
                         padding: 4
                         size_hint: 0.35, 0.3
                         pos_hint: {'x': 0.55, 'y': 0.5}
-
                         md_bg_color: "#f4dedc"
-                        on_touch_down:
-                            root.teste(self, limpeza)
 
                         MDRelativeLayout:
 
@@ -226,8 +212,10 @@ Principal:
                                 icon: "garbage-cleaning.ico"
                                 color: 'grey'
                                 icon_size: '80sp'
-
                                 pos_hint: {"x": 0.1, "y": 0.2}
+                                on_press:
+                                    root.teste(self, limpeza)
+
 
                             MDLabel:
                                 id: limpeza

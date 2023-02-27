@@ -37,7 +37,7 @@ class Principal(Screen):
         self.lista = cursor.fetchall()
         for item in self.lista:
             self.produtos.append(item[1])
-        self.icones = ['X'] * len(self.produtos)
+        self.icones = [("alpha-x", [1, 0, 0, 1], "")] * len(self.produtos)
         self.completos = list(zip(self.produtos, self.icones))
         self.dados_listagem = MDDataTable(pos_hint={'x': 0.15, 'y': 0.2},
                                           size_hint=(.7, .6),
@@ -52,6 +52,7 @@ class Principal(Screen):
         self.ids.scroll.add_widget(self.dados_listagem)
         self.dados_listagem.bind(on_row_press=self.on_row_press)
         self.dados_listagem.bind(on_check_press=self.on_check_press)
+        # self.dados_listagem.table_data.select_all('down')
 
     def on_row_press(self, instance_table, instance_row):
         # instance_row.ids.check.state = 'down'
@@ -63,12 +64,11 @@ class Principal(Screen):
     def on_check_press(self, instance_table, current_row):
         conn = sqlite3.connect('lista_compras')
         cursor = conn.cursor()
-        print(self.dados_listagem.get_row_checks())
-        print(current_row[0])
         cursor.execute('DELETE FROM lista WHERE produto = (?)', (current_row[0],))
         cursor.execute('INSERT INTO lista(produto) VALUES(?)', (current_row[0],))
         conn.commit()
         self.carregar_lista(dt=None)
+
 
     def novo_item(self):
         conn = sqlite3.connect('lista_compras')
