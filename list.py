@@ -2,9 +2,13 @@ import math
 import sqlite3
 from kivy.config import Config
 from kivy.uix.screenmanager import Screen
+
+
 Config.set('graphics', 'resizable', '1')
 Config.set('graphics', 'width', '389')
 Config.set('graphics', 'height', '700')
+from kivymd.uix.list import OneLineAvatarIconListItem, IconLeftWidget, IconRightWidget
+from kivymd.uix.selectioncontrol import MDCheckbox
 from kivy.lang import Builder
 from kivymd.uix.textfield import MDTextField
 from kivy.properties import Clock
@@ -36,38 +40,53 @@ class Principal(Screen):
         cursor.execute('SELECT * FROM lista')
         self.lista = cursor.fetchall()
         for item in self.lista:
-            self.produtos.append(item[1])
-        self.icones = [("alpha-x", [1, 0, 0, 1], "")] * len(self.produtos)
-        self.completos = list(zip(self.produtos, self.icones))
-        self.dados_listagem = MDDataTable(pos_hint={'x': 0.15, 'y': 0.2},
-                                          size_hint=(.7, .6),
-                                          rows_num=len(self.completos),
-                                          background_color_header=get_color_from_hex("#ebf52a"),
-                                          background_color_selected_cell=get_color_from_hex("#f5f7cd"),
-                                          check=True,
-                                          column_data=[("[color=#0d0d0d]Produto[/color]", dp(35)),
-                                                       ("[color=#0d0d0d][/color]", dp(10))],
-                                          row_data=self.completos, elevation=1)
 
-        self.ids.scroll.add_widget(self.dados_listagem)
-        self.dados_listagem.bind(on_row_press=self.on_row_press)
-        self.dados_listagem.bind(on_check_press=self.on_check_press)
-        # self.dados_listagem.table_data.select_all('down')
+            self.ids.lista.add_widget(
+                OneLineAvatarIconListItem(
+                    IconLeftWidget(MDCheckbox(),
+                        icon='transparent.png', on_press=self.teste, text=f"{item[1]}"
+                    ),
+                    IconRightWidget(icon='x.ico', icon_size='15sp', on_press=self.remover, text=f"{item[1]}"),
+                    text=f"{item[1]}"
+                )
+            )
 
-    def on_row_press(self, instance_table, instance_row):
-        # instance_row.ids.check.state = 'down'
-        if instance_row.index % 2 != 0:
-            self.remover(instance_row.index)
-        else:
-            pass
+    # def ver(self, instance):
+    #     print(instance.children[0].children)
+    #     instance.children[0].children.disabled = False
+    #     instance.children[0].children.icon_size = '15sp'
 
-    def on_check_press(self, instance_table, current_row):
-        conn = sqlite3.connect('lista_compras')
-        cursor = conn.cursor()
-        cursor.execute('DELETE FROM lista WHERE produto = (?)', (current_row[0],))
-        cursor.execute('INSERT INTO lista(produto) VALUES(?)', (current_row[0],))
-        conn.commit()
-        self.carregar_lista(dt=None)
+    #     self.icones = [("alpha-x", [1, 0, 0, 1], "")] * len(self.produtos)
+    #     self.completos = list(zip(self.produtos, self.icones))
+    #     self.dados_listagem = MDDataTable(pos_hint={'x': 0.15, 'y': 0.2},
+    #                                       size_hint=(.7, .6),
+    #                                       rows_num=len(self.completos),
+    #                                       background_color_header=get_color_from_hex("#ebf52a"),
+    #                                       background_color_selected_cell=get_color_from_hex("#f5f7cd"),
+    #                                       check=True,
+    #                                       column_data=[("[color=#0d0d0d]Produto[/color]", dp(35)),
+    #                                                    ("[color=#0d0d0d][/color]", dp(10))],
+    #                                       row_data=self.completos, elevation=1)
+    #
+    #     self.ids.scroll.add_widget(self.dados_listagem)
+    #     self.dados_listagem.bind(on_row_press=self.on_row_press)
+    #     self.dados_listagem.bind(on_check_press=self.on_check_press)
+    #     # self.dados_listagem.table_data.select_all('down')
+    #
+    # def on_row_press(self, instance_table, instance_row):
+    #     # instance_row.ids.check.state = 'down'
+    #     if instance_row.index % 2 != 0:
+    #         self.remover(instance_row.index)
+    #     else:
+    #         pass
+    #
+    # def on_check_press(self, instance_table, current_row):
+    #     conn = sqlite3.connect('lista_compras')
+    #     cursor = conn.cursor()
+    #     cursor.execute('DELETE FROM lista WHERE produto = (?)', (current_row[0],))
+    #     cursor.execute('INSERT INTO lista(produto) VALUES(?)', (current_row[0],))
+    #     conn.commit()
+    #     self.carregar_lista(dt=None)
 
 
     def novo_item(self):
@@ -106,19 +125,26 @@ class Principal(Screen):
         cursor = conn.cursor()
         cursor.execute('INSERT INTO lista(produto) VALUES(?)', (entrada.text,))
         conn.commit()
-        self.ids.scroll.clear_widgets()
+        self.ids.lista.clear_widgets()
         self.carregar_lista(dt=None)
 
-    def remover(self, row):
+    def remover(self, instance):
+        print(instance.text)
         conn = sqlite3.connect('lista_compras')
         cursor = conn.cursor()
-        cursor.execute('DELETE FROM lista WHERE produto = (?)', (self.lista[math.floor(row/2)][1],))
+        cursor.execute('DELETE FROM lista WHERE produto = (?)', (instance.text,))
         conn.commit()
-        self.ids.scroll.clear_widgets()
+        self.ids.lista.clear_widgets()
         self.carregar_lista(dt=None)
 
-    def teste(self, instance, item):
-        print('teste', item.text)
+    def teste(self, instance):
+        print(instance)
+        for item in self.ids.lista.children:
+
+            if instance.parent in item.children:
+                print(instance.parent)
+                self.ids.lista.remove_widget(item)
+                self.ids.lista.add_widget(item)
 
 
 class Example(MDApp):

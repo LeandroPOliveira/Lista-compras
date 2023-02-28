@@ -24,7 +24,27 @@ Principal:
 
                 FloatLayout:
                     size_hint: (1, 1)
-                    id: scroll
+
+                    ScrollView:
+                        pos_hint: {'x':.05, 'y':.2}
+                        size_hint: .9, .6
+                        #size: (self.width, 500)
+                        bar_margin: 40
+                        bar_width: 10
+                        scroll_type: ['bars', 'content']
+
+                        GridLayout:
+                            size_hint_y: None
+                            height: self.minimum_height
+                            row_default_height: 30
+                            cols: 1
+                            rows: 50
+                            bar_width: 50
+                            padding: [30, 0, 30, 50]
+
+
+                            MDList:
+                                id: lista
 
                 MDFloatingActionButton:
                     pos_hint: {'x': 0.42, 'y': 0.025}
