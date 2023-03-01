@@ -7,12 +7,13 @@
     name: 'inicio'
 
     MDBottomNavigation:
+        id: navegacao
         #panel_color: "yellow"
         selected_color_background: 0, 0, 1, .4
         text_color_active: "lightgrey"
 
         MDBottomNavigationItem:
-            name: 'screen 1'
+            name: 'screen1'
             text: 'Em exibição'
             icon: 'list-box'
 
@@ -56,7 +57,7 @@
                         root.novo_item()
 
         MDBottomNavigationItem:
-            name: 'screen 2'
+            name: 'screen2'
             text: 'Minhas listas'
             icon: 'database-plus'
             Image:
@@ -80,7 +81,7 @@
 
 
         MDBottomNavigationItem:
-            name: 'screen 3'
+            name: 'screen3'
             text: 'Pesquisar'
             icon: 'store-search'
 
@@ -140,6 +141,7 @@
                                 pos_hint: {"x": 0.1, "y": 0.2}
                                 on_press:
                                     root.buscar_produtos(self, mercearia)
+                                    app.root.current = "produtos"
 
                             MDLabel:
                                 id: mercearia
@@ -164,6 +166,7 @@
                                 pos_hint: {"x": 0.1, "y": 0.2}
                                 on_press:
                                     root.buscar_produtos(self, bebidas)
+                                    app.root.current = "produtos"
 
                             MDLabel:
                                 id: bebidas
@@ -188,6 +191,7 @@
                                 pos_hint: {"x": 0.1, "y": 0.2}
                                 on_press:
                                     root.buscar_produtos(self, açougue)
+                                    app.root.current = "produtos"
 
                             MDLabel:
                                 id: açougue
@@ -212,6 +216,7 @@
                                 pos_hint: {"x": 0.1, "y": 0.2}
                                 on_press:
                                     root.buscar_produtos(self, higiene)
+                                    app.root.current = "produtos"
 
                             MDLabel:
                                 id: higiene
@@ -236,6 +241,7 @@
                                 pos_hint: {"x": 0.1, "y": 0.2}
                                 on_press:
                                     root.buscar_produtos(self, limpeza)
+                                    app.root.current = "produtos"
 
 
                             MDLabel:
@@ -261,6 +267,7 @@
                                 pos_hint: {"x": 0.1, "y": 0.2}
                                 on_press:
                                     root.buscar_produtos(self, utilidades)
+                                    app.root.current = "produtos"
 
 
                             MDLabel:

@@ -141,7 +141,7 @@ class Produtos(Screen):
                                               background_color_header=get_color_from_hex("#ebf52a"),
                                               background_color_selected_cell=get_color_from_hex("#f5f7cd"),
                                               check=True,
-                                              column_data=[("[color=#0d0d0d]Produto[/color]", dp(40))
+                                              column_data=[("[color=#0d0d0d]Produto[/color]", dp(50))
                                                            ],
                                               row_data=self.manager.get_screen('inicio').lista_produtos, elevation=1)
 
