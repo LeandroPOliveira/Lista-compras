@@ -42,7 +42,7 @@ class Principal(Screen):
         self.ids.lista.add_widget(
             OneLineAvatarIconListItem(
                 IconLeftWidget(MDCheckbox(),
-                               icon='transparent.png', on_press=self.teste, text=''
+                               icon='transparent.png', icon_size='10sp', on_press=self.teste, text=''
                                ),
                 text='Produtos', bg_color='yellow'))
 
@@ -51,9 +51,9 @@ class Principal(Screen):
             self.ids.lista.add_widget(
                 OneLineAvatarIconListItem(
                     IconLeftWidget(MDCheckbox(),
-                        icon='transparent.png', on_press=self.teste, text=f"{item[1]}"
+                        icon='transparent.png', icon_size='10sp', on_press=self.teste, text=f"{item[1]}"
                     ),
-                    IconRightWidget(icon='x.ico', icon_size='15sp', on_press=self.remover, text=f"{item[1]}"),
+                    IconRightWidget(icon='icons/x.ico', icon_size='10sp', on_press=self.remover, text=f"{item[1]}"),
                     text=f"{item[1]}"
                 )
             )
