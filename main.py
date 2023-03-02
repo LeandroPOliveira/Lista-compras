@@ -37,7 +37,7 @@ class Principal(Screen):
         self.lista.clear(), self.produtos.clear()
         conn = sqlite3.connect('lista_compras')
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM lista')
+        cursor.execute('SELECT * FROM lista order by checks ASC')
         self.lista = cursor.fetchall()
         self.ids.lista.add_widget(
             OneLineAvatarIconListItem(
@@ -50,7 +50,7 @@ class Principal(Screen):
 
             self.ids.lista.add_widget(
                 OneLineAvatarIconListItem(
-                    IconLeftWidget(MDCheckbox(),
+                    IconLeftWidget(MDCheckbox(active=True if item[3] == 1 else False),
                         icon='transparent.png', icon_size='10sp', on_press=self.teste, text=f"{item[1]}"
                     ),
                     IconRightWidget(icon='icons/x.ico', icon_size='10sp', on_press=self.remover, text=f"{item[1]}"),
@@ -92,7 +92,7 @@ class Principal(Screen):
         # print(entrada.text)
         conn = sqlite3.connect('lista_compras')
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO lista(produto) VALUES(?)', (entrada.text,))
+        cursor.execute('INSERT INTO lista(produto, checks) VALUES(?, ?)', (entrada.text, 0))
         conn.commit()
         self.ids.lista.clear_widgets()
         self.carregar_lista(dt=None)
@@ -107,13 +107,30 @@ class Principal(Screen):
         self.carregar_lista(dt=None)
 
     def teste(self, instance):
-        print(instance)
+        conn = sqlite3.connect('lista_compras')
+        cursor = conn.cursor()
+
+        print(instance.text)
         for item in self.ids.lista.children:
 
             if instance.parent in item.children:
-                print(instance.parent)
-                self.ids.lista.remove_widget(item)
-                self.ids.lista.add_widget(item)
+                cursor.execute('select * FROM lista WHERE produto = (?)', (instance.text,))
+                self.pega_check = cursor.fetchall()
+                self.pega_check = self.pega_check[0][3]
+                print(self.pega_check)
+                if self.pega_check == 0:
+                    self.atualiza_check = 1
+                else:
+                    self.atualiza_check = 0
+                print(self.atualiza_check)
+                cursor.execute('UPDATE lista SET checks = (?) WHERE produto = (?)', (self.atualiza_check, instance.text,))
+                # cursor.execute('INSERT INTO lista(produto) VALUES(?, ?)', (instance.text, 0))
+                conn.commit()
+                self.ids.lista.clear_widgets()
+                self.carregar_lista(dt=None)
+
+                # self.ids.lista.remove_widget(item)
+                # self.ids.lista.add_widget(item)
 
     def buscar_produtos(self, instance, item):
         self.categoria = item.text
@@ -154,7 +171,8 @@ class Produtos(Screen):
         itens = self.dados_listagem.get_row_checks()
         print(itens)
         for item in itens:
-            cursor.execute('INSERT INTO lista(produto, categoria) VALUES(?, ?)', (''.join(item), self.manager.get_screen('inicio').categoria))
+            cursor.execute('INSERT INTO lista(produto, categoria) VALUES(?, ?, ?)', (''.join(item),
+                                                                    self.manager.get_screen('inicio').categoria, 0))
             conn.commit()
             self.manager.get_screen('inicio').ids.lista.clear_widgets()
             self.manager.get_screen('inicio').carregar_lista(dt=None)
@@ -167,7 +185,7 @@ class WindowManager(ScreenManager):
 class Example(MDApp):
     def build(self):
         # self.theme_cls.theme_style = "Dark"
-        return Builder.load_file('list.kv')
+        return Builder.load_file('main.kv')
 
 
 Example().run()
