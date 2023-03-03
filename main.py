@@ -20,6 +20,10 @@ from kivy.metrics import dp
 from kivy.utils import get_color_from_hex
 
 
+class Inicio(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
 class Principal(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

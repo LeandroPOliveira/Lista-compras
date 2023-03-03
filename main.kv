@@ -1,3 +1,5 @@
+#:import hex kivy.utils.get_color_from_hex
+
 <Image>
     source: 'foto.jpg'
     allow_stretch: True
@@ -10,6 +12,43 @@
 <MDIconButton>
     color: 'grey'
     icon_size: '80sp'
+
+<Inicio>:
+
+    FloatLayout:
+        size_hint: (1, 1)
+
+        Image:
+            source: 'fundo.jpg'
+
+        MDLabel:
+            size_hint: 0.8, 0.1
+            pos_hint: {'x': 0.1, 'y': 0.35}
+            text: 'LISTA DE'
+            color: hex('#3b424c')
+            bold: True
+
+        MDLabel:
+            size_hint: 0.8, 0.1
+            pos_hint: {'x': 0.1, 'y': 0.3}
+            text: 'COMPRAS'
+            font_size: '48'
+            color: hex('#1b75fd')
+            bold: True
+
+        MDRectangleFlatIconButton:
+            size_hint: 0.4, 0.08
+            pos_hint: {'x': 0.1, 'y': 0.2}
+            icon: "cart-variant"
+            text: "Entrar"
+            font_size: '20'
+            md_bg_color: hex('#1b75fd')
+            text_color: "white"
+            line_color: hex('#1b75fd')
+            theme_icon_color: "Custom"
+            icon_color: hex('#ffffff')
+            on_press:
+                app.root.current = "inicio"
 
 <Principal>:
     name: 'inicio'
@@ -297,6 +336,8 @@
 
 
 WindowManager:
+
+    Inicio:
 
     Principal:
 
