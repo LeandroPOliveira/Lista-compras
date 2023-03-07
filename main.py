@@ -24,6 +24,7 @@ class Inicio(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+
 class Principal(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -121,12 +122,10 @@ class Principal(Screen):
                 cursor.execute('select * FROM lista WHERE produto = (?)', (instance.text,))
                 self.pega_check = cursor.fetchall()
                 self.pega_check = self.pega_check[0][3]
-                print(self.pega_check)
                 if self.pega_check == 0:
                     self.atualiza_check = 1
                 else:
                     self.atualiza_check = 0
-                print(self.atualiza_check)
                 cursor.execute('UPDATE lista SET checks = (?) WHERE produto = (?)', (self.atualiza_check, instance.text,))
                 # cursor.execute('INSERT INTO lista(produto) VALUES(?, ?)', (instance.text, 0))
                 conn.commit()
@@ -175,7 +174,7 @@ class Produtos(Screen):
         itens = self.dados_listagem.get_row_checks()
         print(itens)
         for item in itens:
-            cursor.execute('INSERT INTO lista(produto, categoria) VALUES(?, ?, ?)', (''.join(item),
+            cursor.execute('INSERT INTO lista(produto, categoria, checks) VALUES(?, ?, ?)', (''.join(item),
                                                                     self.manager.get_screen('inicio').categoria, 0))
             conn.commit()
             self.manager.get_screen('inicio').ids.lista.clear_widgets()
