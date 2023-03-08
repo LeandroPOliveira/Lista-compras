@@ -6,13 +6,12 @@
     keep_ratio: False
 
 <MDCard>
-    padding: 4
+    #padding: 4
     md_bg_color: "#f4dedc"
-
 
 <MDIconButton>
     color: 'grey'
-    icon_size: '80sp'
+    #icon_size: '80sp'
 
 <Inicio>:
 
@@ -50,251 +49,292 @@
             theme_icon_color: "Custom"
             icon_color: hex('#ffffff')
             on_press:
-                app.root.current = "inicio"
+                app.root.current = "tela1"
+
+<ContentNavigationDrawer>:
+    ScrollView:
+
+        MDList:
+
+            OneLineListItem:
+                text: 'Tela Principal'
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "principal"
+
+            OneLineListItem:
+                text: 'Minhas listas'
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "minhas_listas"
+
+            OneLineListItem:
+                text: 'Pesquisar'
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "pesquisar"
+
+<Teste>:
+    name: 'tela1'
+
+    MDTopAppBar:
+        id: toolbar
+        pos_hint: {"top": 1}
+        elevation: 0
+        md_bg_color: hex('#1b75fd')
+        title: ""
+        left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+
+
+    MDNavigationLayout:
+        x: toolbar.height
+
+        ScreenManager:
+            id: screen_manager
+
+            Principal:
+                name: "principal"
+
+            MinhasListas:
+                name: "minhas_listas"
+
+            Pesquisar:
+                name: "pesquisar"
+
+
+        MDNavigationDrawer:
+            id: nav_drawer
+            radius: (0, 16, 16, 0)
+
+            ContentNavigationDrawer:
+                screen_manager: screen_manager
+                nav_drawer: nav_drawer
+
 
 <Principal>:
-    name: 'inicio'
 
-    MDBottomNavigation:
-        id: navegacao
-        #panel_color: "yellow"
-        selected_color_background: 0, 0, 1, .4
-        text_color_active: "lightgrey"
+    FloatLayout:
+        size_hint: (1, 0.915)
 
-        MDBottomNavigationItem:
-            name: 'screen1'
-            text: 'Em exibição'
-            icon: 'list-box'
+        Image:
 
-
-            FloatLayout:
-                size_hint: (1, 1)
-
-                Image:
-
-                FloatLayout:
-                    size_hint: (1, 1)
-
-                    ScrollView:
-                        pos_hint: {'x':.05, 'y':.25}
-                        size_hint: .9, .6
-                        #size: (self.width, 500)
-                        bar_margin: 25
-                        bar_width: 5
-                        scroll_type: ['bars', 'content']
-
-                        GridLayout:
-                            size_hint_y: None
-                            height: self.minimum_height
-                            row_default_height: 15
-                            cols: 1
-                            rows: 50
-                            bar_width: 50
-                            padding: [38, 0, 30, 50]
-
-
-                            MDList:
-                                id: lista
-
-                MDFloatingActionButton:
-                    pos_hint: {'x': 0.42, 'y': 0.025}
-                    md_bg_color: "yellow"
-                    icon: "plus"
-                    text_color: "black"
-
-                    on_press:
-                        root.novo_item()
-
-        MDBottomNavigationItem:
-            name: 'screen2'
-            text: 'Minhas listas'
-            icon: 'database-plus'
-            Image:
-
-            GridLayout:
-                cols: 1
-                rows: 5
-                padding: [100, 150, 100, 150]
-                spacing: 10, 20
-
-
-                MDRectangleFlatButton:
-                    text: 'Visualizar listas'
-                    halign: 'center'
-
-                MDRectangleFlatButton:
-                    text: 'Criar lista'
-                    halign: 'center'
-
-
-
-
-        MDBottomNavigationItem:
-            name: 'screen3'
-            text: 'Pesquisar'
-            icon: 'store-search'
-
-            Image:
-                source: 'back.jpg'
-
+        FloatLayout:
+            size_hint: (1, 1)
 
             ScrollView:
+                pos_hint: {'x':.05, 'y':.25}
+                size_hint: .9, .6
+                #size: (self.width, 500)
+                bar_margin: 25
+                bar_width: 5
+                scroll_type: ['bars', 'content']
 
                 GridLayout:
-                    id: grid_teste
                     size_hint_y: None
                     height: self.minimum_height
-                    row_default_height: '130dp'
-                    cols: 2
-                    rows: 4
+                    row_default_height: 15
+                    cols: 1
+                    rows: 50
                     bar_width: 50
-                    padding: [50, 100, 50, 50]
-                    spacing: 20, 20
+                    padding: [38, 0, 30, 50]
 
 
-                    MDCard:
-                        pos_hint: {'x': 0.1, 'y': 0.5}
+                    MDList:
+                        id: lista
+
+        MDFloatingActionButton:
+            pos_hint: {'x': 0.42, 'y': 0.025}
+            md_bg_color: "yellow"
+            icon: "plus"
+            text_color: "black"
+
+            on_press:
+                root.novo_item()
+
+<MinhasListas>:
+
+    GridLayout:
+        cols: 1
+        rows: 5
+        padding: [100, 150, 100, 150]
+        spacing: 10, 20
 
 
-                        MDRelativeLayout:
+        MDRectangleFlatButton:
+            text: 'Visualizar listas'
+            halign: 'center'
 
-                            MDIconButton:
-                                icon: "icons/fruit.ico"
-                                pos_hint: {"center_x": 0.5, "y": 0.2}
-                                on_press:
-                                    root.buscar_produtos(self, feira)
-                                    app.root.current = "produtos"
+        MDRectangleFlatButton:
+            text: 'Criar lista'
+            halign: 'center'
 
-                            MDLabel:
-                                id: feira
-                                text: 'Feira'
-                                adaptive_size: True
-                                color: "grey"
-                                pos_hint: {'center_x': 0.5, 'y': 0.05}
-                                bold: True
+<Pesquisar>:
 
-                    MDCard:
-                        pos_hint: {'x': 0.55, 'y': 0.5}
+    ScrollView:
+        size_hint: (1, 0.915)
 
-                        MDRelativeLayout:
-
-                            MDIconButton:
-                                icon: "icons/bread.ico"
-                                pos_hint: {"center_x": 0.5, "y": 0.2}
-                                on_press:
-                                    root.buscar_produtos(self, mercearia)
-                                    app.root.current = "produtos"
-
-                            MDLabel:
-                                id: mercearia
-                                text: 'Mercearia'
-                                adaptive_size: True
-                                color: "grey"
-                                pos_hint: {'center_x': 0.5, 'y': 0.05}
-                                bold: True
-
-                    MDCard:
-                        pos_hint: {'x': 0.55, 'y': 0.5}
-
-                        MDRelativeLayout:
-
-                            MDIconButton:
-                                icon: "icons/milk.ico"
-                                pos_hint: {"center_x": 0.5, "y": 0.2}
-                                on_press:
-                                    root.buscar_produtos(self, bebidas)
-                                    app.root.current = "produtos"
-
-                            MDLabel:
-                                id: bebidas
-                                text: 'Bebidas'
-                                adaptive_size: True
-                                color: "grey"
-                                pos_hint: {'center_x': 0.5, 'y': 0.05}
-                                bold: True
-
-                    MDCard:
-                        pos_hint: {'x': 0.55, 'y': 0.5}
-
-                        MDRelativeLayout:
-
-                            MDIconButton:
-                                icon: "icons/steak.ico"
-                                pos_hint: {"center_x": 0.5, "y": 0.2}
-                                on_press:
-                                    root.buscar_produtos(self, açougue)
-                                    app.root.current = "produtos"
-
-                            MDLabel:
-                                id: açougue
-                                text: 'Açougue'
-                                adaptive_size: True
-                                color: "grey"
-                                pos_hint: {'center_x': 0.5, 'y': 0.05}
-                                bold: True
-
-                    MDCard:
-                        pos_hint: {'x': 0.55, 'y': 0.5}
-
-                        MDRelativeLayout:
-
-                            MDIconButton:
-                                icon: "icons/toiletries.ico"
-                                pos_hint: {"center_x": 0.5, "y": 0.2}
-                                on_press:
-                                    root.buscar_produtos(self, higiene)
-                                    app.root.current = "produtos"
-
-                            MDLabel:
-                                id: higiene
-                                text: 'Higiene'
-                                adaptive_size: True
-                                color: "grey"
-                                pos_hint: {'center_x': 0.5, 'y': 0.05}
-                                bold: True
-
-                    MDCard:
-                        pos_hint: {'x': 0.55, 'y': 0.5}
-
-                        MDRelativeLayout:
-
-                            MDIconButton:
-                                icon: "icons/garbage-cleaning.ico"
-                                pos_hint: {"center_x": 0.5, "y": 0.2}
-                                on_press:
-                                    root.buscar_produtos(self, limpeza)
-                                    app.root.current = "produtos"
+        GridLayout:
+            id: grid_teste
+            size_hint_y: None
+            height: self.minimum_height
+            row_default_height: '130dp'
+            cols: 2
+            rows: 4
+            bar_width: 50
+            padding: [50, 100, 50, 50]
+            spacing: 20, 20
 
 
-                            MDLabel:
-                                id: limpeza
-                                text: 'Limpeza'
-                                halign: 'center'
-                                pos_hint: {'center_x': 0.5, 'y': 0.05}
-                                adaptive_size: True
-                                color: "grey"
-                                bold: True
-
-                    MDCard:
-                        pos_hint: {'x': 0.55, 'y': 0.5}
-
-                        MDRelativeLayout:
-
-                            MDIconButton:
-                                icon: "icons/lamp.ico"
-                                pos_hint: {"center_x": 0.5, "y": 0.2}
-                                on_press:
-                                    root.buscar_produtos(self, utilidades)
-                                    app.root.current = "produtos"
+            MDCard:
+                pos_hint: {'x': 0.1, 'y': 0.5}
 
 
-                            MDLabel:
-                                id: utilidades
-                                text: 'Utilidades'
-                                adaptive_size: True
-                                color: "grey"
-                                pos_hint: {'center_x': 0.5, 'y': 0.05}
-                                bold: True
+                MDRelativeLayout:
+
+                    MDIconButton:
+                        icon: "icons/fruit.ico"
+                        icon_size: '80sp'
+                        pos_hint: {"center_x": 0.5, "y": 0.2}
+                        on_press:
+                            root.buscar_produtos(self, feira)
+                            app.root.current = "produtos"
+
+                    MDLabel:
+                        id: feira
+                        text: 'Feira'
+                        adaptive_size: True
+                        color: "grey"
+                        pos_hint: {'center_x': 0.5, 'y': 0.05}
+                        bold: True
+
+            MDCard:
+                pos_hint: {'x': 0.55, 'y': 0.5}
+
+                MDRelativeLayout:
+
+                    MDIconButton:
+                        icon: "icons/bread.ico"
+                        icon_size: '80sp'
+                        pos_hint: {"center_x": 0.5, "y": 0.2}
+                        on_press:
+                            root.buscar_produtos(self, mercearia)
+                            app.root.current = "produtos"
+
+                    MDLabel:
+                        id: mercearia
+                        text: 'Mercearia'
+                        adaptive_size: True
+                        color: "grey"
+                        pos_hint: {'center_x': 0.5, 'y': 0.05}
+                        bold: True
+
+            MDCard:
+                pos_hint: {'x': 0.55, 'y': 0.5}
+
+                MDRelativeLayout:
+
+                    MDIconButton:
+                        icon: "icons/milk.ico"
+                        icon_size: '80sp'
+                        pos_hint: {"center_x": 0.5, "y": 0.2}
+                        on_press:
+                            root.buscar_produtos(self, bebidas)
+                            app.root.current = "produtos"
+
+                    MDLabel:
+                        id: bebidas
+                        text: 'Bebidas'
+                        adaptive_size: True
+                        color: "grey"
+                        pos_hint: {'center_x': 0.5, 'y': 0.05}
+                        bold: True
+
+            MDCard:
+                pos_hint: {'x': 0.55, 'y': 0.5}
+
+                MDRelativeLayout:
+
+                    MDIconButton:
+                        icon: "icons/steak.ico"
+                        icon_size: '80sp'
+                        pos_hint: {"center_x": 0.5, "y": 0.2}
+                        on_press:
+                            root.buscar_produtos(self, açougue)
+                            app.root.current = "produtos"
+
+                    MDLabel:
+                        id: açougue
+                        text: 'Açougue'
+                        adaptive_size: True
+                        color: "grey"
+                        pos_hint: {'center_x': 0.5, 'y': 0.05}
+                        bold: True
+
+            MDCard:
+                pos_hint: {'x': 0.55, 'y': 0.5}
+
+                MDRelativeLayout:
+
+                    MDIconButton:
+                        icon: "icons/toiletries.ico"
+                        icon_size: '80sp'
+                        pos_hint: {"center_x": 0.5, "y": 0.2}
+                        on_press:
+                            root.buscar_produtos(self, higiene)
+                            app.root.current = "produtos"
+
+                    MDLabel:
+                        id: higiene
+                        text: 'Higiene'
+                        adaptive_size: True
+                        color: "grey"
+                        pos_hint: {'center_x': 0.5, 'y': 0.05}
+                        bold: True
+
+            MDCard:
+                pos_hint: {'x': 0.55, 'y': 0.5}
+
+                MDRelativeLayout:
+
+                    MDIconButton:
+                        icon: "icons/garbage-cleaning.ico"
+                        icon_size: '80sp'
+                        pos_hint: {"center_x": 0.5, "y": 0.2}
+                        on_press:
+                            root.buscar_produtos(self, limpeza)
+                            app.root.current = "produtos"
+
+
+                    MDLabel:
+                        id: limpeza
+                        text: 'Limpeza'
+                        halign: 'center'
+                        pos_hint: {'center_x': 0.5, 'y': 0.05}
+                        adaptive_size: True
+                        color: "grey"
+                        bold: True
+
+            MDCard:
+                pos_hint: {'x': 0.55, 'y': 0.5}
+
+                MDRelativeLayout:
+
+                    MDIconButton:
+                        icon: "icons/lamp.ico"
+                        icon_size: '80sp'
+                        pos_hint: {"center_x": 0.5, "y": 0.2}
+                        on_press:
+                            root.buscar_produtos(self, utilidades)
+                            app.root.current = "produtos"
+
+
+                    MDLabel:
+                        id: utilidades
+                        text: 'Utilidades'
+                        adaptive_size: True
+                        color: "grey"
+                        pos_hint: {'center_x': 0.5, 'y': 0.05}
+                        bold: True
 
 
 <Produtos>:
@@ -334,6 +374,8 @@
 WindowManager:
 
     Inicio:
+
+    Teste:
 
     Principal:
 

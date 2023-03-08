@@ -20,6 +20,13 @@ from kivy.metrics import dp
 from kivy.utils import get_color_from_hex
 
 
+class ContentNavigationDrawer(Screen):
+    pass
+
+
+class Teste(Screen):
+    pass
+
 class Inicio(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -135,7 +142,20 @@ class Principal(Screen):
                 # self.ids.lista.remove_widget(item)
                 # self.ids.lista.add_widget(item)
 
+
+
+
+class MinhasListas(Screen):
+    pass
+
+
+class Pesquisar(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+
     def buscar_produtos(self, instance, item):
+        self.lista_produtos = self.manager.get_screen('principal').lista_produtos
         self.categoria = item.text
         conn = sqlite3.connect('lista_compras')
         cursor = conn.cursor()
