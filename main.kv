@@ -57,10 +57,10 @@
         MDList:
 
             OneLineListItem:
-                text: 'Tela Principal'
+                text: 'Lista atual'
                 on_press:
                     root.nav_drawer.set_state("close")
-                    root.screen_manager.current = "principal"
+                    root.screen_manager.current = "lista_atual"
 
             OneLineListItem:
                 text: 'Minhas listas'
@@ -74,7 +74,13 @@
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "pesquisar"
 
-<Teste>:
+            OneLineListItem:
+                text: 'Produtos'
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "produtos"
+
+<Principal>:
     name: 'tela1'
 
     MDTopAppBar:
@@ -92,14 +98,17 @@
         ScreenManager:
             id: screen_manager
 
-            Principal:
-                name: "principal"
+            ListaAtual:
+                name: "lista_atual"
 
             MinhasListas:
                 name: "minhas_listas"
 
             Pesquisar:
                 name: "pesquisar"
+
+            Produtos:
+                name: "produtos"
 
 
         MDNavigationDrawer:
@@ -111,7 +120,7 @@
                 nav_drawer: nav_drawer
 
 
-<Principal>:
+<ListaAtual>:
 
     FloatLayout:
         size_hint: (1, 0.915)
@@ -197,7 +206,7 @@
                         pos_hint: {"center_x": 0.5, "y": 0.2}
                         on_press:
                             root.buscar_produtos(self, feira)
-                            app.root.current = "produtos"
+                            root.manager.current = "produtos"
 
                     MDLabel:
                         id: feira
@@ -218,7 +227,7 @@
                         pos_hint: {"center_x": 0.5, "y": 0.2}
                         on_press:
                             root.buscar_produtos(self, mercearia)
-                            app.root.current = "produtos"
+                            root.manager.current = "produtos"
 
                     MDLabel:
                         id: mercearia
@@ -239,7 +248,7 @@
                         pos_hint: {"center_x": 0.5, "y": 0.2}
                         on_press:
                             root.buscar_produtos(self, bebidas)
-                            app.root.current = "produtos"
+                            root.manager.current = "produtos"
 
                     MDLabel:
                         id: bebidas
@@ -260,7 +269,7 @@
                         pos_hint: {"center_x": 0.5, "y": 0.2}
                         on_press:
                             root.buscar_produtos(self, açougue)
-                            app.root.current = "produtos"
+                            root.manager.current = "produtos"
 
                     MDLabel:
                         id: açougue
@@ -281,7 +290,7 @@
                         pos_hint: {"center_x": 0.5, "y": 0.2}
                         on_press:
                             root.buscar_produtos(self, higiene)
-                            app.root.current = "produtos"
+                            root.manager.current = "produtos"
 
                     MDLabel:
                         id: higiene
@@ -302,7 +311,7 @@
                         pos_hint: {"center_x": 0.5, "y": 0.2}
                         on_press:
                             root.buscar_produtos(self, limpeza)
-                            app.root.current = "produtos"
+                            root.manager.current = "produtos"
 
 
                     MDLabel:
@@ -325,7 +334,8 @@
                         pos_hint: {"center_x": 0.5, "y": 0.2}
                         on_press:
                             root.buscar_produtos(self, utilidades)
-                            app.root.current = "produtos"
+                            root.manager.current = "produtos"
+
 
 
                     MDLabel:
@@ -338,7 +348,9 @@
 
 
 <Produtos>:
-    name: 'produtos'
+
+    on_enter:
+        root.catalogo_produtos()
 
     FloatLayout:
         size_hint: (1, 1)
@@ -355,7 +367,8 @@
             icon: 'arrow-left-circle'
             size_hint: 0.05, 0.05
             pos_hint: {'x': 0.1, 'y': 0.9}
-            on_press: app.root.current = "inicio"
+            on_press:
+                root.manager.current = "lista_atual"
 
 
         MDRectangleFlatButton:
@@ -368,15 +381,13 @@
 
             on_press:
                 root.adicionar_itens()
-                app.root.current = "inicio"
+                root.manager.current = "lista_atual"
 
 
 WindowManager:
 
     Inicio:
 
-    Teste:
-
     Principal:
 
-    Produtos:
+

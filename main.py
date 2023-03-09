@@ -1,12 +1,10 @@
-import math
 import sqlite3
 from kivy.config import Config
 from kivy.uix.screenmanager import Screen, ScreenManager
-
 Config.set('graphics', 'resizable', '1')
 Config.set('graphics', 'width', '389')
 Config.set('graphics', 'height', '700')
-from kivymd.uix.list import OneLineAvatarIconListItem, IconLeftWidget, IconRightWidget, OneLineListItem
+from kivymd.uix.list import OneLineAvatarIconListItem, IconLeftWidget, IconRightWidget
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivy.lang import Builder
 from kivymd.uix.textfield import MDTextField
@@ -24,15 +22,16 @@ class ContentNavigationDrawer(Screen):
     pass
 
 
-class Teste(Screen):
+class Principal(Screen):
     pass
+
 
 class Inicio(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
 
-class Principal(Screen):
+class ListaAtual(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.entrada = None
@@ -54,7 +53,7 @@ class Principal(Screen):
         self.ids.lista.add_widget(
             OneLineAvatarIconListItem(
                 IconLeftWidget(MDCheckbox(),
-                               icon='transparent.png', icon_size='10sp', on_press=self.teste, text=''
+                               icon='transparent.png', icon_size='10sp', on_press=self.marcar_item, text=''
                                ),
                 text='Produtos', bg_color='yellow'))
 
@@ -63,9 +62,9 @@ class Principal(Screen):
             self.ids.lista.add_widget(
                 OneLineAvatarIconListItem(
                     IconLeftWidget(MDCheckbox(active=True if item[3] == 1 else False),
-                        icon='transparent.png', icon_size='10sp', on_press=self.teste, text=f"{item[1]}"
+                        icon='transparent.png', icon_size='10sp', on_press=self.marcar_item, text=f"{item[1]}"
                     ),
-                    IconRightWidget(icon='icons/x.ico', icon_size='10sp', on_press=self.remover, text=f"{item[1]}"),
+                    IconRightWidget(icon='icons/x.ico', icon_size='10sp', on_press=self.remover_item, text=f"{item[1]}"),
                     text=f"{item[1]}"
                 )
             )
@@ -94,13 +93,13 @@ class Principal(Screen):
                 MDFlatButton(
                     text="OK",
                     theme_text_color="Custom",
-                    on_press=lambda x:(self.adicionar(self.entrada), self.dialog.dismiss())
+                    on_press=lambda x:(self.adicionar_item(self.entrada), self.dialog.dismiss())
                 ),
             ],
         )
         self.dialog.open()
 
-    def adicionar(self, entrada):
+    def adicionar_item(self, entrada):
         # print(entrada.text)
         conn = sqlite3.connect('lista_compras')
         cursor = conn.cursor()
@@ -109,7 +108,7 @@ class Principal(Screen):
         self.ids.lista.clear_widgets()
         self.carregar_lista(dt=None)
 
-    def remover(self, instance):
+    def remover_item(self, instance):
         print(instance.text)
         conn = sqlite3.connect('lista_compras')
         cursor = conn.cursor()
@@ -118,7 +117,7 @@ class Principal(Screen):
         self.ids.lista.clear_widgets()
         self.carregar_lista(dt=None)
 
-    def teste(self, instance):
+    def marcar_item(self, instance):
         conn = sqlite3.connect('lista_compras')
         cursor = conn.cursor()
 
@@ -143,8 +142,6 @@ class Principal(Screen):
                 # self.ids.lista.add_widget(item)
 
 
-
-
 class MinhasListas(Screen):
     pass
 
@@ -153,9 +150,8 @@ class Pesquisar(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-
     def buscar_produtos(self, instance, item):
-        self.lista_produtos = self.manager.get_screen('principal').lista_produtos
+        self.lista_produtos = self.manager.get_screen('lista_atual').lista_produtos
         self.categoria = item.text
         conn = sqlite3.connect('lista_compras')
         cursor = conn.cursor()
@@ -167,26 +163,26 @@ class Pesquisar(Screen):
             self.lista_produtos.append((produto[1],))
 
         print(self.lista_produtos)
-        self.manager.get_screen('produtos').buscar_produtos()
+        # self.manager.get_screen('produtos').catalogo_produtos()
 
 
 class Produtos(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def buscar_produtos(self):
+    def catalogo_produtos(self):
+        print(self.manager.get_screen('lista_atual').lista_produtos)
         self.dados_listagem = MDDataTable(pos_hint={'x': 0.15, 'y': 0.2},
                                               size_hint=(.7, .6),
-                                              rows_num=len(self.manager.get_screen('inicio').lista_produtos),
+                                              rows_num=len(self.manager.get_screen('lista_atual').lista_produtos),
                                               background_color_header=get_color_from_hex("#ebf52a"),
                                               background_color_selected_cell=get_color_from_hex("#f5f7cd"),
                                               check=True,
                                               column_data=[("[color=#0d0d0d]Produto[/color]", dp(50))
                                                            ],
-                                              row_data=self.manager.get_screen('inicio').lista_produtos, elevation=1)
+                                              row_data=self.manager.get_screen('lista_atual').lista_produtos, elevation=1)
 
         self.ids.lista_produtos.add_widget(self.dados_listagem)
-
 
     def adicionar_itens(self):
         conn = sqlite3.connect('lista_compras')
@@ -195,10 +191,10 @@ class Produtos(Screen):
         print(itens)
         for item in itens:
             cursor.execute('INSERT INTO lista(produto, categoria, checks) VALUES(?, ?, ?)', (''.join(item),
-                                                                    self.manager.get_screen('inicio').categoria, 0))
+                                                                    self.manager.get_screen('pesquisar').categoria, 0))
             conn.commit()
-            self.manager.get_screen('inicio').ids.lista.clear_widgets()
-            self.manager.get_screen('inicio').carregar_lista(dt=None)
+            self.manager.get_screen('lista_atual').ids.lista.clear_widgets()
+            self.manager.get_screen('lista_atual').carregar_lista(dt=None)
 
 
 class WindowManager(ScreenManager):
