@@ -7,10 +7,10 @@
 
 <MDCard>
     #padding: 4
-    md_bg_color: "#f4dedc"
+    md_bg_color: "#1b75fd"
 
 <MDIconButton>
-    color: 'grey'
+    icon_color: 'white'
     #icon_size: '80sp'
 
 <Inicio>:
@@ -127,6 +127,7 @@
 
         Image:
 
+
         FloatLayout:
             size_hint: (1, 1)
 
@@ -162,189 +163,200 @@
 
 <MinhasListas>:
 
-    GridLayout:
-        cols: 1
-        rows: 5
-        padding: [100, 150, 100, 150]
-        spacing: 10, 20
+    FloatLayout:
+        size_hint: (1, 0.915)
+
+        Image:
+
+        GridLayout:
+            cols: 1
+            rows: 5
+            padding: [100, 150, 100, 150]
+            spacing: 10, 20
 
 
-        MDRectangleFlatButton:
-            text: 'Visualizar listas'
-            halign: 'center'
+            MDRectangleFlatButton:
+                text: 'Visualizar listas'
+                halign: 'center'
 
-        MDRectangleFlatButton:
-            text: 'Criar lista'
-            halign: 'center'
+            MDRectangleFlatButton:
+                text: 'Criar lista'
+                halign: 'center'
 
 <Pesquisar>:
 
-    ScrollView:
+    FloatLayout:
         size_hint: (1, 0.915)
 
-        GridLayout:
-            id: grid_teste
-            size_hint_y: None
-            height: self.minimum_height
-            row_default_height: '130dp'
-            cols: 2
-            rows: 4
-            bar_width: 50
-            padding: [50, 100, 50, 50]
-            spacing: 20, 20
+        Image:
+
+        ScrollView:
+            size_hint: (1, 0.915)
+
+            GridLayout:
+                id: grid_teste
+                size_hint_y: None
+                height: self.minimum_height
+                row_default_height: '130dp'
+                cols: 2
+                rows: 4
+                bar_width: 50
+                padding: [50, 100, 50, 50]
+                spacing: 20, 20
 
 
-            MDCard:
-                pos_hint: {'x': 0.1, 'y': 0.5}
+                MDCard:
+                    pos_hint: {'x': 0.1, 'y': 0.5}
 
 
-                MDRelativeLayout:
+                    MDRelativeLayout:
 
-                    MDIconButton:
-                        icon: "icons/fruit.ico"
-                        icon_size: '80sp'
-                        pos_hint: {"center_x": 0.5, "y": 0.2}
-                        on_press:
-                            root.buscar_produtos(self, feira)
-                            root.manager.current = "produtos"
+                        MDIconButton:
+                            icon: "icons/fruit.ico"
+                            text_color: 'white'
+                            icon_size: '80sp'
+                            pos_hint: {"center_x": 0.5, "y": 0.2}
+                            on_press:
+                                root.buscar_produtos(self, feira)
+                                root.manager.current = "produtos"
 
-                    MDLabel:
-                        id: feira
-                        text: 'Feira'
-                        adaptive_size: True
-                        color: "grey"
-                        pos_hint: {'center_x': 0.5, 'y': 0.05}
-                        bold: True
+                        MDLabel:
+                            id: feira
+                            text: 'Feira'
+                            adaptive_size: True
+                            color: "grey"
+                            pos_hint: {'center_x': 0.5, 'y': 0.05}
+                            bold: True
 
-            MDCard:
-                pos_hint: {'x': 0.55, 'y': 0.5}
+                MDCard:
+                    pos_hint: {'x': 0.55, 'y': 0.5}
 
-                MDRelativeLayout:
+                    MDRelativeLayout:
 
-                    MDIconButton:
-                        icon: "icons/bread.ico"
-                        icon_size: '80sp'
-                        pos_hint: {"center_x": 0.5, "y": 0.2}
-                        on_press:
-                            root.buscar_produtos(self, mercearia)
-                            root.manager.current = "produtos"
+                        MDIconButton:
+                            icon: "icons/bread.ico"
+                            icon_size: '80sp'
+                            pos_hint: {"center_x": 0.5, "y": 0.2}
+                            on_press:
+                                root.buscar_produtos(self, mercearia)
+                                root.manager.current = "produtos"
 
-                    MDLabel:
-                        id: mercearia
-                        text: 'Mercearia'
-                        adaptive_size: True
-                        color: "grey"
-                        pos_hint: {'center_x': 0.5, 'y': 0.05}
-                        bold: True
+                        MDLabel:
+                            id: mercearia
+                            text: 'Mercearia'
+                            adaptive_size: True
+                            color: "white"
+                            pos_hint: {'center_x': 0.5, 'y': 0.05}
+                            bold: True
 
-            MDCard:
-                pos_hint: {'x': 0.55, 'y': 0.5}
+                MDCard:
+                    pos_hint: {'x': 0.55, 'y': 0.5}
 
-                MDRelativeLayout:
+                    MDRelativeLayout:
 
-                    MDIconButton:
-                        icon: "icons/milk.ico"
-                        icon_size: '80sp'
-                        pos_hint: {"center_x": 0.5, "y": 0.2}
-                        on_press:
-                            root.buscar_produtos(self, bebidas)
-                            root.manager.current = "produtos"
+                        MDIconButton:
+                            icon: "icons/milk.ico"
+                            icon_size: '80sp'
+                            pos_hint: {"center_x": 0.5, "y": 0.2}
+                            on_press:
+                                root.buscar_produtos(self, bebidas)
+                                root.manager.current = "produtos"
 
-                    MDLabel:
-                        id: bebidas
-                        text: 'Bebidas'
-                        adaptive_size: True
-                        color: "grey"
-                        pos_hint: {'center_x': 0.5, 'y': 0.05}
-                        bold: True
+                        MDLabel:
+                            id: bebidas
+                            text: 'Bebidas'
+                            adaptive_size: True
+                            color: "grey"
+                            pos_hint: {'center_x': 0.5, 'y': 0.05}
+                            bold: True
 
-            MDCard:
-                pos_hint: {'x': 0.55, 'y': 0.5}
+                MDCard:
+                    pos_hint: {'x': 0.55, 'y': 0.5}
 
-                MDRelativeLayout:
+                    MDRelativeLayout:
 
-                    MDIconButton:
-                        icon: "icons/steak.ico"
-                        icon_size: '80sp'
-                        pos_hint: {"center_x": 0.5, "y": 0.2}
-                        on_press:
-                            root.buscar_produtos(self, açougue)
-                            root.manager.current = "produtos"
+                        MDIconButton:
+                            icon: "icons/steak.ico"
+                            icon_size: '80sp'
+                            pos_hint: {"center_x": 0.5, "y": 0.2}
+                            on_press:
+                                root.buscar_produtos(self, açougue)
+                                root.manager.current = "produtos"
 
-                    MDLabel:
-                        id: açougue
-                        text: 'Açougue'
-                        adaptive_size: True
-                        color: "grey"
-                        pos_hint: {'center_x': 0.5, 'y': 0.05}
-                        bold: True
+                        MDLabel:
+                            id: açougue
+                            text: 'Açougue'
+                            adaptive_size: True
+                            color: "grey"
+                            pos_hint: {'center_x': 0.5, 'y': 0.05}
+                            bold: True
 
-            MDCard:
-                pos_hint: {'x': 0.55, 'y': 0.5}
+                MDCard:
+                    pos_hint: {'x': 0.55, 'y': 0.5}
 
-                MDRelativeLayout:
+                    MDRelativeLayout:
 
-                    MDIconButton:
-                        icon: "icons/toiletries.ico"
-                        icon_size: '80sp'
-                        pos_hint: {"center_x": 0.5, "y": 0.2}
-                        on_press:
-                            root.buscar_produtos(self, higiene)
-                            root.manager.current = "produtos"
+                        MDIconButton:
+                            icon: "icons/toiletries.ico"
+                            icon_size: '80sp'
+                            pos_hint: {"center_x": 0.5, "y": 0.2}
+                            on_press:
+                                root.buscar_produtos(self, higiene)
+                                root.manager.current = "produtos"
 
-                    MDLabel:
-                        id: higiene
-                        text: 'Higiene'
-                        adaptive_size: True
-                        color: "grey"
-                        pos_hint: {'center_x': 0.5, 'y': 0.05}
-                        bold: True
+                        MDLabel:
+                            id: higiene
+                            text: 'Higiene'
+                            adaptive_size: True
+                            color: "grey"
+                            pos_hint: {'center_x': 0.5, 'y': 0.05}
+                            bold: True
 
-            MDCard:
-                pos_hint: {'x': 0.55, 'y': 0.5}
+                MDCard:
+                    pos_hint: {'x': 0.55, 'y': 0.5}
 
-                MDRelativeLayout:
+                    MDRelativeLayout:
 
-                    MDIconButton:
-                        icon: "icons/garbage-cleaning.ico"
-                        icon_size: '80sp'
-                        pos_hint: {"center_x": 0.5, "y": 0.2}
-                        on_press:
-                            root.buscar_produtos(self, limpeza)
-                            root.manager.current = "produtos"
-
-
-                    MDLabel:
-                        id: limpeza
-                        text: 'Limpeza'
-                        halign: 'center'
-                        pos_hint: {'center_x': 0.5, 'y': 0.05}
-                        adaptive_size: True
-                        color: "grey"
-                        bold: True
-
-            MDCard:
-                pos_hint: {'x': 0.55, 'y': 0.5}
-
-                MDRelativeLayout:
-
-                    MDIconButton:
-                        icon: "icons/lamp.ico"
-                        icon_size: '80sp'
-                        pos_hint: {"center_x": 0.5, "y": 0.2}
-                        on_press:
-                            root.buscar_produtos(self, utilidades)
-                            root.manager.current = "produtos"
+                        MDIconButton:
+                            icon: "icons/garbage-cleaning.ico"
+                            icon_size: '80sp'
+                            pos_hint: {"center_x": 0.5, "y": 0.2}
+                            on_press:
+                                root.buscar_produtos(self, limpeza)
+                                root.manager.current = "produtos"
 
 
+                        MDLabel:
+                            id: limpeza
+                            text: 'Limpeza'
+                            halign: 'center'
+                            pos_hint: {'center_x': 0.5, 'y': 0.05}
+                            adaptive_size: True
+                            color: "grey"
+                            bold: True
 
-                    MDLabel:
-                        id: utilidades
-                        text: 'Utilidades'
-                        adaptive_size: True
-                        color: "grey"
-                        pos_hint: {'center_x': 0.5, 'y': 0.05}
-                        bold: True
+                MDCard:
+                    pos_hint: {'x': 0.55, 'y': 0.5}
+
+                    MDRelativeLayout:
+
+                        MDIconButton:
+                            icon: "icons/lamp.ico"
+                            icon_size: '80sp'
+                            pos_hint: {"center_x": 0.5, "y": 0.2}
+                            on_press:
+                                root.buscar_produtos(self, utilidades)
+                                root.manager.current = "produtos"
+
+
+
+                        MDLabel:
+                            id: utilidades
+                            text: 'Utilidades'
+                            adaptive_size: True
+                            color: "grey"
+                            pos_hint: {'center_x': 0.5, 'y': 0.05}
+                            bold: True
 
 
 <Produtos>:
