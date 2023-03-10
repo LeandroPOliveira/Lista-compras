@@ -56,29 +56,41 @@
 
         MDList:
 
-            OneLineListItem:
+            OneLineAvatarListItem:
                 text: 'Lista atual'
                 on_press:
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "lista_atual"
 
-            OneLineListItem:
+                IconLeftWidget:
+                    icon: 'home-outline'
+
+            OneLineAvatarListItem:
                 text: 'Minhas listas'
                 on_press:
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "minhas_listas"
 
-            OneLineListItem:
+                IconLeftWidget:
+                    icon: 'clipboard-list-outline'
+
+            OneLineAvatarListItem:
                 text: 'Pesquisar'
                 on_press:
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "pesquisar"
 
-            OneLineListItem:
+                IconLeftWidget:
+                    icon: 'clipboard-search-outline'
+
+            OneLineAvatarListItem:
                 text: 'Produtos'
                 on_press:
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "produtos"
+
+                IconLeftWidget:
+                    icon: 'store-plus-outline'
 
 <Principal>:
     name: 'tela1'
@@ -162,26 +174,21 @@
                 root.novo_item()
 
 <MinhasListas>:
+    on_enter:
+        root.inserir()
 
     FloatLayout:
         size_hint: (1, 0.915)
 
         Image:
 
-        GridLayout:
-            cols: 1
-            rows: 5
-            padding: [100, 150, 100, 150]
-            spacing: 10, 20
+        MDSwiper:
+            id: swiper
+            size_hint_y: None
+            height: root.height
+            width: root.width
 
-
-            MDRectangleFlatButton:
-                text: 'Visualizar listas'
-                halign: 'center'
-
-            MDRectangleFlatButton:
-                text: 'Criar lista'
-                halign: 'center'
+            MDSwiperItem:
 
 <Pesquisar>:
 

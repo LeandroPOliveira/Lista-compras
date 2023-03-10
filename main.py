@@ -1,6 +1,9 @@
+import os
 import sqlite3
 from kivy.config import Config
 from kivy.uix.screenmanager import Screen, ScreenManager
+
+
 Config.set('graphics', 'resizable', '1')
 Config.set('graphics', 'width', '389')
 Config.set('graphics', 'height', '700')
@@ -16,6 +19,9 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.datatables import MDDataTable
 from kivy.metrics import dp
 from kivy.utils import get_color_from_hex
+from kivymd.uix.floatlayout import MDFloatLayout
+from kivymd.uix.label import MDLabel
+from kivymd.uix.swiper import MDSwiperItem
 
 
 class ContentNavigationDrawer(Screen):
@@ -48,7 +54,7 @@ class ListaAtual(Screen):
         self.lista.clear(), self.produtos.clear()
         conn = sqlite3.connect('lista_compras')
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM lista order by checks ASC')
+        cursor.execute(f'SELECT * FROM lista order by checks ASC')
         self.lista = cursor.fetchall()
         self.ids.lista.add_widget(
             OneLineAvatarIconListItem(
@@ -143,7 +149,44 @@ class ListaAtual(Screen):
 
 
 class MinhasListas(Screen):
-    pass
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.lista = []
+        self.lista_icon = []
+        self.lista2 = []
+
+    def inserir(self):
+
+        conn = sqlite3.connect('lista_compras')
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM sqlite_master where type="table"')
+        resultado = cursor.fetchall()
+        for index, linha in enumerate(resultado):
+
+            self.lista.append([])
+            self.insere_swiper = MDSwiperItem()  # Criar um "swiper" para cada tabela
+            self.lista2.append(self.insere_swiper)
+            self.ids.swiper.add_widget(self.insere_swiper)
+
+            self.inserir_layout = MDFloatLayout()  # Adicionar layout para organizar os widgets
+            self.insere_swiper.add_widget(self.inserir_layout)
+
+            # inserir os rótulos para cada item
+            self.label_tabela = MDLabel(pos_hint={'x': 0, 'y': .72}, font_size=20, text='Nome da tabela',
+                                        size_hint=(1, .2), halign='center')
+            self.inserir_layout.add_widget(self.label_tabela)
+
+            self.num_tabela = MDLabel(text=linha[1], pos_hint={'x': 0.15, 'y': .76}, color=(33 / 255, 150 / 255, 243 / 255, 1),
+                                      font_size='25dp', size_hint=(.7, .02), halign='center')
+            self.inserir_layout.add_widget(self.num_tabela)
+            self.lista[index].append(self.num_tabela)
+
+            self.lista[index].append(self.num_tabela)
+
+        self.insere_swiper2 = MDSwiperItem()
+        self.lista2.append(self.insere_swiper2)
+        self.ids.swiper.add_widget(self.insere_swiper2)
+        self.ids.swiper.set_current(1)
 
 
 class Pesquisar(Screen):
