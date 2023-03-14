@@ -1,12 +1,10 @@
-import os
 import sqlite3
 from kivy.config import Config
 from kivy.uix.screenmanager import Screen, ScreenManager
-
-
 Config.set('graphics', 'resizable', '1')
 Config.set('graphics', 'width', '389')
 Config.set('graphics', 'height', '700')
+from kivymd.uix.card import MDCard
 from kivymd.uix.list import OneLineAvatarIconListItem, IconLeftWidget, IconRightWidget
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivy.lang import Builder
@@ -172,8 +170,9 @@ class MinhasListas(Screen):
             self.insere_swiper.add_widget(self.inserir_layout)
 
             # inserir os rótulos para cada item
-            self.label_tabela = MDLabel(pos_hint={'x': 0, 'y': .72}, font_size=20, text='Nome da tabela',
-                                        size_hint=(1, .2), halign='center')
+            self.label_tabela = MDCard(MDLabel(pos_hint={'x': 0, 'y': .4}, font_size='30dp', text='Nome da tabela',
+                                               color='white',
+                                        size_hint=(1, .2), halign='center'), size_hint=(1, .3), pos_hint={'x': 0, 'y': .3})
             self.inserir_layout.add_widget(self.label_tabela)
 
             self.num_tabela = MDLabel(text=linha[1], pos_hint={'x': 0.15, 'y': .76}, color=(33 / 255, 150 / 255, 243 / 255, 1),
