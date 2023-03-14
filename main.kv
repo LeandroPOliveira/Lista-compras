@@ -111,11 +111,11 @@
         ScreenManager:
             id: screen_manager
 
-            ListaAtual:
-                name: "lista_atual"
-
             MinhasListas:
                 name: "minhas_listas"
+
+            ListaAtual:
+                name: "lista_atual"
 
             Pesquisar:
                 name: "pesquisar"
@@ -134,6 +134,8 @@
 
 
 <ListaAtual>:
+    on_enter:
+        root.carregar_lista()
 
     FloatLayout:
         size_hint: (1, 0.915)
@@ -190,6 +192,15 @@
             width: root.width
 
             MDSwiperItem:
+
+        MDFloatingActionButton:
+            pos_hint: {'x': 0.42, 'y': 0.08}
+            md_bg_color: "yellow"
+            icon: "plus"
+            text_color: "black"
+
+            on_press:
+                root.nova_lista()
 
 <Pesquisar>:
 
