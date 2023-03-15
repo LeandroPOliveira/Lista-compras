@@ -13,6 +13,10 @@
     icon_color: 'white'
     #icon_size: '80sp'
 
+<IconLeftWidget>
+    icon: 'transparent.png'
+    #icon_size :'10sp'
+    text: ''
 
 <Inicio>:
 
@@ -99,6 +103,7 @@
     MDTopAppBar:
         id: toolbar
         pos_hint: {"top": 1}
+        type_height: 'large'
         elevation: 0
         md_bg_color: hex('#1b75fd')
         title: ""
@@ -178,7 +183,7 @@
 
 <MinhasListas>:
     on_enter:
-        root.inserir()
+        root.minhas_listas()
 
     FloatLayout:
         size_hint: (1, 0.915)
