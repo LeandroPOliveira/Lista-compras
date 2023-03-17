@@ -7,7 +7,8 @@
 
 <MDCard>
     #padding: 4
-    md_bg_color: "#1b75fd"
+    md_bg_color: "#ffffff"
+    line_color: "#1b75fd"
 
 <MDIconButton>
     icon_color: 'white'
@@ -29,16 +30,16 @@
         MDLabel:
             size_hint: 0.8, 0.1
             pos_hint: {'x': 0.1, 'y': 0.35}
-            font_size: '14dp'
-            text: 'LISTA DE'
+            font_size: '18dp'
+            text: 'MINHA'
             color: hex('#3b424c')
             bold: True
 
         MDLabel:
             size_hint: 0.8, 0.1
             pos_hint: {'x': 0.1, 'y': 0.3}
-            text: 'COMPRAS'
-            font_size: '40dp'
+            text: 'LISTA'
+            font_size: '44dp'
             color: hex('#1b75fd')
             bold: True
 
@@ -47,7 +48,7 @@
             pos_hint: {'x': 0.1, 'y': 0.2}
             icon: "location-enter"
             text: "Entrar"
-            font_size: '18dp'
+            font_size: '20dp'
             md_bg_color: hex('#1b75fd')
             text_color: "white"
             line_color: hex('#1b75fd')
@@ -88,14 +89,14 @@
                 IconLeftWidget:
                     icon: 'clipboard-search-outline'
 
-            OneLineAvatarListItem:
-                text: 'Produtos'
-                on_press:
-                    root.nav_drawer.set_state("close")
-                    root.screen_manager.current = "produtos"
+            #OneLineAvatarListItem:
+             #   text: 'Produtos'
+              #  on_press:
+               #     root.nav_drawer.set_state("close")
+                #    root.screen_manager.current = "produtos"
 
-                IconLeftWidget:
-                    icon: 'store-plus-outline'
+                #IconLeftWidget:
+                 #   icon: 'store-plus-outline'
 
 <Principal>:
     name: 'tela1'
@@ -142,8 +143,11 @@
     on_enter:
         root.carregar_lista()
 
+    on_leave:
+        root.atualizar_lista()
+
     FloatLayout:
-        size_hint: (1, 0.915)
+        size_hint: (1, 0.93)
 
         Image:
 
@@ -164,7 +168,7 @@
                     height: self.minimum_height
                     row_default_height: 15
                     cols: 1
-                    rows: 50
+                    rows: root.numero_linhas
                     bar_width: 50
                     padding: [38, 0, 30, 50]
 
@@ -173,10 +177,10 @@
                         id: lista
 
         MDFloatingActionButton:
-            pos_hint: {'x': 0.42, 'y': 0.025}
-            md_bg_color: "yellow"
+            pos_hint: {'x': 0.42, 'y': 0.05}
+            md_bg_color: "#1b75fd"
             icon: "plus"
-            text_color: "black"
+            text_color: "white"
 
             on_press:
                 root.novo_item()
@@ -186,9 +190,17 @@
         root.minhas_listas()
 
     FloatLayout:
-        size_hint: (1, 0.915)
+        size_hint: (1, 0.93)
 
         Image:
+
+        MDLabel:
+            text: 'Lista'
+            font_size: '20dp'
+            adaptive_size: True
+            color: "#1b75fd"
+            pos_hint: {'center_x': 0.5, 'y': 0.7}
+            bold: True
 
         MDSwiper:
             id: swiper
@@ -200,9 +212,9 @@
 
         MDFloatingActionButton:
             pos_hint: {'x': 0.42, 'y': 0.08}
-            md_bg_color: "yellow"
+            md_bg_color: "#1b75fd"
             icon: "plus"
-            text_color: "black"
+            text_color: "white"
 
             on_press:
                 root.nova_lista()
@@ -210,7 +222,7 @@
 <Pesquisar>:
 
     FloatLayout:
-        size_hint: (1, 0.915)
+        size_hint: (1, 0.93)
 
         Image:
 
@@ -221,11 +233,11 @@
                 id: grid_teste
                 size_hint_y: None
                 height: self.minimum_height
-                row_default_height: '130dp'
+                row_default_height: '150dp'
                 cols: 2
                 rows: 4
                 bar_width: 50
-                padding: [50, 100, 50, 50]
+                padding: [50, 50, 50, 50]
                 spacing: 20, 20
 
 
@@ -269,7 +281,7 @@
                             id: mercearia
                             text: 'Mercearia'
                             adaptive_size: True
-                            color: "white"
+                            color: "grey"
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
                             bold: True
 
