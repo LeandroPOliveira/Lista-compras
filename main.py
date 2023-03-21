@@ -66,7 +66,7 @@ class ListaAtual(Screen):
                                on_press=self.selecionar_tudo,
                                ),
                 IconRightWidget(icon='refresh', on_press=lambda x: self.atualizar_lista()),
-                text=self.lista_em_uso, bg_color="#a2c3f5"))
+                text=self.lista_em_uso, bg_color="#ffcc21"))
 
         for item in self.lista:
             self.lista_dict[item[1]] = item[3]
@@ -78,7 +78,7 @@ class ListaAtual(Screen):
                                    ),
                     IconRightWidget(icon='icons/x.ico', icon_size='10sp', on_press=self.remover_item,
                                     text=f"{item[1]}"),
-                    text=f"{item[1]}"
+                    text=f"{item[1]}", bg_color="#ffffff"
                 )
             )
 
@@ -231,13 +231,13 @@ class MinhasListas(Screen):
                                                                      on_press=self.apagar_lista),
                                                         MDRectangleFlatButton(text=linha[1],
                                                                               pos_hint={'center_x': 0.5, 'y': .5},
-                                                                              text_color='#ffffff',
-                                                                              md_bg_color="#1b75fd",
+                                                                              text_color='#f8ebff',
+                                                                              md_bg_color="#4a1fe1",
                                                                               on_press=self.lista_selecionada,
                                                                               font_size='20dp', size_hint=(.7, .2),
                                                                               halign='center')),
                                        size_hint=(1, .3), pos_hint={'x': 0, 'y': .3}, md_bg_color="#ffffff",
-                                       line_color="#1b75fd")
+                                       line_color="ffcc21")
 
             self.inserir_layout.add_widget(self.label_tabela)
 

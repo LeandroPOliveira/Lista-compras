@@ -7,8 +7,8 @@
 
 <MDCard>
     #padding: 4
-    md_bg_color: "#ffffff"
-    line_color: "#1b75fd"
+    md_bg_color: "#ffcc21"
+    line_color: "#ffffff"
 
 <MDIconButton>
     icon_color: 'white'
@@ -40,7 +40,7 @@
             pos_hint: {'x': 0.1, 'y': 0.3}
             text: 'LISTA'
             font_size: '44dp'
-            color: hex('#1b75fd')
+            color: hex('#4a1fe1')
             bold: True
 
         MDRectangleFlatIconButton:
@@ -106,7 +106,7 @@
         pos_hint: {"top": 1}
         type_height: 'large'
         elevation: 0
-        md_bg_color: hex('#1b75fd')
+        md_bg_color: hex('#4a1fe1')
         title: ""
         left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
 
@@ -195,12 +195,40 @@
         Image:
 
         MDLabel:
-            text: 'Lista'
-            font_size: '20dp'
+            text: 'Selecione'
+            font_size: '40dp'
             adaptive_size: True
-            color: "#1b75fd"
-            pos_hint: {'center_x': 0.5, 'y': 0.7}
+            color: "white"
+            pos_hint: {'x': 0.25, 'y': 0.87}
             bold: True
+            halign: 'left'
+
+        MDLabel:
+            text: 'ou crie'
+            font_size: '24dp'
+            adaptive_size: True
+            color: "white"
+            pos_hint: {'x': 0.25, 'y': 0.84}
+            bold: True
+            halign: 'left'
+
+        MDLabel:
+            text: 'sua'
+            font_size: '36dp'
+            adaptive_size: True
+            color: "#ffcc21"
+            pos_hint: {'x': 0.25, 'y': 0.79}
+            bold: True
+            halign: 'left'
+
+        MDLabel:
+            text: 'Lista'
+            font_size: '60dp'
+            adaptive_size: True
+            color: "#ffcc21"
+            pos_hint: {'x': 0.45, 'y': 0.78}
+            bold: True
+            halign: 'left'
 
         MDSwiper:
             id: swiper
@@ -226,8 +254,16 @@
 
         Image:
 
+        MDLabel:
+            text: 'Categorias'
+            font_size: '30dp'
+            adaptive_size: True
+            color: "#ffffff"
+            pos_hint: {'center_x': 0.5, 'y': 0.9}
+            bold: True
+
         ScrollView:
-            size_hint: (1, 0.915)
+            size_hint: (1, 0.87)
 
             GridLayout:
                 id: grid_teste
@@ -237,7 +273,7 @@
                 cols: 2
                 rows: 4
                 bar_width: 50
-                padding: [50, 50, 50, 50]
+                padding: [50, 30, 50, 50]
                 spacing: 20, 20
 
 
@@ -260,7 +296,7 @@
                             id: feira
                             text: 'Feira'
                             adaptive_size: True
-                            color: "grey"
+                            color: "white"
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
                             bold: True
 
@@ -281,7 +317,7 @@
                             id: mercearia
                             text: 'Mercearia'
                             adaptive_size: True
-                            color: "grey"
+                            color: "white"
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
                             bold: True
 
@@ -302,7 +338,7 @@
                             id: bebidas
                             text: 'Bebidas'
                             adaptive_size: True
-                            color: "grey"
+                            color: "white"
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
                             bold: True
 
@@ -323,7 +359,7 @@
                             id: açougue
                             text: 'Açougue'
                             adaptive_size: True
-                            color: "grey"
+                            color: "white"
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
                             bold: True
 
@@ -344,7 +380,7 @@
                             id: higiene
                             text: 'Higiene'
                             adaptive_size: True
-                            color: "grey"
+                            color: "white"
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
                             bold: True
 
@@ -368,7 +404,7 @@
                             halign: 'center'
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
                             adaptive_size: True
-                            color: "grey"
+                            color: "white"
                             bold: True
 
                 MDCard:
@@ -390,7 +426,7 @@
                             id: utilidades
                             text: 'Utilidades'
                             adaptive_size: True
-                            color: "grey"
+                            color: "white"
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
                             bold: True
 
@@ -420,11 +456,11 @@
 
 
         MDRectangleFlatButton:
-            pos_hint: {'x': 0.35, 'y': 0.025}
+            pos_hint: {'x': 0.35, 'y': 0.1}
             size_hint: 0.3, 0.08
-            md_bg_color: "yellow"
+            md_bg_color: "ffcc21"
             icon: "plus"
-            text_color: "black"
+            text_color: "white"
             text: 'Adicionar'
 
             on_press:
