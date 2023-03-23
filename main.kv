@@ -7,11 +7,11 @@
 
 <MDCard>
     #padding: 4
-    md_bg_color: "#ffcc21"
+    #md_bg_color: "#ffffff"
     line_color: "#ffffff"
 
 <MDIconButton>
-    icon_color: 'white'
+    icon_color: "#df2100"
     #icon_size: '80sp'
 
 <IconLeftWidget>
@@ -40,7 +40,7 @@
             pos_hint: {'x': 0.1, 'y': 0.3}
             text: 'LISTA'
             font_size: '44dp'
-            color: hex('#4a1fe1')
+            color: hex("#ffbd4d")
             bold: True
 
         MDRectangleFlatIconButton:
@@ -49,9 +49,9 @@
             icon: "location-enter"
             text: "Entrar"
             font_size: '20dp'
-            md_bg_color: hex('#1b75fd')
+            md_bg_color: hex("#df2100")
             text_color: "white"
-            line_color: hex('#1b75fd')
+            line_color: hex('#ffbd4d')
             theme_icon_color: "Custom"
             icon_color: hex('#ffffff')
             on_press:
@@ -106,7 +106,7 @@
         pos_hint: {"top": 1}
         type_height: 'large'
         elevation: 0
-        md_bg_color: hex('#4a1fe1')
+        md_bg_color: hex('#ffbd4d')
         title: ""
         left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
 
@@ -175,6 +175,8 @@
 
                     MDList:
                         id: lista
+                        spacing: 5
+
 
         MDFloatingActionButton:
             pos_hint: {'x': 0.42, 'y': 0.05}
@@ -216,7 +218,7 @@
             text: 'sua'
             font_size: '36dp'
             adaptive_size: True
-            color: "#ffcc21"
+            color: "#df2100"
             pos_hint: {'x': 0.25, 'y': 0.79}
             bold: True
             halign: 'left'
@@ -225,7 +227,7 @@
             text: 'Lista'
             font_size: '60dp'
             adaptive_size: True
-            color: "#ffcc21"
+            color: "#df2100"
             pos_hint: {'x': 0.45, 'y': 0.78}
             bold: True
             halign: 'left'
@@ -254,16 +256,27 @@
 
         Image:
 
+        Image:
+            source: 'icons/carrinho.png'
+            allow_stretch: False
+            #keep_ratio: False
+            size_hint_x: 0.7
+            pos_hint: {'center_x': 0.5, 'y': 0.3}
+            background_color: '#ff5c00'
+
+
         MDLabel:
             text: 'Categorias'
-            font_size: '30dp'
+            font_size: '28dp'
             adaptive_size: True
-            color: "#ffffff"
-            pos_hint: {'center_x': 0.5, 'y': 0.9}
+            color:  '#ff5c00'
+            pos_hint: {'center_x': 0.5, 'y': 0.58}
             bold: True
 
         ScrollView:
-            size_hint: (1, 0.87)
+            size_hint: (1, 0.55)
+            bar_width: 10
+            bar_color: "#df2100"
 
             GridLayout:
                 id: grid_teste
@@ -272,8 +285,9 @@
                 row_default_height: '150dp'
                 cols: 2
                 rows: 4
-                bar_width: 50
-                padding: [50, 30, 50, 50]
+                bar_width: 100
+                bar_color: "#df2100"
+                padding: [50, 0, 50, 50]
                 spacing: 20, 20
 
 
@@ -284,9 +298,9 @@
                     MDRelativeLayout:
 
                         MDIconButton:
-                            icon: "icons/fruit.ico"
+                            icon: "icons/fruit.png"
                             text_color: 'white'
-                            icon_size: '80sp'
+                            icon_size: '100sp'
                             pos_hint: {"center_x": 0.5, "y": 0.2}
                             on_press:
                                 root.buscar_produtos(self, feira)
@@ -295,10 +309,11 @@
                         MDLabel:
                             id: feira
                             text: 'Feira'
+
                             adaptive_size: True
-                            color: "white"
+                            color: "#df2100"
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
-                            bold: True
+
 
                 MDCard:
                     pos_hint: {'x': 0.55, 'y': 0.5}
@@ -306,8 +321,8 @@
                     MDRelativeLayout:
 
                         MDIconButton:
-                            icon: "icons/bread.ico"
-                            icon_size: '80sp'
+                            icon: "icons/bread.png"
+                            icon_size: '100sp'
                             pos_hint: {"center_x": 0.5, "y": 0.2}
                             on_press:
                                 root.buscar_produtos(self, mercearia)
@@ -317,9 +332,9 @@
                             id: mercearia
                             text: 'Mercearia'
                             adaptive_size: True
-                            color: "white"
+                            color: "#df2100"
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
-                            bold: True
+
 
                 MDCard:
                     pos_hint: {'x': 0.55, 'y': 0.5}
@@ -327,8 +342,8 @@
                     MDRelativeLayout:
 
                         MDIconButton:
-                            icon: "icons/milk.ico"
-                            icon_size: '80sp'
+                            icon: "icons/drink.png"
+                            icon_size: '100sp'
                             pos_hint: {"center_x": 0.5, "y": 0.2}
                             on_press:
                                 root.buscar_produtos(self, bebidas)
@@ -338,9 +353,9 @@
                             id: bebidas
                             text: 'Bebidas'
                             adaptive_size: True
-                            color: "white"
+                            color: "#df2100"
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
-                            bold: True
+
 
                 MDCard:
                     pos_hint: {'x': 0.55, 'y': 0.5}
@@ -348,8 +363,8 @@
                     MDRelativeLayout:
 
                         MDIconButton:
-                            icon: "icons/steak.ico"
-                            icon_size: '80sp'
+                            icon: "icons/steak.png"
+                            icon_size: '100sp'
                             pos_hint: {"center_x": 0.5, "y": 0.2}
                             on_press:
                                 root.buscar_produtos(self, açougue)
@@ -359,9 +374,9 @@
                             id: açougue
                             text: 'Açougue'
                             adaptive_size: True
-                            color: "white"
+                            color: "#df2100"
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
-                            bold: True
+
 
                 MDCard:
                     pos_hint: {'x': 0.55, 'y': 0.5}
@@ -369,8 +384,8 @@
                     MDRelativeLayout:
 
                         MDIconButton:
-                            icon: "icons/toiletries.ico"
-                            icon_size: '80sp'
+                            icon: "icons/higiene.png"
+                            icon_size: '100sp'
                             pos_hint: {"center_x": 0.5, "y": 0.2}
                             on_press:
                                 root.buscar_produtos(self, higiene)
@@ -380,9 +395,9 @@
                             id: higiene
                             text: 'Higiene'
                             adaptive_size: True
-                            color: "white"
+                            color: "#df2100"
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
-                            bold: True
+
 
                 MDCard:
                     pos_hint: {'x': 0.55, 'y': 0.5}
@@ -390,8 +405,8 @@
                     MDRelativeLayout:
 
                         MDIconButton:
-                            icon: "icons/garbage-cleaning.ico"
-                            icon_size: '80sp'
+                            icon: "icons/garbage.png"
+                            icon_size: '100sp'
                             pos_hint: {"center_x": 0.5, "y": 0.2}
                             on_press:
                                 root.buscar_produtos(self, limpeza)
@@ -404,8 +419,8 @@
                             halign: 'center'
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
                             adaptive_size: True
-                            color: "white"
-                            bold: True
+                            color: "#df2100"
+
 
                 MDCard:
                     pos_hint: {'x': 0.55, 'y': 0.5}
@@ -413,8 +428,8 @@
                     MDRelativeLayout:
 
                         MDIconButton:
-                            icon: "icons/lamp.ico"
-                            icon_size: '80sp'
+                            icon: "icons/lamp.png"
+                            icon_size: '100sp'
                             pos_hint: {"center_x": 0.5, "y": 0.2}
                             on_press:
                                 root.buscar_produtos(self, utilidades)
@@ -426,9 +441,9 @@
                             id: utilidades
                             text: 'Utilidades'
                             adaptive_size: True
-                            color: "white"
+                            color: "#df2100"
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
-                            bold: True
+
 
 
 <Produtos>:

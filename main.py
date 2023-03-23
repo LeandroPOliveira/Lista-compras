@@ -66,7 +66,8 @@ class ListaAtual(Screen):
                                on_press=self.selecionar_tudo,
                                ),
                 IconRightWidget(icon='refresh', on_press=lambda x: self.atualizar_lista()),
-                text=self.lista_em_uso, bg_color="#ffcc21"))
+                text=self.lista_em_uso, bg_color="#df2100", theme_text_color='Custom', text_color="white",
+                radius=[10, 10, 10, 10]))
 
         for item in self.lista:
             self.lista_dict[item[1]] = item[3]
@@ -78,7 +79,7 @@ class ListaAtual(Screen):
                                    ),
                     IconRightWidget(icon='icons/x.ico', icon_size='10sp', on_press=self.remover_item,
                                     text=f"{item[1]}"),
-                    text=f"{item[1]}", bg_color="#ffffff"
+                    text=f"{item[1]}", theme_text_color='Custom', text_color="#df2100", bg_color="#e6dedc", radius=[10, 10, 10, 10]
                 )
             )
 
