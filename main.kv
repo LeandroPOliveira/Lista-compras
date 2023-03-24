@@ -11,8 +11,9 @@
     line_color: "#ffffff"
 
 <MDIconButton>
+    icon_size: '30sp'
+    theme_icon_color: "Custom"
     icon_color: "#df2100"
-    #icon_size: '80sp'
 
 <IconLeftWidget>
     icon: 'transparent.png'
@@ -70,6 +71,7 @@
 
                 IconLeftWidget:
                     icon: 'home-outline'
+
 
             OneLineAvatarListItem:
                 text: 'Minhas listas'
@@ -154,6 +156,15 @@
 
         FloatLayout:
             size_hint: (1, 1)
+
+            MDIconButton:
+                pos_hint: {'x':.8, 'y':.985}
+                theme_icon_color: "Custom"
+                icon_color: "#df2100"
+                icon: 'dots-vertical'
+                id: menu
+                on_press:
+                    root.callback()
 
             ScrollView:
                 pos_hint: {'x':.05, 'y':.25}

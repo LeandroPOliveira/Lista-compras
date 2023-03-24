@@ -20,6 +20,8 @@ from kivy.metrics import dp
 from kivy.utils import get_color_from_hex
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.swiper import MDSwiperItem
+from kivymd.uix.snackbar import Snackbar
+from kivymd.uix.menu import MDDropdownMenu
 
 
 class ContentNavigationDrawer(Screen):
@@ -195,6 +197,27 @@ class ListaAtual(Screen):
             for item in self.ids.lista.children:
                 self.lista_dict[item.children[1].children[0].text] = 0
                 item.children[1].children[0].children[0].active = False
+
+    def callback(self):
+        self.menu_items = [
+            {
+                "viewclass": "OneLineListItem",
+                "text": "Atualizar lista",
+                "height": dp(56),
+                "on_release": self.atualizar_lista,
+            }
+        ]
+        self.menu = MDDropdownMenu(
+            caller=self.ids.menu,
+            items=self.menu_items,
+            width_mult=4,
+        )
+
+        self.menu.open()
+
+    def menu_callback(self, text_item):
+        self.menu.dismiss()
+        Snackbar(text=text_item).open()
 
 
 class MinhasListas(Screen):
