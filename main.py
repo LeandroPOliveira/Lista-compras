@@ -55,11 +55,14 @@ class ListaAtual(Screen):
         self.itens_a_remover = []
         self.itens_a_adicionar = []
 
-    def carregar_lista(self):
+    def carregar_lista(self, cond_extra=None):
         self.lista.clear(), self.produtos.clear(), self.ids.lista.clear_widgets()
         conn = sqlite3.connect('lista_compras')
         cursor = conn.cursor()
-        cursor.execute(f'SELECT * FROM {self.lista_em_uso} order by checks ASC')
+        if cond_extra == None:
+            cursor.execute(f'SELECT * FROM {self.lista_em_uso} order by checks ASC')
+        else:
+            cursor.execute(f'SELECT * FROM {self.lista_em_uso} order by checks ASC, {cond_extra}')
         self.lista = cursor.fetchall()
         self.numero_linhas = len(self.lista)
         self.ids.lista.add_widget(
@@ -81,13 +84,15 @@ class ListaAtual(Screen):
                                    ),
                     IconRightWidget(icon='icons/x.ico', icon_size='10sp', on_press=self.remover_item,
                                     text=f"{item[1]}"),
-                    text=f"{item[1]}", theme_text_color='Custom', text_color="#df2100", bg_color="#e6dedc", radius=[10, 10, 10, 10]
+                    text=f"{item[1]}", theme_text_color='Custom', text_color="#df2100", bg_color="#e6dedc",
+                    radius=[10, 10, 10, 10]
                 )
             )
 
         # self.lista_dict = sorted(self.lista_dict.items(), key=lambda item: item[1])
 
     def novo_item(self):
+
         self.entrada = MDTextField()
         self.dialog = MDDialog(
             title="Novo produto:",
@@ -116,17 +121,24 @@ class ListaAtual(Screen):
         self.dialog.open()
 
     def adicionar_item(self, entrada):
+        entrada = entrada.text.capitalize()
         self.atualizar_lista()
         conn = sqlite3.connect('lista_compras')
         cursor = conn.cursor()
-        cursor.execute(f'INSERT INTO {self.lista_em_uso}(produto, checks) VALUES(?, ?)', (entrada.text, 0))
-        conn.commit()
-        self.ids.lista.clear_widgets()
-        self.carregar_lista()
-        # self.itens_a_adicionar.append(entrada.text)
-        # self.lista_dict[entrada.text] = 0
-        self.numero_linhas = self.numero_linhas + 1
-        self.atualizar_lista()
+        cursor.execute(f'SELECT id from {self.lista_em_uso} where produto = ?', (entrada, ))
+        duplicado = cursor.fetchone()
+        if duplicado is None:
+            cursor.execute(f'INSERT INTO {self.lista_em_uso}(produto, checks) VALUES(?, ?)', (entrada, 0))
+            conn.commit()
+            self.ids.lista.clear_widgets()
+            self.carregar_lista()
+            # self.itens_a_adicionar.append(entrada.text)
+            # self.lista_dict[entrada.text] = 0
+            self.numero_linhas = self.numero_linhas + 1
+            self.atualizar_lista()
+        else:
+            self.dialog_dup = MDDialog(text='Item já adicionado', radius=[20, 7, 20, 7], )
+            self.dialog_dup.open()
 
     def remover_item(self, instance):
         self.itens_a_remover.append(instance.text)
@@ -161,7 +173,6 @@ class ListaAtual(Screen):
             #     cursor.execute(f'INSERT INTO {self.lista_em_uso}(produto, checks) VALUES(?, ?)', (key, 0))
             else:
                 cursor.execute(f'UPDATE {self.lista_em_uso} SET checks = (?) WHERE produto = (?)', (value, key,))
-
 
         conn.commit()
         self.ids.lista.clear_widgets()
@@ -198,13 +209,30 @@ class ListaAtual(Screen):
                 self.lista_dict[item.children[1].children[0].text] = 0
                 item.children[1].children[0].children[0].active = False
 
-    def callback(self):
+    def ordenar_crescente(self):
+        self.carregar_lista('produto ASC')
+
+    def ordenar_decrescente(self):
+        self.carregar_lista('produto DESC')
+
+    def chama_menu(self):
         self.menu_items = [
             {
                 "viewclass": "OneLineListItem",
                 "text": "Atualizar lista",
                 "height": dp(56),
                 "on_release": self.atualizar_lista,
+            }, {
+                "viewclass": "OneLineListItem",
+                "text": "Ordem crescente",
+                "height": dp(56),
+                "on_release": self.ordenar_crescente,
+            },
+            {
+                "viewclass": "OneLineListItem",
+                "text": "Ordem decrescente",
+                "height": dp(56),
+                "on_release": self.ordenar_decrescente,
             }
         ]
         self.menu = MDDropdownMenu(
