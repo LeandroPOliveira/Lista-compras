@@ -1,6 +1,7 @@
 import sqlite3
 from kivy.config import Config
 from kivy.uix.screenmanager import Screen, ScreenManager
+
 Config.set('graphics', 'resizable', '1')
 Config.set('graphics', 'width', '389')
 Config.set('graphics', 'height', '700')
@@ -122,23 +123,40 @@ class ListaAtual(Screen):
 
     def adicionar_item(self, entrada):
         entrada = entrada.text.capitalize()
-        self.atualizar_lista()
-        conn = sqlite3.connect('lista_compras')
-        cursor = conn.cursor()
-        cursor.execute(f'SELECT id from {self.lista_em_uso} where produto = ?', (entrada, ))
-        duplicado = cursor.fetchone()
-        if duplicado is None:
-            cursor.execute(f'INSERT INTO {self.lista_em_uso}(produto, checks) VALUES(?, ?)', (entrada, 0))
-            conn.commit()
-            self.ids.lista.clear_widgets()
-            self.carregar_lista()
-            # self.itens_a_adicionar.append(entrada.text)
-            # self.lista_dict[entrada.text] = 0
-            self.numero_linhas = self.numero_linhas + 1
-            self.atualizar_lista()
-        else:
-            self.dialog_dup = MDDialog(text='Item já adicionado', radius=[20, 7, 20, 7], )
-            self.dialog_dup.open()
+        dict_index = sum(map((1).__eq__, self.lista_dict.values()))
+
+        self.ids.lista.add_widget(
+            OneLineAvatarIconListItem(
+                IconLeftWidget(MDCheckbox(),
+                               icon='transparent.png', icon_size='10sp', on_press=self.marcar_item,
+                               text=f"{entrada}"
+                               ),
+                IconRightWidget(icon='icons/x.ico', icon_size='10sp', on_press=self.remover_item,
+                                text=f"{entrada}"),
+                text=f"{entrada}", theme_text_color='Custom', text_color="#df2100", bg_color="#e6dedc",
+                radius=[10, 10, 10, 10]
+            )
+            , dict_index)
+
+        self.itens_a_adicionar.append(entrada)
+        self.lista_dict[entrada] = 0
+
+        # self.atualizar_lista()
+        # conn = sqlite3.connect('lista_compras')
+        # cursor = conn.cursor()
+        # cursor.execute(f'SELECT id from {self.lista_em_uso} where produto = ?', (entrada, ))
+        # duplicado = cursor.fetchone()
+        # if duplicado is None:
+        #     cursor.execute(f'INSERT INTO {self.lista_em_uso}(produto, checks) VALUES(?, ?)', (entrada, 0))
+        #     conn.commit()
+        #     self.ids.lista.clear_widgets()
+        #     self.carregar_lista()
+
+        #     self.numero_linhas = self.numero_linhas + 1
+        #     self.atualizar_lista()
+        # else:
+        #     self.dialog_dup = MDDialog(text='Item já adicionado', radius=[20, 7, 20, 7], )
+        #     self.dialog_dup.open()
 
     def remover_item(self, instance):
         self.itens_a_remover.append(instance.text)
@@ -153,14 +171,22 @@ class ListaAtual(Screen):
         # self.carregar_lista()
 
     def marcar_item(self, instance):
-        # instance.parent.parent.text_color = 'blue'
-        # instance.children[0].color_active = 'grey'
-        for item in self.ids.lista.children:
-            if instance.parent in item.children:
-                if self.lista_dict[instance.text] == 0:
-                    self.lista_dict[instance.text] = 1
-                else:
-                    self.lista_dict[instance.text] = 0
+        if instance.children[0].state == 'down':
+            self.ids.lista.remove_widget(instance.parent.parent)
+            self.ids.lista.add_widget(instance.parent.parent)
+            self.lista_dict[instance.text] = 1
+        else:
+            self.ids.lista.remove_widget(instance.parent.parent)
+            dict_index = sum(map((1).__eq__, self.lista_dict.values()))
+            self.ids.lista.add_widget(instance.parent.parent, dict_index - 1)
+            self.lista_dict[instance.text] = 0
+        # print(instance.children[0].children.children)
+        # for item in self.ids.lista.children:
+        #     if instance.parent in item.children:
+        #         if self.lista_dict[instance.text] == 0:
+        #             self.lista_dict[instance.text] = 1
+        #         else:
+        #             self.lista_dict[instance.text] = 0
 
     def atualizar_lista(self):
         print(self.itens_a_remover)
@@ -169,15 +195,15 @@ class ListaAtual(Screen):
         for key, value in self.lista_dict.items():
             if key in self.itens_a_remover:
                 cursor.execute(f'DELETE FROM {self.lista_em_uso} WHERE produto = (?)', (key,))
-            # if key in self.itens_a_adicionar:
-            #     cursor.execute(f'INSERT INTO {self.lista_em_uso}(produto, checks) VALUES(?, ?)', (key, 0))
+            if key in self.itens_a_adicionar:
+                cursor.execute(f'INSERT INTO {self.lista_em_uso}(produto, checks) VALUES(?, ?)', (key, 0))
             else:
                 cursor.execute(f'UPDATE {self.lista_em_uso} SET checks = (?) WHERE produto = (?)', (value, key,))
 
         conn.commit()
         self.ids.lista.clear_widgets()
         self.itens_a_remover.clear()
-        # self.itens_a_adicionar.clear()
+        self.itens_a_adicionar.clear()
         self.carregar_lista()
 
         # conn = sqlite3.connect('lista_compras')
@@ -404,7 +430,6 @@ class MinhasListas(Screen):
             ],
         )
         self.dialog3.open()
-
 
     def apagar(self, entrada):
         conn = sqlite3.connect('lista_compras')
