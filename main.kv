@@ -1,7 +1,7 @@
 #:import hex kivy.utils.get_color_from_hex
 
 <Image>
-    source: 'foto.jpg'
+    source: 'assets/foto.jpg'
     allow_stretch: True
     keep_ratio: False
 
@@ -16,7 +16,7 @@
     icon_color: "#df2100"
 
 <IconLeftWidget>
-    icon: 'transparent.png'
+    icon: 'assets/transparent.png'
     #icon_size :'10sp'
     text: ''
 
@@ -26,7 +26,7 @@
         size_hint: (1, 1)
 
         Image:
-            source: 'fundo.jpg'
+            source: 'assets/fundo.jpg'
 
         MDLabel:
             size_hint: 0.8, 0.1
@@ -52,7 +52,7 @@
             font_size: '20dp'
             md_bg_color: hex("#df2100")
             text_color: "white"
-            line_color: hex('#ffbd4d')
+            line_color: hex("#df2100")
             theme_icon_color: "Custom"
             icon_color: hex('#ffffff')
             on_press:
@@ -153,7 +153,6 @@
 
         Image:
 
-
         FloatLayout:
             size_hint: (1, 1)
 
@@ -191,7 +190,7 @@
 
         MDFloatingActionButton:
             pos_hint: {'x': 0.42, 'y': 0.05}
-            md_bg_color: "#1b75fd"
+            md_bg_color: "#df2100"
             icon: "plus"
             text_color: "white"
 
@@ -206,6 +205,17 @@
         size_hint: (1, 0.93)
 
         Image:
+            source: 'assets/fundo3.png'
+
+        Image:
+            source: 'assets/banana.jpg'
+            size_hint: .4, .25
+            pos_hint: {'x': 0, 'y': 0}
+
+        Image:
+            source: 'assets/morango.jpg'
+            size_hint: .4, .2
+            pos_hint: {'x': 0.6, 'y': 0}
 
         MDLabel:
             text: 'Selecione'
@@ -251,12 +261,14 @@
 
             MDSwiperItem:
 
-        MDFloatingActionButton:
-            pos_hint: {'x': 0.42, 'y': 0.08}
-            md_bg_color: "#1b75fd"
+        MDFillRoundFlatIconButton:
+            text: 'Nova'
+            pos_hint: {'center_x': 0.5, 'y': 0.25}
+            size_hint: 0.4, 0.07
+            font_size: '18dp'
+            md_bg_color: "#df2100"
             icon: "plus"
             text_color: "white"
-
             on_press:
                 root.nova_lista()
 
@@ -268,7 +280,7 @@
         Image:
 
         Image:
-            source: 'icons/carrinho.png'
+            source: 'assets/carrinho.png'
             allow_stretch: False
             #keep_ratio: False
             size_hint_x: 0.7
@@ -309,7 +321,7 @@
                     MDRelativeLayout:
 
                         MDIconButton:
-                            icon: "icons/fruit.png"
+                            icon: "assets/fruit.png"
                             text_color: 'white'
                             icon_size: '100sp'
                             pos_hint: {"center_x": 0.5, "y": 0.2}
@@ -332,7 +344,7 @@
                     MDRelativeLayout:
 
                         MDIconButton:
-                            icon: "icons/bread.png"
+                            icon: "assets/bread.png"
                             icon_size: '100sp'
                             pos_hint: {"center_x": 0.5, "y": 0.2}
                             on_press:
@@ -353,7 +365,7 @@
                     MDRelativeLayout:
 
                         MDIconButton:
-                            icon: "icons/drink.png"
+                            icon: "assets/drink.png"
                             icon_size: '100sp'
                             pos_hint: {"center_x": 0.5, "y": 0.2}
                             on_press:
@@ -374,7 +386,7 @@
                     MDRelativeLayout:
 
                         MDIconButton:
-                            icon: "icons/steak.png"
+                            icon: "assets/steak.png"
                             icon_size: '100sp'
                             pos_hint: {"center_x": 0.5, "y": 0.2}
                             on_press:
@@ -395,7 +407,7 @@
                     MDRelativeLayout:
 
                         MDIconButton:
-                            icon: "icons/higiene.png"
+                            icon: "assets/higiene.png"
                             icon_size: '100sp'
                             pos_hint: {"center_x": 0.5, "y": 0.2}
                             on_press:
@@ -416,7 +428,7 @@
                     MDRelativeLayout:
 
                         MDIconButton:
-                            icon: "icons/garbage.png"
+                            icon: "assets/garbage.png"
                             icon_size: '100sp'
                             pos_hint: {"center_x": 0.5, "y": 0.2}
                             on_press:
@@ -439,7 +451,7 @@
                     MDRelativeLayout:
 
                         MDIconButton:
-                            icon: "icons/lamp.png"
+                            icon: "assets/lamp.png"
                             icon_size: '100sp'
                             pos_hint: {"center_x": 0.5, "y": 0.2}
                             on_press:
@@ -474,21 +486,20 @@
 
 
         MDIconButton:
-            icon: 'arrow-left-circle'
+            icon: 'arrow-left'
             size_hint: 0.05, 0.05
             pos_hint: {'x': 0.1, 'y': 0.9}
             on_press:
                 root.manager.current = "lista_atual"
 
-
-        MDRectangleFlatButton:
-            pos_hint: {'x': 0.35, 'y': 0.1}
-            size_hint: 0.3, 0.08
-            md_bg_color: "ffcc21"
+        MDFillRoundFlatIconButton:
+            text: 'Adicionar'
+            pos_hint: {'center_x': 0.5, 'y': 0.1}
+            size_hint: 0.4, 0.07
+            font_size: '16dp'
+            md_bg_color: "#df2100"
             icon: "plus"
             text_color: "white"
-            text: 'Adicionar'
-
             on_press:
                 root.adicionar_itens()
                 root.manager.current = "lista_atual"

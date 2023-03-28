@@ -23,6 +23,7 @@ from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.swiper import MDSwiperItem
 from kivymd.uix.snackbar import Snackbar
 from kivymd.uix.menu import MDDropdownMenu
+from kivymd.uix.label import MDLabel
 
 
 class ContentNavigationDrawer(Screen):
@@ -80,10 +81,10 @@ class ListaAtual(Screen):
             self.ids.lista.add_widget(
                 OneLineAvatarIconListItem(
                     IconLeftWidget(MDCheckbox(active=True if item[3] == 1 else False),
-                                   icon='transparent.png', icon_size='10sp', on_press=self.marcar_item,
+                                   icon='assets/transparent.png', icon_size='10sp', on_press=self.marcar_item,
                                    text=f"{item[1]}"
                                    ),
-                    IconRightWidget(icon='icons/x.ico', icon_size='10sp', on_press=self.remover_item,
+                    IconRightWidget(icon='assets/x.ico', icon_size='10sp', on_press=self.remover_item,
                                     text=f"{item[1]}"),
                     text=f"{item[1]}", theme_text_color='Custom', text_color="#df2100", bg_color="#e6dedc",
                     radius=[10, 10, 10, 10]
@@ -128,10 +129,10 @@ class ListaAtual(Screen):
         self.ids.lista.add_widget(
             OneLineAvatarIconListItem(
                 IconLeftWidget(MDCheckbox(),
-                               icon='transparent.png', icon_size='10sp', on_press=self.marcar_item,
+                               icon='assets/transparent.png', icon_size='10sp', on_press=self.marcar_item,
                                text=f"{entrada}"
                                ),
-                IconRightWidget(icon='icons/x.ico', icon_size='10sp', on_press=self.remover_item,
+                IconRightWidget(icon='assets/x.ico', icon_size='10sp', on_press=self.remover_item,
                                 text=f"{entrada}"),
                 text=f"{entrada}", theme_text_color='Custom', text_color="#df2100", bg_color="#e6dedc",
                 radius=[10, 10, 10, 10]
@@ -301,20 +302,21 @@ class MinhasListas(Screen):
             self.insere_swiper.add_widget(self.inserir_layout)
 
             # inserir os rótulos para cada item
-            self.label_tabela = MDCard(MDRelativeLayout(MDIconButton(icon='pencil', text=linha[1],
-                                                                     pos_hint={'center_x': 0.3, 'y': .2},
-                                                                     on_press=self.editar_lista),
-                                                        MDIconButton(icon='icons/x.ico', icon_size='15sp',
-                                                                     text=linha[1], pos_hint={'center_x': 0.7, 'y': .2},
-                                                                     on_press=self.apagar_lista),
-                                                        MDRectangleFlatButton(text=linha[1],
-                                                                              pos_hint={'center_x': 0.5, 'y': .5},
-                                                                              text_color='#f8ebff',
-                                                                              md_bg_color="#4a1fe1",
-                                                                              on_press=self.lista_selecionada,
-                                                                              font_size='20dp', size_hint=(.7, .2),
-                                                                              halign='center')),
-                                       size_hint=(1, .3), pos_hint={'x': 0, 'y': .3}, md_bg_color="#ffffff",
+            self.label_tabela = MDCard(MDRelativeLayout(MDIconButton(icon='food-apple-outline',
+                                                                     pos_hint={'center_x': 0.5, 'y': .5},
+                                                                     icon_size='80dp',
+                                                                     on_press=self.lista_selecionada,
+                                                                     size_hint=(.7, .3),
+                                                                     halign='center'),
+                                                        MDLabel(text=linha[1],
+                                                                color="#ffb4d",
+                                                                theme_text_color='Custom',
+                                                                text_color="#df2100",
+                                                                font_size='30dp',
+                                                                halign='center',
+                                                                adaptive_size=True,
+                                                                pos_hint={'center_x': 0.5, 'y': .2})),
+                                       size_hint=(1, .25), pos_hint={'x': 0, 'y': .4}, md_bg_color="#ffffff",
                                        line_color="ffcc21")
 
             self.inserir_layout.add_widget(self.label_tabela)
