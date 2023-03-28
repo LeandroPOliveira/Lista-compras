@@ -156,6 +156,14 @@
         FloatLayout:
             size_hint: (1, 1)
 
+            MDLabel:
+                text: root.lista_em_uso
+                font_size: '22dp'
+                adaptive_size: True
+                color:  "#df2100"
+                pos_hint: {'center_x': 0.5, 'y': 0.875}
+                bold: True
+
             MDIconButton:
                 pos_hint: {'x':.8, 'y':.985}
                 theme_icon_color: "Custom"
@@ -165,9 +173,21 @@
                 on_press:
                     root.chama_menu()
 
+            OneLineAvatarIconListItem:
+                bg_color: "#df2100"
+                theme_text_color: 'Custom'
+                text_color: "white"
+                pos_hint: {'center_x':.5, 'y':.85}
+                size_hint: .6, .05
+
+                IconLeftWidget:
+                    MDCheckbox:
+                        on_press: root.selecionar_tudo(self)
+
+
             ScrollView:
-                pos_hint: {'x':.05, 'y':.25}
-                size_hint: .9, .6
+                pos_hint: {'x':.1, 'y':.25}
+                size_hint: .8, .6
                 #size: (self.width, 500)
                 bar_margin: 25
                 bar_width: 5

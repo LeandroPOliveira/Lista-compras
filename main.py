@@ -14,7 +14,7 @@ from kivymd.uix.textfield import MDTextField
 from kivy.properties import Clock, StringProperty, NumericProperty
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.button import MDFlatButton, MDRectangleFlatButton, MDIconButton
+from kivymd.uix.button import MDFlatButton, MDIconButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.datatables import MDDataTable
 from kivy.metrics import dp
@@ -67,14 +67,14 @@ class ListaAtual(Screen):
             cursor.execute(f'SELECT * FROM {self.lista_em_uso} order by checks ASC, {cond_extra}')
         self.lista = cursor.fetchall()
         self.numero_linhas = len(self.lista)
-        self.ids.lista.add_widget(
-            OneLineAvatarIconListItem(
-                IconLeftWidget(MDCheckbox(),
-                               on_press=self.selecionar_tudo,
-                               ),
-                IconRightWidget(icon='refresh', on_press=lambda x: self.atualizar_lista()),
-                text=self.lista_em_uso, bg_color="#df2100", theme_text_color='Custom', text_color="white",
-                radius=[10, 10, 10, 10]))
+        # self.ids.lista.add_widget(
+            # OneLineAvatarIconListItem(
+            #     IconLeftWidget(MDCheckbox(),
+            #                    on_press=self.selecionar_tudo,
+            #                    ),
+            #     IconRightWidget(icon='refresh', on_press=lambda x: self.atualizar_lista()),
+            #     bg_color="#df2100", theme_text_color='Custom', text_color="white",
+            #     radius=[10, 10, 10, 10]))
 
         for item in self.lista:
             self.lista_dict[item[1]] = item[3]
@@ -86,12 +86,15 @@ class ListaAtual(Screen):
                                    ),
                     IconRightWidget(icon='assets/x.ico', icon_size='10sp', on_press=self.remover_item,
                                     text=f"{item[1]}"),
-                    text=f"{item[1]}", theme_text_color='Custom', text_color="#df2100", bg_color="#e6dedc",
+                    text=f"{item[1]}", theme_text_color='Custom', text_color="#df2100", bg_color="#ffffff",
                     radius=[10, 10, 10, 10]
                 )
             )
 
-        # self.lista_dict = sorted(self.lista_dict.items(), key=lambda item: item[1])
+        # self.ids.lista.add_widget(
+        #     OneLineAvatarIconListItem(text='Marcados', bg_color="#df2100", theme_text_color='Custom',
+        #                               text_color="white", radius=[10, 10, 10, 10]),
+        #     sum(map((1).__eq__, self.lista_dict.values()))+1)
 
     def novo_item(self):
 
@@ -176,11 +179,16 @@ class ListaAtual(Screen):
             self.ids.lista.remove_widget(instance.parent.parent)
             self.ids.lista.add_widget(instance.parent.parent)
             self.lista_dict[instance.text] = 1
+            instance.children[0].color = "#c9c8c7"
+            instance.parent.parent.text = f'[s]{instance.text}[/s]'
+            instance.parent.parent.text_color = "#9c9c9c"
         else:
             self.ids.lista.remove_widget(instance.parent.parent)
             dict_index = sum(map((1).__eq__, self.lista_dict.values()))
             self.ids.lista.add_widget(instance.parent.parent, dict_index - 1)
             self.lista_dict[instance.text] = 0
+            instance.parent.parent.text = instance.text
+            instance.parent.parent.text_color = "#df2100"
         # print(instance.children[0].children.children)
         # for item in self.ids.lista.children:
         #     if instance.parent in item.children:
@@ -227,14 +235,21 @@ class ListaAtual(Screen):
         #         self.carregar_lista()
 
     def selecionar_tudo(self, instance):
-        if instance.children[0].state == 'down':
+        print(instance)
+        instance.color = "#c9c8c7"
+        if instance.state == 'down':
             for item in self.ids.lista.children:
                 self.lista_dict[item.children[1].children[0].text] = 1
                 item.children[1].children[0].children[0].active = True
+                item.children[1].children[0].children[0].color = "#c9c8c7"
+                item.text = f'[s]{item.text}[/s]'
+                item.text_color = "#9c9c9c"
         else:
             for item in self.ids.lista.children:
                 self.lista_dict[item.children[1].children[0].text] = 0
                 item.children[1].children[0].children[0].active = False
+                item.text = item.children[1].children[0].text
+                item.text_color = "#df2100"
 
     def ordenar_crescente(self):
         self.carregar_lista('produto ASC')
@@ -302,20 +317,28 @@ class MinhasListas(Screen):
             self.insere_swiper.add_widget(self.inserir_layout)
 
             # inserir os rótulos para cada item
-            self.label_tabela = MDCard(MDRelativeLayout(MDIconButton(icon='food-apple-outline',
+            self.label_tabela = MDCard(MDRelativeLayout(MDIconButton(icon='pencil', text=linha[1],
+                                                                     pos_hint={'center_x': 0.3, 'y': .75},
+                                                                     icon_size='18sp', icon_color='black',
+                                                                     on_press=self.editar_lista),
+                                                        MDIconButton(icon='assets/x.ico', icon_size='15sp',
+                                                                     text=linha[1], pos_hint={'center_x': 0.7, 'y': .75},
+                                                                     on_press=self.apagar_lista),
+                                                        MDIconButton(text=linha[1],
+                                                                     icon='food-apple-outline',
+                                                                     icon_color='#ff5c00',
                                                                      pos_hint={'center_x': 0.5, 'y': .5},
                                                                      icon_size='80dp',
                                                                      on_press=self.lista_selecionada,
-                                                                     size_hint=(.7, .3),
+                                                                     size_hint=(.7, .15),
                                                                      halign='center'),
                                                         MDLabel(text=linha[1],
-                                                                color="#ffb4d",
                                                                 theme_text_color='Custom',
                                                                 text_color="#df2100",
                                                                 font_size='30dp',
                                                                 halign='center',
                                                                 adaptive_size=True,
-                                                                pos_hint={'center_x': 0.5, 'y': .2})),
+                                                                pos_hint={'center_x': 0.5, 'y': .1})),
                                        size_hint=(1, .25), pos_hint={'x': 0, 'y': .4}, md_bg_color="#ffffff",
                                        line_color="ffcc21")
 
