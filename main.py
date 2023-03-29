@@ -87,7 +87,7 @@ class ListaAtual(Screen):
                     IconRightWidget(icon='assets/x.ico', icon_size='10sp', on_press=self.remover_item,
                                     text=f"{item[1]}"),
                     text=f"{item[1]}", theme_text_color='Custom', text_color="#df2100", bg_color="#ffffff",
-                    radius=[10, 10, 10, 10]
+                    radius=[0, 10, 0, 10]
                 )
             )
 
@@ -138,7 +138,7 @@ class ListaAtual(Screen):
                 IconRightWidget(icon='assets/x.ico', icon_size='10sp', on_press=self.remover_item,
                                 text=f"{entrada}"),
                 text=f"{entrada}", theme_text_color='Custom', text_color="#df2100", bg_color="#e6dedc",
-                radius=[10, 10, 10, 10]
+                radius=[0, 10, 0, 10]
             )
             , dict_index)
 
@@ -318,14 +318,14 @@ class MinhasListas(Screen):
 
             # inserir os rótulos para cada item
             self.label_tabela = MDCard(MDRelativeLayout(MDIconButton(icon='pencil', text=linha[1],
-                                                                     pos_hint={'center_x': 0.3, 'y': .75},
+                                                                     pos_hint={'x': 0.1, 'y': .75},
                                                                      icon_size='18sp', icon_color='black',
                                                                      on_press=self.editar_lista),
                                                         MDIconButton(icon='assets/x.ico', icon_size='15sp',
-                                                                     text=linha[1], pos_hint={'center_x': 0.7, 'y': .75},
+                                                                     text=linha[1], pos_hint={'x': 0.7, 'y': .75},
                                                                      on_press=self.apagar_lista),
                                                         MDIconButton(text=linha[1],
-                                                                     icon='food-apple-outline',
+                                                                     icon='list-box-outline',
                                                                      icon_color='#ff5c00',
                                                                      pos_hint={'center_x': 0.5, 'y': .5},
                                                                      icon_size='80dp',
@@ -339,7 +339,7 @@ class MinhasListas(Screen):
                                                                 halign='center',
                                                                 adaptive_size=True,
                                                                 pos_hint={'center_x': 0.5, 'y': .1})),
-                                       size_hint=(1, .25), pos_hint={'x': 0, 'y': .4}, md_bg_color="#ffffff",
+                                       size_hint=(0.8, .25), pos_hint={'x': 0.1, 'y': .4}, md_bg_color="#ffffff",
                                        line_color="ffcc21")
 
             self.inserir_layout.add_widget(self.label_tabela)

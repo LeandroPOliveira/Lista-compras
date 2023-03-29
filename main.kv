@@ -152,6 +152,7 @@
         size_hint: (1, 0.93)
 
         Image:
+            source: 'assets/foto2.jpg'
 
         FloatLayout:
             size_hint: (1, 1)
@@ -159,9 +160,10 @@
             MDLabel:
                 text: root.lista_em_uso
                 font_size: '22dp'
-                adaptive_size: True
+                halign: 'center'
                 color:  "#df2100"
-                pos_hint: {'center_x': 0.5, 'y': 0.875}
+                pos_hint: {'center_x': 0.5, 'y': 0.9}
+                size_hint: .65, .1
                 bold: True
 
             MDIconButton:
@@ -177,8 +179,8 @@
                 bg_color: "#df2100"
                 theme_text_color: 'Custom'
                 text_color: "white"
-                pos_hint: {'center_x':.5, 'y':.85}
-                size_hint: .6, .05
+                pos_hint: {'center_x':.5, 'y':.8}
+                size_hint: .65, .08
 
                 IconLeftWidget:
                     MDCheckbox:
@@ -186,9 +188,9 @@
 
 
             ScrollView:
-                pos_hint: {'x':.1, 'y':.25}
+                pos_hint: {'x':.1, 'y':.2}
                 size_hint: .8, .6
-                #size: (self.width, 500)
+                size: (self.width, 500)
                 bar_margin: 25
                 bar_width: 5
                 scroll_type: ['bars', 'content']
@@ -200,12 +202,12 @@
                     cols: 1
                     rows: root.numero_linhas
                     bar_width: 50
-                    padding: [38, 0, 30, 50]
+                    padding: [30, 0, 30, 50]
 
 
                     MDList:
                         id: lista
-                        spacing: 5
+                        spacing: 3
 
 
         MDFloatingActionButton:
@@ -226,16 +228,6 @@
 
         Image:
             source: 'assets/fundo3.png'
-
-        Image:
-            source: 'assets/banana.jpg'
-            size_hint: .4, .25
-            pos_hint: {'x': 0, 'y': 0}
-
-        Image:
-            source: 'assets/morango.jpg'
-            size_hint: .4, .2
-            pos_hint: {'x': 0.6, 'y': 0}
 
         MDLabel:
             text: 'Selecione'
