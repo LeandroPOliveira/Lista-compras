@@ -1,7 +1,6 @@
 import sqlite3
 from kivy.config import Config
 from kivy.uix.screenmanager import Screen, ScreenManager
-
 Config.set('graphics', 'resizable', '1')
 Config.set('graphics', 'width', '389')
 Config.set('graphics', 'height', '700')
@@ -16,7 +15,6 @@ from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFlatButton, MDIconButton
 from kivymd.uix.dialog import MDDialog
-from kivymd.uix.datatables import MDDataTable
 from kivy.metrics import dp
 from kivy.utils import get_color_from_hex
 from kivymd.uix.floatlayout import MDFloatLayout
@@ -68,13 +66,13 @@ class ListaAtual(Screen):
         self.lista = cursor.fetchall()
         self.numero_linhas = len(self.lista)
         # self.ids.lista.add_widget(
-            # OneLineAvatarIconListItem(
-            #     IconLeftWidget(MDCheckbox(),
-            #                    on_press=self.selecionar_tudo,
-            #                    ),
-            #     IconRightWidget(icon='refresh', on_press=lambda x: self.atualizar_lista()),
-            #     bg_color="#df2100", theme_text_color='Custom', text_color="white",
-            #     radius=[10, 10, 10, 10]))
+        # OneLineAvatarIconListItem(
+        #     IconLeftWidget(MDCheckbox(),
+        #                    on_press=self.selecionar_tudo,
+        #                    ),
+        #     IconRightWidget(icon='refresh', on_press=lambda x: self.atualizar_lista()),
+        #     bg_color="#df2100", theme_text_color='Custom', text_color="white",
+        #     radius=[10, 10, 10, 10]))
 
         for item in self.lista:
             self.lista_dict[item[1]] = item[3]
@@ -91,13 +89,18 @@ class ListaAtual(Screen):
                 )
             )
 
+        for item in self.ids.lista.children:
+            if item.children[1].children[0].children[0].active:
+                item.children[1].children[0].children[0].color = "#c9c8c7"
+                item.text = f'[s]{item.text}[/s]'
+                item.text_color = "#9c9c9c"
+
         # self.ids.lista.add_widget(
         #     OneLineAvatarIconListItem(text='Marcados', bg_color="#df2100", theme_text_color='Custom',
         #                               text_color="white", radius=[10, 10, 10, 10]),
         #     sum(map((1).__eq__, self.lista_dict.values()))+1)
 
     def novo_item(self):
-
         self.entrada = MDTextField()
         self.dialog = MDDialog(
             title="Novo produto:",
@@ -137,7 +140,7 @@ class ListaAtual(Screen):
                                ),
                 IconRightWidget(icon='assets/x.ico', icon_size='10sp', on_press=self.remover_item,
                                 text=f"{entrada}"),
-                text=f"{entrada}", theme_text_color='Custom', text_color="#df2100", bg_color="#e6dedc",
+                text=f"{entrada}", theme_text_color='Custom', text_color="#df2100", bg_color="#ffffff",
                 radius=[0, 10, 0, 10]
             )
             , dict_index)
@@ -198,7 +201,6 @@ class ListaAtual(Screen):
         #             self.lista_dict[instance.text] = 0
 
     def atualizar_lista(self):
-        print(self.itens_a_remover)
         conn = sqlite3.connect('lista_compras')
         cursor = conn.cursor()
         for key, value in self.lista_dict.items():
@@ -214,25 +216,6 @@ class ListaAtual(Screen):
         self.itens_a_remover.clear()
         self.itens_a_adicionar.clear()
         self.carregar_lista()
-
-        # conn = sqlite3.connect('lista_compras')
-        # cursor = conn.cursor()
-        #
-        # for item in self.ids.lista.children:
-        #     if instance.parent in item.children:
-        #         cursor.execute(f'select * FROM {self.lista_em_uso} WHERE produto = (?)', (instance.text,))
-        #         self.pega_check = cursor.fetchall()
-        #         self.pega_check = self.pega_check[0][3]
-        #         if self.pega_check == 0:
-        #             self.atualiza_check = 1
-        #         else:
-        #             self.atualiza_check = 0
-        #         cursor.execute(f'UPDATE {self.lista_em_uso} SET checks = (?) WHERE produto = (?)',
-        #                        (self.atualiza_check, instance.text,))
-        #
-        #         conn.commit()
-        #         self.ids.lista.clear_widgets()
-        #         self.carregar_lista()
 
     def selecionar_tudo(self, instance):
         print(instance)
@@ -252,9 +235,11 @@ class ListaAtual(Screen):
                 item.text_color = "#df2100"
 
     def ordenar_crescente(self):
+        self.atualizar_lista()
         self.carregar_lista('produto ASC')
 
     def ordenar_decrescente(self):
+        self.atualizar_lista()
         self.carregar_lista('produto DESC')
 
     def chama_menu(self):
@@ -338,7 +323,8 @@ class MinhasListas(Screen):
                                                                 font_size='30dp',
                                                                 halign='center',
                                                                 adaptive_size=True,
-                                                                pos_hint={'center_x': 0.5, 'y': .1})),
+                                                                pos_hint={'center_x': 0.5, 'y': .1},
+                                                                size_hint=(0.6, .1))),
                                        size_hint=(0.8, .25), pos_hint={'x': 0.1, 'y': .4}, md_bg_color="#ffffff",
                                        line_color="ffcc21")
 
@@ -353,6 +339,7 @@ class MinhasListas(Screen):
 
     def lista_selecionada(self, instance):
         self.manager.get_screen('lista_atual').lista_em_uso = instance.text
+        self.manager.get_screen('lista_atual').carregar_lista()
         self.manager.current = 'lista_atual'
 
     def editar_lista(self, instance):
@@ -468,6 +455,7 @@ class MinhasListas(Screen):
 
 
 class Pesquisar(Screen):
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -480,41 +468,60 @@ class Pesquisar(Screen):
         self.lista_produtos.clear()
         self.resultado = cursor.fetchall()
 
-        for produto in self.resultado:
-            self.lista_produtos.append((produto[1],))
+        # for produto in self.resultado:
+        #     self.lista_produtos.append((produto[1],))
 
 
 class Produtos(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.produtos_selecionados = []
 
     def catalogo_produtos(self):
-        print(self.manager.get_screen('lista_atual').lista_produtos)
-        self.dados_listagem = MDDataTable(pos_hint={'x': 0.15, 'y': 0.2},
-                                          size_hint=(.7, .6),
-                                          rows_num=len(self.manager.get_screen('lista_atual').lista_produtos),
-                                          background_color_header=get_color_from_hex("#ebf52a"),
-                                          background_color_selected_cell=get_color_from_hex("#f5f7cd"),
-                                          check=True,
-                                          column_data=[("[color=#0d0d0d]Produto[/color]", dp(50))
-                                                       ],
-                                          row_data=self.manager.get_screen('lista_atual').lista_produtos, elevation=1)
-
-        self.ids.lista_produtos.add_widget(self.dados_listagem)
+        self.ids.lista_produtos.clear_widgets()
+        # print(self.manager.get_screen('lista_atual').lista_produtos)
+        for item in self.manager.get_screen('pesquisar').resultado:
+            # self.lista_dict[item[1]] = item[3]
+            self.ids.lista_produtos.add_widget(
+                OneLineAvatarIconListItem(
+                    IconLeftWidget(MDCheckbox(),
+                                   icon='assets/transparent.png', icon_size='10sp',
+                                   text=f"{item[1]}"
+                                   ),
+                    IconRightWidget(icon='assets/x.ico', icon_size='10sp',
+                                    text=f"{item[1]}"),
+                    text=f"{item[1]}", theme_text_color='Custom', text_color="#df2100", bg_color="#ffffff",
+                    radius=[0, 10, 0, 10]
+                )
+            )
+        # self.dados_listagem = MDDataTable(pos_hint={'x': 0.15, 'y': 0.2},
+        #                                   size_hint=(.7, .6),
+        #                                   rows_num=len(self.manager.get_screen('lista_atual').lista_produtos),
+        #                                   background_color_header=get_color_from_hex("#ebf52a"),
+        #                                   background_color_selected_cell=get_color_from_hex("#f5f7cd"),
+        #                                   check=True,
+        #                                   column_data=[("[color=#0d0d0d]Produto[/color]", dp(50))
+        #                                                ],
+        #                                   row_data=self.manager.get_screen('lista_atual').lista_produtos, elevation=1)
+        #
+        # self.ids.lista_produtos.add_widget(self.dados_listagem)
 
     def adicionar_itens(self):
-        conn = sqlite3.connect('lista_compras')
-        cursor = conn.cursor()
-        itens = self.dados_listagem.get_row_checks()
-
-        for item in itens:
-            cursor.execute('INSERT INTO lista(produto, categoria, checks) VALUES(?, ?, ?)', (''.join(item),
-                                                                                             self.manager.get_screen(
-                                                                                                 'pesquisar').categoria,
-                                                                                             0))
-            conn.commit()
-            self.manager.get_screen('lista_atual').ids.lista.clear_widgets()
-            self.manager.get_screen('lista_atual').carregar_lista()
+        for item in reversed(self.ids.lista_produtos.children):
+            if item.children[1].children[0].children[0].active:
+                # self.produtos_selecionados.append(item.children[1].children[0].text)
+                self.manager.get_screen('lista_atual').adicionar_item(item.children[1].children[0])
+        # conn = sqlite3.connect('lista_compras')
+        # cursor = conn.cursor()
+        #
+        # for item in self.produtos_selecionados:
+        #     cursor.execute(f'INSERT INTO {self.manager.get_screen("lista_atual").lista_em_uso}'
+        #                    f'(produto, categoria, checks) VALUES(?, ?, ?)', (item, self.manager.get_screen(
+        #                     'pesquisar').categoria, 0))
+        #
+        #     conn.commit()
+        #
+        #     self.manager.get_screen('lista_atual').carregar_lista()
 
 
 class WindowManager(ScreenManager):

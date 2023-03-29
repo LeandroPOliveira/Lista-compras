@@ -142,8 +142,8 @@
 
 
 <ListaAtual>:
-    on_enter:
-        root.carregar_lista()
+    #on_enter:
+     #   root.carregar_lista()
 
     on_leave:
         root.atualizar_lista()
@@ -180,7 +180,7 @@
                 theme_text_color: 'Custom'
                 text_color: "white"
                 pos_hint: {'center_x':.5, 'y':.8}
-                size_hint: .65, .08
+                size_hint: .8, .08
 
                 IconLeftWidget:
                     MDCheckbox:
@@ -487,22 +487,66 @@
         root.catalogo_produtos()
 
     FloatLayout:
+        size_hint: (1, 0.93)
+
+    Image:
+        source: 'assets/foto2.jpg'
+
+    FloatLayout:
         size_hint: (1, 1)
-
-        Image:
-
-        FloatLayout:
-            size_hint: (1, 1)
-
-            id: lista_produtos
-
 
         MDIconButton:
             icon: 'arrow-left'
             size_hint: 0.05, 0.05
             pos_hint: {'x': 0.1, 'y': 0.9}
             on_press:
-                root.manager.current = "lista_atual"
+                root.manager.current = "pesquisar"
+
+
+       # MDLabel:
+           # text: root.categoria
+            #font_size: '22dp'
+            #halign: 'center'
+            #color:  "#df2100"
+            #pos_hint: {'center_x': 0.5, 'y': 0.9}
+            #size_hint: .65, .1
+            #bold: True
+
+        OneLineAvatarIconListItem:
+            bg_color: "#df2100"
+            theme_text_color: 'Custom'
+            text_color: "white"
+            pos_hint: {'center_x':.5, 'y':.8}
+            size_hint: .7, .08
+
+            IconLeftWidget:
+                MDCheckbox:
+                    on_press: root.selecionar_tudo(self)
+
+
+        ScrollView:
+            pos_hint: {'x':.1, 'y':.2}
+            size_hint: .8, .6
+            size: (self.width, 500)
+            bar_margin: 25
+            bar_width: 5
+            scroll_type: ['bars', 'content']
+
+            GridLayout:
+                size_hint_y: None
+                height: self.minimum_height
+                row_default_height: 15
+                cols: 1
+                rows: 50
+                bar_width: 50
+                padding: [30, 0, 30, 50]
+
+
+                MDList:
+                    id: lista_produtos
+                    spacing: 3
+
+
 
         MDFillRoundFlatIconButton:
             text: 'Adicionar'
