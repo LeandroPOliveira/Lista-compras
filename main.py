@@ -16,10 +16,8 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFlatButton, MDIconButton
 from kivymd.uix.dialog import MDDialog
 from kivy.metrics import dp
-from kivy.utils import get_color_from_hex
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.swiper import MDSwiperItem
-from kivymd.uix.snackbar import Snackbar
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.label import MDLabel
 
@@ -38,41 +36,27 @@ class Inicio(Screen):
 
 
 class ListaAtual(Screen):
-    lista_em_uso = StringProperty('lista')
+    lista_em_uso = StringProperty('')
     numero_linhas = NumericProperty(10)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.entrada = None
-        self.dados_listagem = None
-        self.completos = None
-        self.icones = None
-        self.lista = []
-        self.produtos = []
-        self.lista_produtos = []
+        self.lista = None
         self.dialog = None
         self.lista_dict = {}
         self.itens_a_remover = []
         self.itens_a_adicionar = []
 
     def carregar_lista(self, cond_extra=None):
-        self.lista.clear(), self.produtos.clear(), self.ids.lista.clear_widgets()
+        self.ids.lista.clear_widgets()
         conn = sqlite3.connect('lista_compras')
         cursor = conn.cursor()
-        if cond_extra == None:
+        if cond_extra is None:
             cursor.execute(f'SELECT * FROM {self.lista_em_uso} order by checks ASC')
         else:
             cursor.execute(f'SELECT * FROM {self.lista_em_uso} order by checks ASC, {cond_extra}')
         self.lista = cursor.fetchall()
-        self.numero_linhas = len(self.lista)
-        # self.ids.lista.add_widget(
-        # OneLineAvatarIconListItem(
-        #     IconLeftWidget(MDCheckbox(),
-        #                    on_press=self.selecionar_tudo,
-        #                    ),
-        #     IconRightWidget(icon='refresh', on_press=lambda x: self.atualizar_lista()),
-        #     bg_color="#df2100", theme_text_color='Custom', text_color="white",
-        #     radius=[10, 10, 10, 10]))
 
         for item in self.lista:
             self.lista_dict[item[1]] = item[3]
@@ -94,11 +78,6 @@ class ListaAtual(Screen):
                 item.children[1].children[0].children[0].color = "#c9c8c7"
                 item.text = f'[s]{item.text}[/s]'
                 item.text_color = "#9c9c9c"
-
-        # self.ids.lista.add_widget(
-        #     OneLineAvatarIconListItem(text='Marcados', bg_color="#df2100", theme_text_color='Custom',
-        #                               text_color="white", radius=[10, 10, 10, 10]),
-        #     sum(map((1).__eq__, self.lista_dict.values()))+1)
 
     def novo_item(self):
         self.entrada = MDTextField()
@@ -135,47 +114,21 @@ class ListaAtual(Screen):
         self.ids.lista.add_widget(
             OneLineAvatarIconListItem(
                 IconLeftWidget(MDCheckbox(),
-                               icon='assets/transparent.png', icon_size='10sp', on_press=self.marcar_item,
+                               icon_size='10sp', on_press=self.marcar_item,
                                text=f"{entrada}"
                                ),
                 IconRightWidget(icon='assets/x.ico', icon_size='10sp', on_press=self.remover_item,
                                 text=f"{entrada}"),
                 text=f"{entrada}", theme_text_color='Custom', text_color="#df2100", bg_color="#ffffff",
                 radius=[0, 10, 0, 10]
-            )
-            , dict_index)
+            ), dict_index)
 
         self.itens_a_adicionar.append(entrada)
         self.lista_dict[entrada] = 0
 
-        # self.atualizar_lista()
-        # conn = sqlite3.connect('lista_compras')
-        # cursor = conn.cursor()
-        # cursor.execute(f'SELECT id from {self.lista_em_uso} where produto = ?', (entrada, ))
-        # duplicado = cursor.fetchone()
-        # if duplicado is None:
-        #     cursor.execute(f'INSERT INTO {self.lista_em_uso}(produto, checks) VALUES(?, ?)', (entrada, 0))
-        #     conn.commit()
-        #     self.ids.lista.clear_widgets()
-        #     self.carregar_lista()
-
-        #     self.numero_linhas = self.numero_linhas + 1
-        #     self.atualizar_lista()
-        # else:
-        #     self.dialog_dup = MDDialog(text='Item já adicionado', radius=[20, 7, 20, 7], )
-        #     self.dialog_dup.open()
-
     def remover_item(self, instance):
         self.itens_a_remover.append(instance.text)
         self.ids.lista.remove_widget(instance.parent.parent)
-
-        # self.atualizar_lista()
-        # conn = sqlite3.connect('lista_compras')
-        # cursor = conn.cursor()
-        # cursor.execute(f'DELETE FROM {self.lista_em_uso} WHERE produto = (?)', (instance.text,))
-        # conn.commit()
-        # self.ids.lista.clear_widgets()
-        # self.carregar_lista()
 
     def marcar_item(self, instance):
         if instance.children[0].state == 'down':
@@ -192,63 +145,62 @@ class ListaAtual(Screen):
             self.lista_dict[instance.text] = 0
             instance.parent.parent.text = instance.text
             instance.parent.parent.text_color = "#df2100"
-        # print(instance.children[0].children.children)
-        # for item in self.ids.lista.children:
-        #     if instance.parent in item.children:
-        #         if self.lista_dict[instance.text] == 0:
-        #             self.lista_dict[instance.text] = 1
-        #         else:
-        #             self.lista_dict[instance.text] = 0
 
-    def atualizar_lista(self):
-        conn = sqlite3.connect('lista_compras')
-        cursor = conn.cursor()
-        for key, value in self.lista_dict.items():
-            if key in self.itens_a_remover:
-                cursor.execute(f'DELETE FROM {self.lista_em_uso} WHERE produto = (?)', (key,))
-            if key in self.itens_a_adicionar:
-                cursor.execute(f'INSERT INTO {self.lista_em_uso}(produto, checks) VALUES(?, ?)', (key, 0))
+    def salvar_lista(self):
+        if self.lista_em_uso != '':
+            conn = sqlite3.connect('lista_compras')
+            cursor = conn.cursor()
+            for key, value in self.lista_dict.items():
+                if key in self.itens_a_remover:
+                    cursor.execute(f'DELETE FROM {self.lista_em_uso} WHERE produto = (?)', (key,))
+                if key in self.itens_a_adicionar:
+                    cursor.execute(f'INSERT INTO {self.lista_em_uso}(produto, checks) VALUES(?, ?)', (key, 0))
+                else:
+                    cursor.execute(f'UPDATE {self.lista_em_uso} SET checks = (?) WHERE produto = (?)', (value, key,))
+
+            conn.commit()
+            self.ids.lista.clear_widgets()
+            self.itens_a_remover.clear()
+            self.itens_a_adicionar.clear()
+            self.carregar_lista()
+            try:
+                self.menu.dismiss()
+            except AttributeError:
+                pass
+
+        def selecionar_tudo(self, instance):
+            instance.color = "#c9c8c7"
+            if instance.state == 'down':
+                for item in self.ids.lista.children:
+                    self.lista_dict[item.children[1].children[0].text] = 1
+                    item.children[1].children[0].children[0].active = True
+                    item.children[1].children[0].children[0].color = "#c9c8c7"
+                    item.text = f'[s]{item.text}[/s]'
+                    item.text_color = "#9c9c9c"
             else:
-                cursor.execute(f'UPDATE {self.lista_em_uso} SET checks = (?) WHERE produto = (?)', (value, key,))
-
-        conn.commit()
-        self.ids.lista.clear_widgets()
-        self.itens_a_remover.clear()
-        self.itens_a_adicionar.clear()
-        self.carregar_lista()
-
-    def selecionar_tudo(self, instance):
-        print(instance)
-        instance.color = "#c9c8c7"
-        if instance.state == 'down':
-            for item in self.ids.lista.children:
-                self.lista_dict[item.children[1].children[0].text] = 1
-                item.children[1].children[0].children[0].active = True
-                item.children[1].children[0].children[0].color = "#c9c8c7"
-                item.text = f'[s]{item.text}[/s]'
-                item.text_color = "#9c9c9c"
-        else:
-            for item in self.ids.lista.children:
-                self.lista_dict[item.children[1].children[0].text] = 0
-                item.children[1].children[0].children[0].active = False
-                item.text = item.children[1].children[0].text
-                item.text_color = "#df2100"
+                for item in self.ids.lista.children:
+                    self.lista_dict[item.children[1].children[0].text] = 0
+                    item.children[1].children[0].children[0].active = False
+                    item.text = item.children[1].children[0].text
+                    item.text_color = "#df2100"
 
     def ordenar_crescente(self):
-        self.atualizar_lista()
+        self.salvar_lista()
         self.carregar_lista('produto ASC')
+        self.menu.dismiss()
 
     def ordenar_decrescente(self):
-        self.atualizar_lista()
+        self.salvar_lista()
         self.carregar_lista('produto DESC')
+        self.menu.dismiss()
 
     def chama_menu(self):
         self.menu_items = [
             {
                 "viewclass": "OneLineListItem",
-                "text": "Atualizar lista",
+                "text": "Salvar lista",
                 "height": dp(56),
-                "on_release": self.atualizar_lista,
+                "on_release": self.salvar_lista,
             }, {
                 "viewclass": "OneLineListItem",
                 "text": "Ordem crescente",
@@ -270,10 +222,6 @@ class ListaAtual(Screen):
 
         self.menu.open()
 
-    def menu_callback(self, text_item):
-        self.menu.dismiss()
-        Snackbar(text=text_item).open()
-
 
 class MinhasListas(Screen):
     def __init__(self, **kwargs):
@@ -286,8 +234,8 @@ class MinhasListas(Screen):
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM sqlite_master where type="table"')
         resultado = cursor.fetchall()
-        resultado.pop(1)
-        resultado.pop(1)
+        resultado.pop(1)  # Excluir tabela 'sqlite_sequence'
+        resultado.pop(1)  # Excluir tabela 'produtos' utilizada como busca de itens
 
         if len(self.lista) != 0:
             for i in self.lista:
@@ -305,10 +253,10 @@ class MinhasListas(Screen):
             self.label_tabela = MDCard(MDRelativeLayout(MDIconButton(icon='pencil', text=linha[1],
                                                                      pos_hint={'x': 0.1, 'y': .75},
                                                                      icon_size='18sp', icon_color='black',
-                                                                     on_press=self.editar_lista),
+                                                                     on_press=self.editar_nome_lista),
                                                         MDIconButton(icon='assets/x.ico', icon_size='15sp',
                                                                      text=linha[1], pos_hint={'x': 0.7, 'y': .75},
-                                                                     on_press=self.apagar_lista),
+                                                                     on_press=self.excluir_lista),
                                                         MDIconButton(text=linha[1],
                                                                      icon='list-box-outline',
                                                                      icon_color='#ff5c00',
@@ -329,7 +277,6 @@ class MinhasListas(Screen):
                                        line_color="ffcc21")
 
             self.inserir_layout.add_widget(self.label_tabela)
-
             self.lista.append(self.label_tabela)
 
         self.insere_swiper2 = MDSwiperItem()
@@ -342,7 +289,7 @@ class MinhasListas(Screen):
         self.manager.get_screen('lista_atual').carregar_lista()
         self.manager.current = 'lista_atual'
 
-    def editar_lista(self, instance):
+    def editar_nome_lista(self, instance):
         self.nome_anterior = instance.text
         self.entrada = MDTextField(text=instance.text)
         self.dialog_lista2 = MDDialog(
@@ -365,13 +312,13 @@ class MinhasListas(Screen):
                 MDFlatButton(
                     text="OK",
                     theme_text_color="Custom",
-                    on_press=lambda x: (self.editar_nome(self.entrada), self.dialog_lista2.dismiss())
+                    on_press=lambda x: (self.gravar_nome(self.entrada), self.dialog_lista2.dismiss())
                 ),
             ],
         )
         self.dialog_lista2.open()
 
-    def editar_nome(self, entrada):
+    def gravar_nome(self, entrada):
         conn = sqlite3.connect('lista_compras')
         cursor = conn.cursor()
 
@@ -379,7 +326,7 @@ class MinhasListas(Screen):
         conn.commit()
         self.minhas_listas(dt=None)
 
-    def nova_lista(self):
+    def criar_nova_lista(self):
         self.entrada = MDTextField()
         self.dialog_lista = MDDialog(
             title="Nova lista:",
@@ -401,13 +348,13 @@ class MinhasListas(Screen):
                 MDFlatButton(
                     text="OK",
                     theme_text_color="Custom",
-                    on_press=lambda x: (self.adicionar_lista(self.entrada), self.dialog_lista.dismiss())
+                    on_press=lambda x: (self.gravar_nova_lista(self.entrada), self.dialog_lista.dismiss())
                 ),
             ],
         )
         self.dialog_lista.open()
 
-    def adicionar_lista(self, entrada):
+    def gravar_nova_lista(self, entrada):
         conn = sqlite3.connect('lista_compras')
         cursor = conn.cursor()
 
@@ -425,7 +372,7 @@ class MinhasListas(Screen):
             pass
         self.manager.current = 'lista_atual'
 
-    def apagar_lista(self, instance):
+    def excluir_lista(self, instance):
         self.dialog3 = MDDialog(
             text="Confirma a exclusão?",
             buttons=[
@@ -437,13 +384,13 @@ class MinhasListas(Screen):
                 MDFlatButton(
                     text="CONFIRMAR",
                     theme_text_color="Custom",
-                    on_press=lambda x: (self.apagar(instance.text), self.dialog3.dismiss())
+                    on_press=lambda x: (self.gravar_exclusao(instance.text), self.dialog3.dismiss())
                 ),
             ],
         )
         self.dialog3.open()
 
-    def apagar(self, entrada):
+    def gravar_exclusao(self, entrada):
         conn = sqlite3.connect('lista_compras')
         cursor = conn.cursor()
         cursor.execute(f'DROP TABLE {entrada}')
@@ -458,18 +405,15 @@ class Pesquisar(Screen):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.resultado = None
+        self.categoria = None
 
     def buscar_produtos(self, instance, item):
-        self.lista_produtos = self.manager.get_screen('lista_atual').lista_produtos
         self.categoria = item.text
         conn = sqlite3.connect('lista_compras')
         cursor = conn.cursor()
         cursor.execute('select * from produtos WHERE categoria = (?) order by produto ASC', (self.categoria,))
-        self.lista_produtos.clear()
         self.resultado = cursor.fetchall()
-
-        # for produto in self.resultado:
-        #     self.lista_produtos.append((produto[1],))
 
 
 class Produtos(Screen):
@@ -479,13 +423,11 @@ class Produtos(Screen):
 
     def catalogo_produtos(self):
         self.ids.lista_produtos.clear_widgets()
-        # print(self.manager.get_screen('lista_atual').lista_produtos)
         for item in self.manager.get_screen('pesquisar').resultado:
-            # self.lista_dict[item[1]] = item[3]
             self.ids.lista_produtos.add_widget(
                 OneLineAvatarIconListItem(
                     IconLeftWidget(MDCheckbox(),
-                                   icon='assets/transparent.png', icon_size='10sp',
+                                   icon_size='10sp',
                                    text=f"{item[1]}"
                                    ),
                     IconRightWidget(icon='assets/x.ico', icon_size='10sp',
@@ -509,29 +451,18 @@ class Produtos(Screen):
     def adicionar_itens(self):
         for item in reversed(self.ids.lista_produtos.children):
             if item.children[1].children[0].children[0].active:
-                # self.produtos_selecionados.append(item.children[1].children[0].text)
                 self.manager.get_screen('lista_atual').adicionar_item(item.children[1].children[0])
-        # conn = sqlite3.connect('lista_compras')
-        # cursor = conn.cursor()
-        #
-        # for item in self.produtos_selecionados:
-        #     cursor.execute(f'INSERT INTO {self.manager.get_screen("lista_atual").lista_em_uso}'
-        #                    f'(produto, categoria, checks) VALUES(?, ?, ?)', (item, self.manager.get_screen(
-        #                     'pesquisar').categoria, 0))
-        #
-        #     conn.commit()
-        #
-        #     self.manager.get_screen('lista_atual').carregar_lista()
-
+    
 
 class WindowManager(ScreenManager):
     pass
 
 
-class Example(MDApp):
+class MinhaLista(MDApp):
+
     def build(self):
-        # self.theme_cls.theme_style = "Dark"
+        # self.ref_lista_atual = ListaAtual()
         return Builder.load_file('main.kv')
 
 
-Example().run()
+MinhaLista().run()

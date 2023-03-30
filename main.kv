@@ -63,43 +63,43 @@
 
         MDList:
 
-            OneLineAvatarListItem:
+            MDNavigationDrawerItem:
                 text: 'Lista atual'
+                icon: 'home-outline'
+                icon_color: "#df2100"
+                focus_color: "#ffbd4d"
                 on_press:
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "lista_atual"
 
-                IconLeftWidget:
-                    icon: 'home-outline'
-
-
-            OneLineAvatarListItem:
+            MDNavigationDrawerItem:
                 text: 'Minhas listas'
+                icon: 'clipboard-list-outline'
+                icon_color: "#df2100"
+                focus_color: "#ffbd4d"
                 on_press:
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "minhas_listas"
 
-                IconLeftWidget:
-                    icon: 'clipboard-list-outline'
-
-            OneLineAvatarListItem:
+            MDNavigationDrawerItem:
                 text: 'Pesquisar'
+                icon: 'clipboard-search-outline'
+                icon_color: "#df2100"
+                focus_color: "#ffbd4d"
                 on_press:
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "pesquisar"
 
-                IconLeftWidget:
-                    icon: 'clipboard-search-outline'
+            MDNavigationDrawerDivider:
 
-            #OneLineAvatarListItem:
-             #   text: 'Produtos'
-              #  on_press:
-               #     root.nav_drawer.set_state("close")
-                #    root.screen_manager.current = "produtos"
-
-                #IconLeftWidget:
-                 #   icon: 'store-plus-outline'
-
+            MDNavigationDrawerItem:
+                text: 'Sair'
+                icon: 'exit-to-app'
+                icon_color: "#df2100"
+                focus_color: "#ffbd4d"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    app.stop()
 <Principal>:
     name: 'tela1'
 
@@ -142,11 +142,8 @@
 
 
 <ListaAtual>:
-    #on_enter:
-     #   root.carregar_lista()
-
     on_leave:
-        root.atualizar_lista()
+        root.salvar_lista()
 
     FloatLayout:
         size_hint: (1, 0.93)
@@ -180,7 +177,8 @@
                 theme_text_color: 'Custom'
                 text_color: "white"
                 pos_hint: {'center_x':.5, 'y':.8}
-                size_hint: .8, .08
+                size_hint: .7, .07
+                radius: [5, 5, 5, 5]
 
                 IconLeftWidget:
                     MDCheckbox:
@@ -188,10 +186,10 @@
 
 
             ScrollView:
-                pos_hint: {'x':.1, 'y':.2}
-                size_hint: .8, .6
+                pos_hint: {'x':.15, 'y':.2}
+                size_hint: .7, .6
                 size: (self.width, 500)
-                bar_margin: 25
+                bar_margin: 0
                 bar_width: 5
                 scroll_type: ['bars', 'content']
 
@@ -202,8 +200,6 @@
                     cols: 1
                     rows: root.numero_linhas
                     bar_width: 50
-                    padding: [30, 0, 30, 50]
-
 
                     MDList:
                         id: lista
@@ -517,7 +513,8 @@
             theme_text_color: 'Custom'
             text_color: "white"
             pos_hint: {'center_x':.5, 'y':.8}
-            size_hint: .7, .08
+            size_hint: .7, .07
+            radius: [5, 5, 5, 5]
 
             IconLeftWidget:
                 MDCheckbox:
@@ -525,10 +522,10 @@
 
 
         ScrollView:
-            pos_hint: {'x':.1, 'y':.2}
-            size_hint: .8, .6
+            pos_hint: {'x':.15, 'y':.2}
+            size_hint: .7, .6
             size: (self.width, 500)
-            bar_margin: 25
+            bar_margin: 0
             bar_width: 5
             scroll_type: ['bars', 'content']
 
@@ -539,8 +536,6 @@
                 cols: 1
                 rows: 50
                 bar_width: 50
-                padding: [30, 0, 30, 50]
-
 
                 MDList:
                     id: lista_produtos
