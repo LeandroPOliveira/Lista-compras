@@ -1,19 +1,15 @@
-#:import hex kivy.utils.get_color_from_hex
-
 <Image>
-    source: 'assets/foto.jpg'
+    source: 'assets/foto5.png'
     allow_stretch: True
     keep_ratio: False
 
 <MDCard>
-    #padding: 4
-    #md_bg_color: "#ffffff"
-    line_color: "#ffffff"
+    line_color: app.cor_branca
 
 <MDIconButton>
     icon_size: '30sp'
     theme_icon_color: "Custom"
-    icon_color: "#df2100"
+
 
 <IconLeftWidget>
     icon: 'assets/transparent.png'
@@ -33,7 +29,7 @@
             pos_hint: {'x': 0.1, 'y': 0.35}
             font_size: '18dp'
             text: 'MINHA'
-            color: hex('#3b424c')
+            color: app.cor_clara
             bold: True
 
         MDLabel:
@@ -41,7 +37,7 @@
             pos_hint: {'x': 0.1, 'y': 0.3}
             text: 'LISTA'
             font_size: '44dp'
-            color: hex("#ffbd4d")
+            color: app.cor_escura
             bold: True
 
         MDRectangleFlatIconButton:
@@ -50,11 +46,11 @@
             icon: "location-enter"
             text: "Entrar"
             font_size: '20dp'
-            md_bg_color: hex("#df2100")
+            md_bg_color: app.cor_media
             text_color: "white"
-            line_color: hex("#df2100")
+            line_color: app.cor_media
             theme_icon_color: "Custom"
-            icon_color: hex('#ffffff')
+            icon_color: app.cor_branca
             on_press:
                 app.root.current = "tela1"
 
@@ -66,8 +62,8 @@
             MDNavigationDrawerItem:
                 text: 'Lista atual'
                 icon: 'home-outline'
-                icon_color: "#df2100"
-                focus_color: "#ffbd4d"
+                icon_color: app.cor_clara
+                focus_color: app.cor_escura
                 on_press:
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "lista_atual"
@@ -75,8 +71,8 @@
             MDNavigationDrawerItem:
                 text: 'Minhas listas'
                 icon: 'clipboard-list-outline'
-                icon_color: "#df2100"
-                focus_color: "#ffbd4d"
+                icon_color: app.cor_clara
+                focus_color: app.cor_escura
                 on_press:
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "minhas_listas"
@@ -84,8 +80,8 @@
             MDNavigationDrawerItem:
                 text: 'Pesquisar'
                 icon: 'clipboard-search-outline'
-                icon_color: "#df2100"
-                focus_color: "#ffbd4d"
+                icon_color: app.cor_clara
+                focus_color: app.cor_escura
                 on_press:
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "pesquisar"
@@ -95,8 +91,8 @@
             MDNavigationDrawerItem:
                 text: 'Sair'
                 icon: 'exit-to-app'
-                icon_color: "#df2100"
-                focus_color: "#ffbd4d"
+                icon_color: app.cor_clara
+                focus_color: app.cor_escura
                 on_press:
                     root.nav_drawer.set_state("close")
                     app.stop()
@@ -108,7 +104,7 @@
         pos_hint: {"top": 1}
         type_height: 'large'
         elevation: 0
-        md_bg_color: hex('#ffbd4d')
+        md_bg_color: app.cor_escura
         title: ""
         left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
 
@@ -149,7 +145,8 @@
         size_hint: (1, 0.93)
 
         Image:
-            source: 'assets/foto2.jpg'
+            #source: 'assets/foto2.jpg'
+            source: 'assets/foto5.png'
 
         FloatLayout:
             size_hint: (1, 1)
@@ -158,7 +155,7 @@
                 text: root.lista_em_uso
                 font_size: '22dp'
                 halign: 'center'
-                color:  "#df2100"
+                color:  app.cor_media
                 pos_hint: {'center_x': 0.5, 'y': 0.9}
                 size_hint: .65, .1
                 bold: True
@@ -166,14 +163,14 @@
             MDIconButton:
                 pos_hint: {'x':.8, 'y':.985}
                 theme_icon_color: "Custom"
-                icon_color: "#df2100"
                 icon: 'dots-vertical'
+                icon_color: app.cor_branca
                 id: menu
                 on_press:
                     root.chama_menu()
 
             OneLineAvatarIconListItem:
-                bg_color: "#df2100"
+                bg_color: app.cor_clara
                 theme_text_color: 'Custom'
                 text_color: "white"
                 pos_hint: {'center_x':.5, 'y':.8}
@@ -208,7 +205,7 @@
 
         MDFloatingActionButton:
             pos_hint: {'x': 0.42, 'y': 0.05}
-            md_bg_color: "#df2100"
+            md_bg_color: app.cor_escura
             icon: "plus"
             text_color: "white"
 
@@ -223,7 +220,7 @@
         size_hint: (1, 0.93)
 
         Image:
-            source: 'assets/fundo3.png'
+            source: 'assets/fundo4.png'
 
         MDLabel:
             text: 'Selecione'
@@ -247,7 +244,7 @@
             text: 'sua'
             font_size: '36dp'
             adaptive_size: True
-            color: "#df2100"
+            color: app.cor_media
             pos_hint: {'x': 0.25, 'y': 0.79}
             bold: True
             halign: 'left'
@@ -256,7 +253,7 @@
             text: 'Lista'
             font_size: '60dp'
             adaptive_size: True
-            color: "#df2100"
+            color: app.cor_media
             pos_hint: {'x': 0.45, 'y': 0.78}
             bold: True
             halign: 'left'
@@ -271,14 +268,14 @@
 
         MDFillRoundFlatIconButton:
             text: 'Nova'
-            pos_hint: {'center_x': 0.5, 'y': 0.25}
+            pos_hint: {'center_x': 0.5, 'y': 0.15}
             size_hint: 0.4, 0.07
             font_size: '18dp'
-            md_bg_color: "#df2100"
+            md_bg_color: app.cor_escura
             icon: "plus"
             text_color: "white"
             on_press:
-                root.nova_lista()
+                root.criar_nova_lista()
 
 <Pesquisar>:
 
@@ -293,21 +290,19 @@
             #keep_ratio: False
             size_hint_x: 0.7
             pos_hint: {'center_x': 0.5, 'y': 0.3}
-            background_color: '#ff5c00'
-
 
         MDLabel:
             text: 'Categorias'
             font_size: '28dp'
             adaptive_size: True
-            color:  '#ff5c00'
+            color:  app.cor_escura
             pos_hint: {'center_x': 0.5, 'y': 0.58}
             bold: True
 
         ScrollView:
             size_hint: (1, 0.55)
             bar_width: 10
-            bar_color: "#df2100"
+            bar_color: app.cor_botao
 
             GridLayout:
                 id: grid_teste
@@ -317,7 +312,7 @@
                 cols: 2
                 rows: 4
                 bar_width: 100
-                bar_color: "#df2100"
+                bar_color: app.cor_botao
                 padding: [50, 0, 50, 50]
                 spacing: 20, 20
 
@@ -342,7 +337,7 @@
                             text: 'Feira'
 
                             adaptive_size: True
-                            color: "#df2100"
+                            color: app.cor_escura
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
 
 
@@ -363,7 +358,7 @@
                             id: mercearia
                             text: 'Mercearia'
                             adaptive_size: True
-                            color: "#df2100"
+                            color: app.cor_escura
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
 
 
@@ -384,7 +379,7 @@
                             id: bebidas
                             text: 'Bebidas'
                             adaptive_size: True
-                            color: "#df2100"
+                            color: app.cor_escura
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
 
 
@@ -405,7 +400,7 @@
                             id: açougue
                             text: 'Açougue'
                             adaptive_size: True
-                            color: "#df2100"
+                            color: app.cor_escura
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
 
 
@@ -426,7 +421,7 @@
                             id: higiene
                             text: 'Higiene'
                             adaptive_size: True
-                            color: "#df2100"
+                            color: app.cor_escura
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
 
 
@@ -450,7 +445,7 @@
                             halign: 'center'
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
                             adaptive_size: True
-                            color: "#df2100"
+                            color: app.cor_escura
 
 
                 MDCard:
@@ -472,7 +467,7 @@
                             id: utilidades
                             text: 'Utilidades'
                             adaptive_size: True
-                            color: "#df2100"
+                            color: app.cor_escura
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
 
 
@@ -486,13 +481,14 @@
         size_hint: (1, 0.93)
 
     Image:
-        source: 'assets/foto2.jpg'
+        source: 'assets/foto5.png'
 
     FloatLayout:
         size_hint: (1, 1)
 
         MDIconButton:
             icon: 'arrow-left'
+            icon_color: app.cor_branca
             size_hint: 0.05, 0.05
             pos_hint: {'x': 0.1, 'y': 0.9}
             on_press:
@@ -509,16 +505,12 @@
             #bold: True
 
         OneLineAvatarIconListItem:
-            bg_color: "#df2100"
+            bg_color: app.cor_clara
             theme_text_color: 'Custom'
-            text_color: "white"
+            text_color: app.cor_tabela
             pos_hint: {'center_x':.5, 'y':.8}
             size_hint: .7, .07
             radius: [5, 5, 5, 5]
-
-            IconLeftWidget:
-                MDCheckbox:
-                    on_press: root.selecionar_tudo(self)
 
 
         ScrollView:
@@ -548,7 +540,7 @@
             pos_hint: {'center_x': 0.5, 'y': 0.1}
             size_hint: 0.4, 0.07
             font_size: '16dp'
-            md_bg_color: "#df2100"
+            md_bg_color: app.cor_escura
             icon: "plus"
             text_color: "white"
             on_press:

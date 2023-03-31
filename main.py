@@ -68,16 +68,17 @@ class ListaAtual(Screen):
                                    ),
                     IconRightWidget(icon='assets/x.ico', icon_size='10sp', on_press=self.remover_item,
                                     text=f"{item[1]}"),
-                    text=f"{item[1]}", theme_text_color='Custom', text_color="#df2100", bg_color="#ffffff",
+                    text=f"{item[1]}", theme_text_color='Custom', text_color=MinhaLista().cor_escura,
+                    bg_color=MinhaLista().cor_tabela,
                     radius=[0, 10, 0, 10]
                 )
             )
 
         for item in self.ids.lista.children:
             if item.children[1].children[0].children[0].active:
-                item.children[1].children[0].children[0].color = "#c9c8c7"
+                item.children[1].children[0].children[0].color = MinhaLista().cor_marcada
                 item.text = f'[s]{item.text}[/s]'
-                item.text_color = "#9c9c9c"
+                item.text_color = MinhaLista().cor_marcada
 
     def novo_item(self):
         self.entrada = MDTextField()
@@ -119,7 +120,8 @@ class ListaAtual(Screen):
                                ),
                 IconRightWidget(icon='assets/x.ico', icon_size='10sp', on_press=self.remover_item,
                                 text=f"{entrada}"),
-                text=f"{entrada}", theme_text_color='Custom', text_color="#df2100", bg_color="#ffffff",
+                text=f"{entrada}", theme_text_color='Custom', text_color=MinhaLista().cor_escura,
+                bg_color=MinhaLista().cor_tabela,
                 radius=[0, 10, 0, 10]
             ), dict_index)
 
@@ -135,16 +137,16 @@ class ListaAtual(Screen):
             self.ids.lista.remove_widget(instance.parent.parent)
             self.ids.lista.add_widget(instance.parent.parent)
             self.lista_dict[instance.text] = 1
-            instance.children[0].color = "#c9c8c7"
+            instance.children[0].color = MinhaLista().cor_marcada_check
             instance.parent.parent.text = f'[s]{instance.text}[/s]'
-            instance.parent.parent.text_color = "#9c9c9c"
+            instance.parent.parent.text_color = MinhaLista().cor_marcada
         else:
             self.ids.lista.remove_widget(instance.parent.parent)
             dict_index = sum(map((1).__eq__, self.lista_dict.values()))
             self.ids.lista.add_widget(instance.parent.parent, dict_index - 1)
             self.lista_dict[instance.text] = 0
             instance.parent.parent.text = instance.text
-            instance.parent.parent.text_color = "#df2100"
+            instance.parent.parent.text_color = MinhaLista().cor_escura
 
     def salvar_lista(self):
         if self.lista_em_uso != '':
@@ -168,21 +170,21 @@ class ListaAtual(Screen):
             except AttributeError:
                 pass
 
-        def selecionar_tudo(self, instance):
-            instance.color = "#c9c8c7"
-            if instance.state == 'down':
-                for item in self.ids.lista.children:
-                    self.lista_dict[item.children[1].children[0].text] = 1
-                    item.children[1].children[0].children[0].active = True
-                    item.children[1].children[0].children[0].color = "#c9c8c7"
-                    item.text = f'[s]{item.text}[/s]'
-                    item.text_color = "#9c9c9c"
-            else:
-                for item in self.ids.lista.children:
-                    self.lista_dict[item.children[1].children[0].text] = 0
-                    item.children[1].children[0].children[0].active = False
-                    item.text = item.children[1].children[0].text
-                    item.text_color = "#df2100"
+    def selecionar_tudo(self, instance):
+        instance.color = MinhaLista().cor_marcada_check
+        if instance.state == 'down':
+            for item in self.ids.lista.children:
+                self.lista_dict[item.children[1].children[0].text] = 1
+                item.children[1].children[0].children[0].active = True
+                item.children[1].children[0].children[0].color = MinhaLista().cor_marcada_check
+                item.text = f'[s]{item.text}[/s]'
+                item.text_color = MinhaLista().cor_marcada
+        else:
+            for item in self.ids.lista.children:
+                self.lista_dict[item.children[1].children[0].text] = 0
+                item.children[1].children[0].children[0].active = False
+                item.text = item.children[1].children[0].text
+                item.text_color = MinhaLista().cor_escura
 
     def ordenar_crescente(self):
         self.salvar_lista()
@@ -259,7 +261,7 @@ class MinhasListas(Screen):
                                                                      on_press=self.excluir_lista),
                                                         MDIconButton(text=linha[1],
                                                                      icon='list-box-outline',
-                                                                     icon_color='#ff5c00',
+                                                                     icon_color=MinhaLista().cor_media,
                                                                      pos_hint={'center_x': 0.5, 'y': .5},
                                                                      icon_size='80dp',
                                                                      on_press=self.lista_selecionada,
@@ -267,14 +269,14 @@ class MinhasListas(Screen):
                                                                      halign='center'),
                                                         MDLabel(text=linha[1],
                                                                 theme_text_color='Custom',
-                                                                text_color="#df2100",
+                                                                text_color=MinhaLista().cor_escura,
                                                                 font_size='30dp',
                                                                 halign='center',
                                                                 adaptive_size=True,
                                                                 pos_hint={'center_x': 0.5, 'y': .1},
                                                                 size_hint=(0.6, .1))),
                                        size_hint=(0.8, .25), pos_hint={'x': 0.1, 'y': .4}, md_bg_color="#ffffff",
-                                       line_color="ffcc21")
+                                       line_color=MinhaLista().cor_clara)
 
             self.inserir_layout.add_widget(self.label_tabela)
             self.lista.append(self.label_tabela)
@@ -432,21 +434,12 @@ class Produtos(Screen):
                                    ),
                     IconRightWidget(icon='assets/x.ico', icon_size='10sp',
                                     text=f"{item[1]}"),
-                    text=f"{item[1]}", theme_text_color='Custom', text_color="#df2100", bg_color="#ffffff",
+                    text=f"{item[1]}", theme_text_color='Custom',
+                    text_color=MinhaLista().cor_escura,
+                    bg_color=MinhaLista().cor_tabela,
                     radius=[0, 10, 0, 10]
                 )
             )
-        # self.dados_listagem = MDDataTable(pos_hint={'x': 0.15, 'y': 0.2},
-        #                                   size_hint=(.7, .6),
-        #                                   rows_num=len(self.manager.get_screen('lista_atual').lista_produtos),
-        #                                   background_color_header=get_color_from_hex("#ebf52a"),
-        #                                   background_color_selected_cell=get_color_from_hex("#f5f7cd"),
-        #                                   check=True,
-        #                                   column_data=[("[color=#0d0d0d]Produto[/color]", dp(50))
-        #                                                ],
-        #                                   row_data=self.manager.get_screen('lista_atual').lista_produtos, elevation=1)
-        #
-        # self.ids.lista_produtos.add_widget(self.dados_listagem)
 
     def adicionar_itens(self):
         for item in reversed(self.ids.lista_produtos.children):
@@ -459,9 +452,16 @@ class WindowManager(ScreenManager):
 
 
 class MinhaLista(MDApp):
+    cor_clara = StringProperty('#3a6ea5')
+    cor_media = StringProperty('#004e98')
+    cor_escura = StringProperty('#ff6700')
+    cor_botao = StringProperty('#c0c0c0')
+    cor_tabela = StringProperty('#ebebeb')
+    cor_marcada = StringProperty('#9c9c9c')
+    cor_marcada_check = StringProperty('#c9c8c7')
+    cor_branca = StringProperty('#ffffff')
 
     def build(self):
-        # self.ref_lista_atual = ListaAtual()
         return Builder.load_file('main.kv')
 
 
