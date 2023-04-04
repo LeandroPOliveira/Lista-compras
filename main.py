@@ -47,6 +47,7 @@ class ListaAtual(Screen):
         self.lista_dict = {}
         self.itens_a_remover = []
         self.itens_a_adicionar = []
+        self.itens_a_editar = []
 
     def carregar_lista(self, cond_extra=None):
         self.ids.lista.clear_widgets()
@@ -70,7 +71,7 @@ class ListaAtual(Screen):
                                     text=f"{item[1]}"),
                     text=f"{item[1]}", theme_text_color='Custom', text_color=MinhaLista().cor_escura,
                     bg_color=MinhaLista().cor_tabela,
-                    radius=[0, 10, 0, 10]
+                    radius=[0, 10, 0, 10], on_press=self.editar_item
                 )
             )
 
@@ -79,6 +80,42 @@ class ListaAtual(Screen):
                 item.children[1].children[0].children[0].color = MinhaLista().cor_marcada
                 item.text = f'[s]{item.text}[/s]'
                 item.text_color = MinhaLista().cor_marcada
+
+    def editar_item(self, instance):
+        self.status_check = instance.children[1].children[0].children[0].state
+        self.editar = instance
+        self.entrada = MDTextField(text=instance.text)
+        self.dialog = MDDialog(
+            title="Editar item:",
+            type="custom",
+            content_cls=MDBoxLayout(
+                self.entrada,
+                orientation="vertical",
+                spacing="12dp",
+                size_hint_y=None,
+                height="60dp",
+            ),
+            buttons=[
+                MDFlatButton(
+                    text="CANCELAR",
+                    theme_text_color="Custom",
+                    on_press=lambda x: self.dialog.dismiss()
+
+                ),
+                MDFlatButton(
+                    text="OK",
+                    theme_text_color="Custom",
+                    on_press=lambda x: (self.atualizar(self.entrada), self.dialog.dismiss())
+                ),
+            ],
+        )
+        self.dialog.open()
+
+    def atualizar(self, entrada):
+        self.lista_dict[entrada.text] = self.lista_dict[self.editar.text]
+        self.itens_a_adicionar.append(entrada.text)
+        self.itens_a_remover.append(self.editar.text)
+        self.editar.text = entrada.text
 
     def novo_item(self):
         self.entrada = MDTextField()
