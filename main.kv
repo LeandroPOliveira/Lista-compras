@@ -4,7 +4,8 @@
     keep_ratio: False
 
 <MDCard>
-    line_color: app.cor_branca
+    md_bg_color: app.cor_clara
+    line_color: app.cor_clara
 
 <MDIconButton>
     icon_size: '30sp'
@@ -29,7 +30,7 @@
             pos_hint: {'x': 0.1, 'y': 0.35}
             font_size: '18dp'
             text: 'MINHA'
-            color: app.cor_clara
+            color: app.cor_botao
             bold: True
 
         MDLabel:
@@ -46,9 +47,9 @@
             icon: "location-enter"
             text: "Entrar"
             font_size: '20dp'
-            md_bg_color: app.cor_media
+            md_bg_color: app.cor_botao
             text_color: "white"
-            line_color: app.cor_media
+            line_color: app.cor_botao
             theme_icon_color: "Custom"
             icon_color: app.cor_branca
             on_press:
@@ -62,8 +63,8 @@
             MDNavigationDrawerItem:
                 text: 'Lista atual'
                 icon: 'home-outline'
-                icon_color: app.cor_clara
-                focus_color: app.cor_escura
+                icon_color: app.cor_escura
+                focus_color: app.cor_clara
                 on_press:
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "lista_atual"
@@ -71,8 +72,8 @@
             MDNavigationDrawerItem:
                 text: 'Minhas listas'
                 icon: 'clipboard-list-outline'
-                icon_color: app.cor_clara
-                focus_color: app.cor_escura
+                icon_color: app.cor_escura
+                focus_color: app.cor_clara
                 on_press:
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "minhas_listas"
@@ -80,8 +81,8 @@
             MDNavigationDrawerItem:
                 text: 'Pesquisar'
                 icon: 'clipboard-search-outline'
-                icon_color: app.cor_clara
-                focus_color: app.cor_escura
+                icon_color: app.cor_escura
+                focus_color: app.cor_clara
                 on_press:
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "pesquisar"
@@ -91,8 +92,8 @@
             MDNavigationDrawerItem:
                 text: 'Sair'
                 icon: 'exit-to-app'
-                icon_color: app.cor_clara
-                focus_color: app.cor_escura
+                icon_color: app.cor_escura
+                focus_color: app.cor_clara
                 on_press:
                     root.nav_drawer.set_state("close")
                     app.stop()
@@ -170,7 +171,7 @@
                     root.chama_menu()
 
             OneLineAvatarIconListItem:
-                bg_color: app.cor_clara
+                bg_color: app.cor_botao
                 theme_text_color: 'Custom'
                 text_color: "white"
                 pos_hint: {'center_x':.5, 'y':.8}
@@ -235,7 +236,7 @@
             text: 'ou crie'
             font_size: '24dp'
             adaptive_size: True
-            color: "white"
+            color: app.cor_branca
             pos_hint: {'x': 0.25, 'y': 0.84}
             bold: True
             halign: 'left'
@@ -244,7 +245,7 @@
             text: 'sua'
             font_size: '36dp'
             adaptive_size: True
-            color: app.cor_media
+            color: app.cor_botao
             pos_hint: {'x': 0.25, 'y': 0.79}
             bold: True
             halign: 'left'
@@ -253,7 +254,7 @@
             text: 'Lista'
             font_size: '60dp'
             adaptive_size: True
-            color: app.cor_media
+            color: app.cor_botao
             pos_hint: {'x': 0.45, 'y': 0.78}
             bold: True
             halign: 'left'
@@ -271,9 +272,9 @@
             pos_hint: {'center_x': 0.5, 'y': 0.15}
             size_hint: 0.4, 0.07
             font_size: '18dp'
-            md_bg_color: app.cor_escura
+            md_bg_color: app.cor_botao
             icon: "plus"
-            text_color: "white"
+            text_color: app.cor_branca
             on_press:
                 root.criar_nova_lista()
 
@@ -295,7 +296,7 @@
             text: 'Categorias'
             font_size: '28dp'
             adaptive_size: True
-            color:  app.cor_escura
+            color:  app.cor_botao
             pos_hint: {'center_x': 0.5, 'y': 0.58}
             bold: True
 
@@ -320,7 +321,6 @@
                 MDCard:
                     pos_hint: {'x': 0.1, 'y': 0.5}
 
-
                     MDRelativeLayout:
 
                         MDIconButton:
@@ -337,12 +337,14 @@
                             text: 'Feira'
 
                             adaptive_size: True
-                            color: app.cor_escura
+                            color: app.cor_botao
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
 
 
                 MDCard:
                     pos_hint: {'x': 0.55, 'y': 0.5}
+                    md_bg_color: app.cor_clara
+                    line_color: app.cor_clara
 
                     MDRelativeLayout:
 
@@ -358,7 +360,7 @@
                             id: mercearia
                             text: 'Mercearia'
                             adaptive_size: True
-                            color: app.cor_escura
+                            color: app.cor_botao
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
 
 
@@ -379,7 +381,7 @@
                             id: bebidas
                             text: 'Bebidas'
                             adaptive_size: True
-                            color: app.cor_escura
+                            color: app.cor_botao
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
 
 
@@ -400,7 +402,7 @@
                             id: açougue
                             text: 'Açougue'
                             adaptive_size: True
-                            color: app.cor_escura
+                            color: app.cor_botao
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
 
 
@@ -421,7 +423,7 @@
                             id: higiene
                             text: 'Higiene'
                             adaptive_size: True
-                            color: app.cor_escura
+                            color: app.cor_botao
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
 
 
@@ -443,9 +445,9 @@
                             id: limpeza
                             text: 'Limpeza'
                             halign: 'center'
-                            pos_hint: {'center_x': 0.5, 'y': 0.05}
                             adaptive_size: True
-                            color: app.cor_escura
+                            color: app.cor_botao
+                            pos_hint: {'center_x': 0.5, 'y': 0.05}
 
 
                 MDCard:
@@ -467,7 +469,7 @@
                             id: utilidades
                             text: 'Utilidades'
                             adaptive_size: True
-                            color: app.cor_escura
+                            color: app.cor_botao
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
 
 
@@ -505,7 +507,7 @@
             #bold: True
 
         OneLineAvatarIconListItem:
-            bg_color: app.cor_clara
+            bg_color: app.cor_botao
             theme_text_color: 'Custom'
             text_color: app.cor_tabela
             pos_hint: {'center_x':.5, 'y':.8}

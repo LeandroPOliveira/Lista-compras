@@ -69,8 +69,8 @@ class ListaAtual(Screen):
                                    ),
                     IconRightWidget(icon='assets/x.ico', icon_size='10sp', on_press=self.remover_item,
                                     text=f"{item[1]}"),
-                    text=f"{item[1]}", theme_text_color='Custom', text_color=MinhaLista().cor_escura,
-                    bg_color=MinhaLista().cor_tabela,
+                    text=f"{item[1]}", theme_text_color='Custom', text_color=MinhaLista().cor_botao,
+                    bg_color=MinhaLista().cor_branca,
                     radius=[0, 10, 0, 10], on_press=self.editar_item
                 )
             )
@@ -84,16 +84,25 @@ class ListaAtual(Screen):
     def editar_item(self, instance):
         self.status_check = instance.children[1].children[0].children[0].state
         self.editar = instance
-        self.entrada = MDTextField(text=instance.text)
+        separa_item = instance.text.split()
+        if instance.text[0].isdigit():
+            produto = " ".join(separa_item[1:])
+            quantidade = separa_item[0]
+        else:
+            produto = instance.text
+            quantidade = ''
+
+        self.entr_prod = MDTextField(hint_text='Produto', text=produto)
+        self.entr_qtd = MDTextField(hint_text='Quantidade', text=quantidade)
         self.dialog = MDDialog(
             title="Editar item:",
             type="custom",
             content_cls=MDBoxLayout(
-                self.entrada,
+                self.entr_prod, self.entr_qtd,
                 orientation="vertical",
-                spacing="12dp",
+                spacing="0dp",
                 size_hint_y=None,
-                height="60dp",
+                height="100dp",
             ),
             buttons=[
                 MDFlatButton(
@@ -105,29 +114,40 @@ class ListaAtual(Screen):
                 MDFlatButton(
                     text="OK",
                     theme_text_color="Custom",
-                    on_press=lambda x: (self.atualizar(self.entrada), self.dialog.dismiss())
+                    on_press=lambda x: (self.atualizar(self.entr_prod, self.entr_qtd), self.dialog.dismiss())
                 ),
             ],
         )
         self.dialog.open()
 
-    def atualizar(self, entrada):
-        self.lista_dict[entrada.text] = self.lista_dict[self.editar.text]
-        self.itens_a_adicionar.append(entrada.text)
-        self.itens_a_remover.append(self.editar.text)
-        self.editar.text = entrada.text
+    def atualizar(self, produto, quantidade):
+        if produto.text != '':
+            if quantidade.text != '':
+                if any(c.isalpha() for c in quantidade.text):
+                    entrada = f'{quantidade.text.strip()} {produto.text.capitalize().strip()}'
+                else:
+                    entrada = f'{quantidade.text.strip()}x {produto.text.capitalize().strip()}'
+            else:
+                entrada = produto.text.capitalize().strip()
+
+            self.lista_dict[entrada] = self.lista_dict[self.editar.text]
+            self.itens_a_adicionar.append(entrada)
+            self.itens_a_remover.append(self.editar.text)
+            self.editar.text = entrada
+
 
     def novo_item(self):
-        self.entrada = MDTextField()
+        self.entr_prod = MDTextField(hint_text='Produto')
+        self.entr_qtd = MDTextField(hint_text='Quantidade')
         self.dialog = MDDialog(
             title="Novo produto:",
             type="custom",
             content_cls=MDBoxLayout(
-                self.entrada,
+                self.entr_prod, self.entr_qtd,
                 orientation="vertical",
-                spacing="12dp",
+                spacing="0dp",
                 size_hint_y=None,
-                height="60dp",
+                height="100dp",
             ),
             buttons=[
                 MDFlatButton(
@@ -139,31 +159,38 @@ class ListaAtual(Screen):
                 MDFlatButton(
                     text="OK",
                     theme_text_color="Custom",
-                    on_press=lambda x: (self.adicionar_item(self.entrada), self.dialog.dismiss())
+                    on_press=lambda x: (self.adicionar_item(self.entr_prod, self.entr_qtd.text), self.dialog.dismiss())
                 ),
             ],
         )
         self.dialog.open()
 
-    def adicionar_item(self, entrada):
-        entrada = entrada.text.capitalize()
-        dict_index = sum(map((1).__eq__, self.lista_dict.values()))
+    def adicionar_item(self, produto, quantidade=''):
+        if produto.text != '':
+            if quantidade != '':
+                if any(c.isalpha() for c in quantidade):
+                    entrada = f'{quantidade.strip()} {produto.text.capitalize().strip()}'
+                else:
+                    entrada = f'{quantidade.strip()}x {produto.text.capitalize().strip()}'
+            else:
+                entrada = produto.text.capitalize().strip()
+            dict_index = sum(map((1).__eq__, self.lista_dict.values()))
 
-        self.ids.lista.add_widget(
-            OneLineAvatarIconListItem(
-                IconLeftWidget(MDCheckbox(),
-                               icon_size='10sp', on_press=self.marcar_item,
-                               text=f"{entrada}"
-                               ),
-                IconRightWidget(icon='assets/x.ico', icon_size='10sp', on_press=self.remover_item,
-                                text=f"{entrada}"),
-                text=f"{entrada}", theme_text_color='Custom', text_color=MinhaLista().cor_escura,
-                bg_color=MinhaLista().cor_tabela,
-                radius=[0, 10, 0, 10]
-            ), dict_index)
+            self.ids.lista.add_widget(
+                OneLineAvatarIconListItem(
+                    IconLeftWidget(MDCheckbox(),
+                                   icon_size='10sp', on_press=self.marcar_item,
+                                   text=f"{entrada}"
+                                   ),
+                    IconRightWidget(icon='assets/x.ico', icon_size='10sp', on_press=self.remover_item,
+                                    text=f"{entrada}"),
+                    text=f"{entrada}", theme_text_color='Custom', text_color=MinhaLista().cor_botao,
+                    bg_color=MinhaLista().cor_branca,
+                    radius=[0, 10, 0, 10], on_press=self.editar_item
+                ), dict_index)
 
-        self.itens_a_adicionar.append(entrada)
-        self.lista_dict[entrada] = 0
+            self.itens_a_adicionar.append(entrada)
+            self.lista_dict[entrada] = 0
 
     def remover_item(self, instance):
         self.itens_a_remover.append(instance.text)
@@ -183,17 +210,17 @@ class ListaAtual(Screen):
             self.ids.lista.add_widget(instance.parent.parent, dict_index - 1)
             self.lista_dict[instance.text] = 0
             instance.parent.parent.text = instance.text
-            instance.parent.parent.text_color = MinhaLista().cor_escura
+            instance.parent.parent.text_color = MinhaLista().cor_botao
 
     def salvar_lista(self):
         if self.lista_em_uso != '':
             conn = sqlite3.connect('lista_compras')
             cursor = conn.cursor()
             for key, value in self.lista_dict.items():
-                if key in self.itens_a_remover:
-                    cursor.execute(f'DELETE FROM {self.lista_em_uso} WHERE produto = (?)', (key,))
                 if key in self.itens_a_adicionar:
                     cursor.execute(f'INSERT INTO {self.lista_em_uso}(produto, checks) VALUES(?, ?)', (key, 0))
+                if key in self.itens_a_remover:
+                    cursor.execute(f'DELETE FROM {self.lista_em_uso} WHERE produto = (?)', (key,))
                 else:
                     cursor.execute(f'UPDATE {self.lista_em_uso} SET checks = (?) WHERE produto = (?)', (value, key,))
 
@@ -221,7 +248,7 @@ class ListaAtual(Screen):
                 self.lista_dict[item.children[1].children[0].text] = 0
                 item.children[1].children[0].children[0].active = False
                 item.text = item.children[1].children[0].text
-                item.text_color = MinhaLista().cor_escura
+                item.text_color = MinhaLista().cor_botao
 
     def ordenar_crescente(self):
         self.salvar_lista()
@@ -298,7 +325,7 @@ class MinhasListas(Screen):
                                                                      on_press=self.excluir_lista),
                                                         MDIconButton(text=linha[1],
                                                                      icon='list-box-outline',
-                                                                     icon_color=MinhaLista().cor_media,
+                                                                     icon_color=MinhaLista().cor_botao,
                                                                      pos_hint={'center_x': 0.5, 'y': .5},
                                                                      icon_size='80dp',
                                                                      on_press=self.lista_selecionada,
@@ -306,14 +333,14 @@ class MinhasListas(Screen):
                                                                      halign='center'),
                                                         MDLabel(text=linha[1],
                                                                 theme_text_color='Custom',
-                                                                text_color=MinhaLista().cor_escura,
+                                                                text_color=MinhaLista().cor_media,
                                                                 font_size='30dp',
                                                                 halign='center',
                                                                 adaptive_size=True,
                                                                 pos_hint={'center_x': 0.5, 'y': .1},
                                                                 size_hint=(0.6, .1))),
-                                       size_hint=(0.8, .25), pos_hint={'x': 0.1, 'y': .4}, md_bg_color="#ffffff",
-                                       line_color=MinhaLista().cor_clara)
+                                       size_hint=(0.8, .25), pos_hint={'x': 0.1, 'y': .4},
+                                       md_bg_color=MinhaLista().cor_branca, line_color=MinhaLista().cor_clara)
 
             self.inserir_layout.add_widget(self.label_tabela)
             self.lista.append(self.label_tabela)
@@ -472,8 +499,8 @@ class Produtos(Screen):
                     IconRightWidget(icon='assets/x.ico', icon_size='10sp',
                                     text=f"{item[1]}"),
                     text=f"{item[1]}", theme_text_color='Custom',
-                    text_color=MinhaLista().cor_escura,
-                    bg_color=MinhaLista().cor_tabela,
+                    text_color=MinhaLista().cor_botao,
+                    bg_color=MinhaLista().cor_branca,
                     radius=[0, 10, 0, 10]
                 )
             )
@@ -489,10 +516,10 @@ class WindowManager(ScreenManager):
 
 
 class MinhaLista(MDApp):
-    cor_clara = StringProperty('#3a6ea5')
-    cor_media = StringProperty('#004e98')
-    cor_escura = StringProperty('#ff6700')
-    cor_botao = StringProperty('#c0c0c0')
+    cor_clara = StringProperty('#fef5e6')
+    cor_media = StringProperty('#31312d')
+    cor_escura = StringProperty('#fdc60a')
+    cor_botao = StringProperty('#FF5C01')
     cor_tabela = StringProperty('#ebebeb')
     cor_marcada = StringProperty('#9c9c9c')
     cor_marcada_check = StringProperty('#c9c8c7')
