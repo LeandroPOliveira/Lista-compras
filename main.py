@@ -517,7 +517,7 @@ class WindowManager(ScreenManager):
 
 class MinhaLista(MDApp):
     cor_clara = StringProperty('#fef5e6')
-    cor_media = StringProperty('#31312d')
+    cor_media = StringProperty('#3b424c')
     cor_escura = StringProperty('#fdc60a')
     cor_botao = StringProperty('#FF5C01')
     cor_tabela = StringProperty('#ebebeb')
