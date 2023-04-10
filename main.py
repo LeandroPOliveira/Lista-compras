@@ -1,6 +1,7 @@
 import sqlite3
 from kivy.config import Config
 from kivy.uix.screenmanager import Screen, ScreenManager
+
 Config.set('graphics', 'resizable', '1')
 Config.set('graphics', 'width', '389')
 Config.set('graphics', 'height', '700')
@@ -69,7 +70,7 @@ class ListaAtual(Screen):
                                    ),
                     IconRightWidget(icon='assets/x.ico', icon_size='10sp', on_press=self.remover_item,
                                     text=f"{item[1]}"),
-                    text=f"{item[1]}", theme_text_color='Custom', text_color=MinhaLista().cor_botao,
+                    text=f"[size=22dp]{item[1]}[/size]", theme_text_color='Custom', text_color=MinhaLista().cor_botao,
                     bg_color=MinhaLista().cor_branca,
                     radius=[0, 10, 0, 10], on_press=self.editar_item
                 )
@@ -135,7 +136,6 @@ class ListaAtual(Screen):
             self.itens_a_remover.append(self.editar.text)
             self.editar.text = entrada
 
-
     def novo_item(self):
         self.entr_prod = MDTextField(hint_text='Produto')
         self.entr_qtd = MDTextField(hint_text='Quantidade')
@@ -147,7 +147,7 @@ class ListaAtual(Screen):
                 orientation="vertical",
                 spacing="0dp",
                 size_hint_y=None,
-                height="100dp",
+                height="150dp",
             ),
             buttons=[
                 MDFlatButton(
@@ -184,7 +184,7 @@ class ListaAtual(Screen):
                                    ),
                     IconRightWidget(icon='assets/x.ico', icon_size='10sp', on_press=self.remover_item,
                                     text=f"{entrada}"),
-                    text=f"{entrada}", theme_text_color='Custom', text_color=MinhaLista().cor_botao,
+                    text=f"[size=22dp]{entrada}[/size]", theme_text_color='Custom', text_color=MinhaLista().cor_botao,
                     bg_color=MinhaLista().cor_branca,
                     radius=[0, 10, 0, 10], on_press=self.editar_item
                 ), dict_index)
@@ -293,7 +293,7 @@ class MinhasListas(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.lista = []
-        Clock.schedule_once(self.minhas_listas)
+        Clock.schedule_once(self.minhas_listas, 2)
 
     def minhas_listas(self, dt=None):
         conn = sqlite3.connect('lista_compras')
@@ -509,7 +509,7 @@ class Produtos(Screen):
         for item in reversed(self.ids.lista_produtos.children):
             if item.children[1].children[0].children[0].active:
                 self.manager.get_screen('lista_atual').adicionar_item(item.children[1].children[0])
-    
+
 
 class WindowManager(ScreenManager):
     pass
