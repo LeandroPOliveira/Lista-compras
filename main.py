@@ -68,7 +68,7 @@ class ListaAtual(Screen):
                                    icon='assets/transparent.png', icon_size='10sp', on_press=self.marcar_item,
                                    text=f"{item[1]}"
                                    ),
-                    IconRightWidget(icon='assets/x.ico', icon_size='10sp', on_press=self.remover_item,
+                    IconRightWidget(icon='assets/x.ico', icon_size='14sp', on_press=self.remover_item,
                                     text=f"{item[1]}"),
                     text=f"[size=22dp]{item[1]}[/size]", theme_text_color='Custom', text_color=MinhaLista().cor_botao,
                     bg_color=MinhaLista().cor_branca,
@@ -85,12 +85,13 @@ class ListaAtual(Screen):
     def editar_item(self, instance):
         self.status_check = instance.children[1].children[0].children[0].state
         self.editar = instance
-        separa_item = instance.text.split()
-        if instance.text[0].isdigit():
+        self.formato = instance.text.replace('[', ',').replace(']', ',').split(',')[2]
+        separa_item = self.formato.split()
+        if separa_item[0][0].isdigit():
             produto = " ".join(separa_item[1:])
             quantidade = separa_item[0]
         else:
-            produto = instance.text
+            produto = self.formato
             quantidade = ''
 
         self.entr_prod = MDTextField(hint_text='Produto', text=produto)
@@ -117,11 +118,12 @@ class ListaAtual(Screen):
                     theme_text_color="Custom",
                     on_press=lambda x: (self.atualizar(self.entr_prod, self.entr_qtd), self.dialog.dismiss())
                 ),
-            ],
+            ], pos_hint={'y': .4}
         )
         self.dialog.open()
 
     def atualizar(self, produto, quantidade):
+        print(quantidade.text)
         if produto.text != '':
             if quantidade.text != '':
                 if any(c.isalpha() for c in quantidade.text):
@@ -131,10 +133,11 @@ class ListaAtual(Screen):
             else:
                 entrada = produto.text.capitalize().strip()
 
-            self.lista_dict[entrada] = self.lista_dict[self.editar.text]
+            self.lista_dict[entrada] = self.lista_dict[self.formato]
             self.itens_a_adicionar.append(entrada)
-            self.itens_a_remover.append(self.editar.text)
-            self.editar.text = entrada
+            self.itens_a_remover.append(self.formato)
+
+            self.editar.text = f'[size=22dp]{entrada}[/size]'
 
     def novo_item(self):
         self.entr_prod = MDTextField(hint_text='Produto')
@@ -161,7 +164,7 @@ class ListaAtual(Screen):
                     theme_text_color="Custom",
                     on_press=lambda x: (self.adicionar_item(self.entr_prod, self.entr_qtd.text), self.dialog.dismiss())
                 ),
-            ],
+            ], pos_hint={'y': .4}, 
         )
         self.dialog.open()
 
@@ -182,7 +185,7 @@ class ListaAtual(Screen):
                                    icon_size='10sp', on_press=self.marcar_item,
                                    text=f"{entrada}"
                                    ),
-                    IconRightWidget(icon='assets/x.ico', icon_size='10sp', on_press=self.remover_item,
+                    IconRightWidget(icon='assets/x.ico', icon_size='14sp', on_press=self.remover_item,
                                     text=f"{entrada}"),
                     text=f"[size=22dp]{entrada}[/size]", theme_text_color='Custom', text_color=MinhaLista().cor_botao,
                     bg_color=MinhaLista().cor_branca,
@@ -493,12 +496,12 @@ class Produtos(Screen):
             self.ids.lista_produtos.add_widget(
                 OneLineAvatarIconListItem(
                     IconLeftWidget(MDCheckbox(),
-                                   icon_size='10sp',
+                                   icon_size='14sp',
                                    text=f"{item[1]}"
                                    ),
                     IconRightWidget(icon='assets/x.ico', icon_size='10sp',
                                     text=f"{item[1]}"),
-                    text=f"{item[1]}", theme_text_color='Custom',
+                    text=f"[size=22dp]{item[1]}[/size]", theme_text_color='Custom',
                     text_color=MinhaLista().cor_botao,
                     bg_color=MinhaLista().cor_branca,
                     radius=[0, 10, 0, 10]
@@ -518,7 +521,7 @@ class WindowManager(ScreenManager):
 class MinhaLista(MDApp):
     cor_clara = StringProperty('#fef5e6')
     cor_media = StringProperty('#3b424c')
-    cor_escura = StringProperty('#fdc60a')
+    cor_escura = StringProperty('#ffbd4d')
     cor_botao = StringProperty('#FF5C01')
     cor_tabela = StringProperty('#ebebeb')
     cor_marcada = StringProperty('#9c9c9c')
