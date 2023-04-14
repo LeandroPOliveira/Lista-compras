@@ -164,7 +164,7 @@ class ListaAtual(Screen):
                     theme_text_color="Custom",
                     on_press=lambda x: (self.adicionar_item(self.entr_prod, self.entr_qtd.text), self.dialog.dismiss())
                 ),
-            ], pos_hint={'y': .4}, 
+            ], pos_hint={'y': .4},
         )
         self.dialog.open()
 
@@ -521,7 +521,7 @@ class WindowManager(ScreenManager):
 class MinhaLista(MDApp):
     cor_clara = StringProperty('#fef5e6')
     cor_media = StringProperty('#3b424c')
-    cor_escura = StringProperty('#ffbd4d')
+    cor_escura = StringProperty('#fdc60a')
     cor_botao = StringProperty('#FF5C01')
     cor_tabela = StringProperty('#ebebeb')
     cor_marcada = StringProperty('#9c9c9c')
