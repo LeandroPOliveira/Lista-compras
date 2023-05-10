@@ -435,11 +435,8 @@ class MinhasListas(Screen):
 
         conn.commit()
         self.manager.get_screen('lista_atual').lista_em_uso = entrada.text
-        try:
-            self.ids.lista.clear_widgets()
-        except AttributeError:
-            pass
         self.manager.current = 'lista_atual'
+        self.manager.get_screen('lista_atual').carregar_lista()
 
     def excluir_lista(self, instance):
         self.dialog3 = MDDialog(

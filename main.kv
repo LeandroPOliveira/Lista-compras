@@ -90,7 +90,7 @@
                 icon_color: app.cor_escura
                 focus_color: app.cor_clara
                 on_press:
-                    root.nav_drawer.set_state("close")
+                    #root.nav_drawer.set_state("close")
                     root.screen_manager.current = "pesquisar"
 
             MDNavigationDrawerDivider:
@@ -342,7 +342,6 @@
                         MDLabel:
                             id: feira
                             text: 'Feira'
-
                             adaptive_size: True
                             color: app.cor_botao
                             pos_hint: {'center_x': 0.5, 'y': 0.05}
