@@ -27,16 +27,12 @@ class ContentNavigationDrawer(Screen):
     pass
 
 
-class Principal(Screen):
-    pass
-
-
 class Inicio(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
 
-class ListaAtual(Screen):
+class Principal(Screen):
     lista_em_uso = StringProperty('')
     numero_linhas = NumericProperty(10)
 
@@ -49,6 +45,10 @@ class ListaAtual(Screen):
         self.itens_a_remover = []
         self.itens_a_adicionar = []
         self.itens_a_editar = []
+        self.resultado = None
+        self.categoria = None
+        self.lista = []
+        Clock.schedule_once(self.minhas_listas, 2)
 
     def carregar_lista(self, cond_extra=None):
         self.ids.lista.clear_widgets()
@@ -250,7 +250,8 @@ class ListaAtual(Screen):
             for item in self.ids.lista.children:
                 self.lista_dict[item.children[1].children[0].text] = 0
                 item.children[1].children[0].children[0].active = False
-                item.text = item.children[1].children[0].text
+                item.children[1].children[0].children[0].color = MinhaLista().cor_marcada_check
+                item.text = f'[size=22dp]{item.children[1].children[0].text}[/size]'
                 item.text_color = MinhaLista().cor_botao
 
     def ordenar_crescente(self):
@@ -290,13 +291,6 @@ class ListaAtual(Screen):
         )
 
         self.menu.open()
-
-
-class MinhasListas(Screen):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.lista = []
-        Clock.schedule_once(self.minhas_listas, 2)
 
     def minhas_listas(self, dt=None):
         conn = sqlite3.connect('lista_compras')
@@ -354,9 +348,9 @@ class MinhasListas(Screen):
         self.ids.swiper.set_current(1)
 
     def lista_selecionada(self, instance):
-        self.manager.get_screen('lista_atual').lista_em_uso = instance.text
-        self.manager.get_screen('lista_atual').carregar_lista()
-        self.manager.current = 'lista_atual'
+        self.lista_em_uso = instance.text
+        self.carregar_lista()
+        self.ids.navegacao.switch_tab('screen1')
 
     def editar_nome_lista(self, instance):
         self.nome_anterior = instance.text
@@ -434,9 +428,9 @@ class MinhasListas(Screen):
         checks integer);''')
 
         conn.commit()
-        self.manager.get_screen('lista_atual').lista_em_uso = entrada.text
-        self.manager.current = 'lista_atual'
-        self.manager.get_screen('lista_atual').carregar_lista()
+        self.lista_em_uso = entrada.text
+        self.ids.navagacao.switch_tab('screen1')
+        self.carregar_lista()
 
     def excluir_lista(self, instance):
         self.dialog3 = MDDialog(
@@ -466,14 +460,6 @@ class MinhasListas(Screen):
         self.dialog_data.open()
         self.minhas_listas()
 
-
-class Pesquisar(Screen):
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.resultado = None
-        self.categoria = None
-
     def buscar_produtos(self, instance, item):
         self.categoria = item.text
         conn = sqlite3.connect('lista_compras')
@@ -489,7 +475,7 @@ class Produtos(Screen):
 
     def catalogo_produtos(self):
         self.ids.lista_produtos.clear_widgets()
-        for item in self.manager.get_screen('pesquisar').resultado:
+        for item in self.manager.get_screen('tela1').resultado:
             self.ids.lista_produtos.add_widget(
                 OneLineAvatarIconListItem(
                     IconLeftWidget(MDCheckbox(),
@@ -508,7 +494,7 @@ class Produtos(Screen):
     def adicionar_itens(self):
         for item in reversed(self.ids.lista_produtos.children):
             if item.children[1].children[0].children[0].active:
-                self.manager.get_screen('lista_atual').adicionar_item(item.children[1].children[0])
+                self.manager.get_screen('tela1').adicionar_item(item.children[1].children[0])
 
 
 class WindowManager(ScreenManager):

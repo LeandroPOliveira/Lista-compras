@@ -61,432 +61,367 @@
             on_press:
                 app.root.current = "tela1"
 
-<ContentNavigationDrawer>:
-    ScrollView:
 
-        MDList:
-
-            MDNavigationDrawerItem:
-                text: 'Lista atual'
-                icon: 'home-outline'
-                icon_color: app.cor_escura
-                focus_color: app.cor_clara
-                on_press:
-                    root.nav_drawer.set_state("close")
-                    root.screen_manager.current = "lista_atual"
-
-            MDNavigationDrawerItem:
-                text: 'Minhas listas'
-                icon: 'clipboard-list-outline'
-                icon_color: app.cor_escura
-                focus_color: app.cor_clara
-                on_press:
-                    root.nav_drawer.set_state("close")
-                    root.screen_manager.current = "minhas_listas"
-
-            MDNavigationDrawerItem:
-                text: 'Pesquisar'
-                icon: 'clipboard-search-outline'
-                icon_color: app.cor_escura
-                focus_color: app.cor_clara
-                on_press:
-                    #root.nav_drawer.set_state("close")
-                    root.screen_manager.current = "pesquisar"
-
-            MDNavigationDrawerDivider:
-
-            MDNavigationDrawerItem:
-                text: 'Sair'
-                icon: 'exit-to-app'
-                icon_color: app.cor_escura
-                focus_color: app.cor_clara
-                on_press:
-                    root.nav_drawer.set_state("close")
-                    app.stop()
 <Principal>:
     name: 'tela1'
 
-    MDTopAppBar:
-        id: toolbar
-        pos_hint: {"top": 1}
-        type_height: 'large'
-        elevation: 0
-        md_bg_color: app.cor_escura
-        title: ""
-        left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+    MDBottomNavigation:
+        id: navegacao
+        panel_color: app.cor_escura
+        #selected_color_background: 0, 0, 1, .4
+        text_color_active: app.cor_botao
+        text_color_normal: 0, 0, 0, .7
+
+        MDBottomNavigationItem:
+            name: 'screen1'
+            text: 'Atual'
+            icon: 'list-box'
+            on_leave:
+                root.salvar_lista()
+
+            FloatLayout:
+                size_hint: (1, 1)
+
+                Image:
+                    #source: 'assets/foto2.jpg'
+                    source: 'assets/foto5.png'
+
+                FloatLayout:
+                    size_hint: (1, 1)
+
+                    MDLabel:
+                        text: root.lista_em_uso
+                        font_size: '26dp'
+                        halign: 'center'
+                        color:  app.cor_media
+                        pos_hint: {'center_x': 0.5, 'y': 0.9}
+                        size_hint: .65, .1
+                        bold: True
+
+                    OneLineAvatarIconListItem:
+                        bg_color: app.cor_botao
+                        theme_text_color: 'Custom'
+                        text_color: "white"
+                        pos_hint: {'center_x':.5, 'y':.8}
+                        size_hint: .8, .07
+                        radius: [5, 5, 5, 5]
+
+                        IconLeftWidget:
+                            MDCheckbox:
+                                color_inactive: app.cor_branca
+                                on_press: root.selecionar_tudo(self)
+
+                        IconRightWidget:
+                            icon: 'dots-vertical'
+                            icon_color: app.cor_branca
+                            id: menu
+                            on_press:
+                                root.chama_menu()
+
+                    ScrollView:
+                        pos_hint: {'x':.1, 'y':.2}
+                        size_hint: .8, .6
+                        size: (self.width, 500)
+                        bar_margin: 0
+                        bar_width: 5
+                        scroll_type: ['bars', 'content']
+
+                        GridLayout:
+                            size_hint_y: None
+                            height: self.minimum_height
+                            row_default_height: 15
+                            cols: 1
+                            rows: root.numero_linhas
+                            bar_width: 50
+
+                            MDList:
+                                id: lista
+                                spacing: 3
+                                font_size: '22dp'
 
 
-    MDNavigationLayout:
-        x: toolbar.height
+                MDFloatingActionButton:
+                    pos_hint: {'x': 0.8, 'y': 0.05}
+                    md_bg_color: app.cor_botao
+                    icon: "plus"
+                    text_color: "white"
 
-        ScreenManager:
-            id: screen_manager
+                    on_press:
+                        root.novo_item()
 
-            MinhasListas:
-                name: "minhas_listas"
+        MDBottomNavigationItem:
+            name: 'screen2'
+            text: 'Listas'
+            icon: 'database-plus'
+            on_enter:
+                root.minhas_listas()
 
-            ListaAtual:
-                name: "lista_atual"
+            FloatLayout:
+                size_hint: (1, 1)
 
-            Pesquisar:
-                name: "pesquisar"
+                Image:
 
-            Produtos:
-                name: "produtos"
+                Image:
+                    source: 'assets/fundo4.png'
 
+                MDLabel:
+                    text: 'Selecione'
+                    font_size: '40dp'
+                    adaptive_size: True
+                    color: "white"
+                    pos_hint: {'x': 0.25, 'y': 0.87}
+                    bold: True
+                    halign: 'left'
 
-        MDNavigationDrawer:
-            id: nav_drawer
-            radius: (0, 16, 16, 0)
+                MDLabel:
+                    text: 'ou crie'
+                    font_size: '24dp'
+                    adaptive_size: True
+                    color: app.cor_branca
+                    pos_hint: {'x': 0.25, 'y': 0.84}
+                    bold: True
+                    halign: 'left'
 
-            ContentNavigationDrawer:
-                screen_manager: screen_manager
-                nav_drawer: nav_drawer
+                MDLabel:
+                    text: 'sua'
+                    font_size: '36dp'
+                    adaptive_size: True
+                    color: app.cor_botao
+                    pos_hint: {'x': 0.25, 'y': 0.79}
+                    bold: True
+                    halign: 'left'
 
+                MDLabel:
+                    text: 'Lista'
+                    font_size: '60dp'
+                    adaptive_size: True
+                    color: app.cor_botao
+                    pos_hint: {'x': 0.45, 'y': 0.78}
+                    bold: True
+                    halign: 'left'
 
-<ListaAtual>:
-    on_leave:
-        root.salvar_lista()
-
-    FloatLayout:
-        size_hint: (1, 0.93)
-
-        Image:
-            #source: 'assets/foto2.jpg'
-            source: 'assets/foto5.png'
-
-        FloatLayout:
-            size_hint: (1, 1)
-
-            MDLabel:
-                text: root.lista_em_uso
-                font_size: '26dp'
-                halign: 'center'
-                color:  app.cor_media
-                pos_hint: {'center_x': 0.5, 'y': 0.9}
-                size_hint: .65, .1
-                bold: True
-
-            MDIconButton:
-                pos_hint: {'x':.8, 'y':.985}
-                theme_icon_color: "Custom"
-                icon: 'dots-vertical'
-                icon_color: app.cor_branca
-                id: menu
-                on_press:
-                    root.chama_menu()
-
-            OneLineAvatarIconListItem:
-                bg_color: app.cor_botao
-                theme_text_color: 'Custom'
-                text_color: "white"
-                pos_hint: {'center_x':.5, 'y':.8}
-                size_hint: .8, .07
-                radius: [5, 5, 5, 5]
-
-                IconLeftWidget:
-                    MDCheckbox:
-                        on_press: root.selecionar_tudo(self)
-
-
-            ScrollView:
-                pos_hint: {'x':.1, 'y':.2}
-                size_hint: .8, .6
-                size: (self.width, 500)
-                bar_margin: 0
-                bar_width: 5
-                scroll_type: ['bars', 'content']
-
-                GridLayout:
+                MDSwiper:
+                    id: swiper
                     size_hint_y: None
-                    height: self.minimum_height
-                    row_default_height: 15
-                    cols: 1
-                    rows: root.numero_linhas
-                    bar_width: 50
+                    height: root.height
+                    width: root.width
 
-                    MDList:
-                        id: lista
-                        spacing: 3
-                        font_size: '22dp'
+                    MDSwiperItem:
 
+                MDFillRoundFlatIconButton:
+                    text: 'Nova'
+                    pos_hint: {'center_x': 0.5, 'y': 0.15}
+                    size_hint: 0.4, 0.07
+                    font_size: '18dp'
+                    md_bg_color: app.cor_botao
+                    icon: "plus"
+                    text_color: app.cor_branca
+                    on_press:
+                        root.criar_nova_lista()
 
-        MDFloatingActionButton:
-            pos_hint: {'x': 0.8, 'y': 0.05}
-            md_bg_color: app.cor_botao
-            icon: "plus"
-            text_color: "white"
+        MDBottomNavigationItem:
+            name: 'screen3'
+            text: 'Pesquisar'
+            icon: 'store-search'
 
-            on_press:
-                root.novo_item()
+            FloatLayout:
+                size_hint: (1, 1)
 
-<MinhasListas>:
-    on_enter:
-        root.minhas_listas()
+                Image:
 
-    FloatLayout:
-        size_hint: (1, 0.93)
+                Image:
+                    source: 'assets/carrinho.png'
+                    allow_stretch: False
+                    #keep_ratio: False
+                    size_hint_x: 0.7
+                    pos_hint: {'center_x': 0.5, 'y': 0.3}
 
-        Image:
-            source: 'assets/fundo4.png'
+                MDLabel:
+                    text: 'Categorias'
+                    font_size: '28dp'
+                    adaptive_size: True
+                    color:  app.cor_botao
+                    pos_hint: {'center_x': 0.5, 'y': 0.58}
+                    bold: True
 
-        MDLabel:
-            text: 'Selecione'
-            font_size: '40dp'
-            adaptive_size: True
-            color: "white"
-            pos_hint: {'x': 0.25, 'y': 0.87}
-            bold: True
-            halign: 'left'
+                ScrollView:
+                    size_hint: (1, 0.55)
+                    bar_width: 10
+                    bar_color: app.cor_botao
 
-        MDLabel:
-            text: 'ou crie'
-            font_size: '24dp'
-            adaptive_size: True
-            color: app.cor_branca
-            pos_hint: {'x': 0.25, 'y': 0.84}
-            bold: True
-            halign: 'left'
-
-        MDLabel:
-            text: 'sua'
-            font_size: '36dp'
-            adaptive_size: True
-            color: app.cor_botao
-            pos_hint: {'x': 0.25, 'y': 0.79}
-            bold: True
-            halign: 'left'
-
-        MDLabel:
-            text: 'Lista'
-            font_size: '60dp'
-            adaptive_size: True
-            color: app.cor_botao
-            pos_hint: {'x': 0.45, 'y': 0.78}
-            bold: True
-            halign: 'left'
-
-        MDSwiper:
-            id: swiper
-            size_hint_y: None
-            height: root.height
-            width: root.width
-
-            MDSwiperItem:
-
-        MDFillRoundFlatIconButton:
-            text: 'Nova'
-            pos_hint: {'center_x': 0.5, 'y': 0.15}
-            size_hint: 0.4, 0.07
-            font_size: '18dp'
-            md_bg_color: app.cor_botao
-            icon: "plus"
-            text_color: app.cor_branca
-            on_press:
-                root.criar_nova_lista()
-
-<Pesquisar>:
-
-    FloatLayout:
-        size_hint: (1, 0.93)
-
-        Image:
-
-        Image:
-            source: 'assets/carrinho.png'
-            allow_stretch: False
-            #keep_ratio: False
-            size_hint_x: 0.7
-            pos_hint: {'center_x': 0.5, 'y': 0.3}
-
-        MDLabel:
-            text: 'Categorias'
-            font_size: '28dp'
-            adaptive_size: True
-            color:  app.cor_botao
-            pos_hint: {'center_x': 0.5, 'y': 0.58}
-            bold: True
-
-        ScrollView:
-            size_hint: (1, 0.55)
-            bar_width: 10
-            bar_color: app.cor_botao
-
-            GridLayout:
-                id: grid_teste
-                size_hint_y: None
-                height: self.minimum_height
-                row_default_height: '150dp'
-                cols: 2
-                rows: 4
-                bar_width: 100
-                bar_color: app.cor_botao
-                padding: [50, 0, 50, 50]
-                spacing: 20, 20
+                    GridLayout:
+                        id: grid_teste
+                        size_hint_y: None
+                        height: self.minimum_height
+                        row_default_height: '150dp'
+                        cols: 2
+                        rows: 4
+                        bar_width: 100
+                        bar_color: app.cor_botao
+                        padding: [50, 0, 50, 50]
+                        spacing: 20, 20
 
 
-                MDCard:
-                    pos_hint: {'x': 0.1, 'y': 0.5}
+                        MDCard:
+                            pos_hint: {'x': 0.1, 'y': 0.5}
 
-                    MDRelativeLayout:
+                            MDRelativeLayout:
 
-                        MDIconButton:
-                            icon: "assets/fruit.png"
-                            text_color: 'white'
-                            icon_size: '100sp'
-                            pos_hint: {"center_x": 0.5, "y": 0.2}
-                            on_press:
-                                root.buscar_produtos(self, feira)
-                                root.manager.current = "produtos"
+                                MDIconButton:
+                                    icon: "assets/fruit.png"
+                                    text_color: 'white'
+                                    icon_size: '100sp'
+                                    pos_hint: {"center_x": 0.5, "y": 0.2}
+                                    on_press:
+                                        root.buscar_produtos(self, feira)
+                                        root.manager.current = "produtos"
 
-                        MDLabel:
-                            id: feira
-                            text: 'Feira'
-                            adaptive_size: True
-                            color: app.cor_botao
-                            pos_hint: {'center_x': 0.5, 'y': 0.05}
-
-
-                MDCard:
-                    pos_hint: {'x': 0.55, 'y': 0.5}
-                    md_bg_color: app.cor_clara
-                    line_color: app.cor_clara
-
-                    MDRelativeLayout:
-
-                        MDIconButton:
-                            icon: "assets/bread.png"
-                            icon_size: '100sp'
-                            pos_hint: {"center_x": 0.5, "y": 0.2}
-                            on_press:
-                                root.buscar_produtos(self, mercearia)
-                                root.manager.current = "produtos"
-
-                        MDLabel:
-                            id: mercearia
-                            text: 'Mercearia'
-                            adaptive_size: True
-                            color: app.cor_botao
-                            pos_hint: {'center_x': 0.5, 'y': 0.05}
+                                MDLabel:
+                                    id: feira
+                                    text: 'Feira'
+                                    adaptive_size: True
+                                    color: app.cor_botao
+                                    pos_hint: {'center_x': 0.5, 'y': 0.05}
 
 
-                MDCard:
-                    pos_hint: {'x': 0.55, 'y': 0.5}
+                        MDCard:
+                            pos_hint: {'x': 0.55, 'y': 0.5}
+                            md_bg_color: app.cor_clara
+                            line_color: app.cor_clara
 
-                    MDRelativeLayout:
+                            MDRelativeLayout:
 
-                        MDIconButton:
-                            icon: "assets/drink.png"
-                            icon_size: '100sp'
-                            pos_hint: {"center_x": 0.5, "y": 0.2}
-                            on_press:
-                                root.buscar_produtos(self, bebidas)
-                                root.manager.current = "produtos"
+                                MDIconButton:
+                                    icon: "assets/bread.png"
+                                    icon_size: '100sp'
+                                    pos_hint: {"center_x": 0.5, "y": 0.2}
+                                    on_press:
+                                        root.buscar_produtos(self, mercearia)
+                                        root.manager.current = "produtos"
 
-                        MDLabel:
-                            id: bebidas
-                            text: 'Bebidas'
-                            adaptive_size: True
-                            color: app.cor_botao
-                            pos_hint: {'center_x': 0.5, 'y': 0.05}
-
-
-                MDCard:
-                    pos_hint: {'x': 0.55, 'y': 0.5}
-
-                    MDRelativeLayout:
-
-                        MDIconButton:
-                            icon: "assets/steak.png"
-                            icon_size: '100sp'
-                            pos_hint: {"center_x": 0.5, "y": 0.2}
-                            on_press:
-                                root.buscar_produtos(self, açougue)
-                                root.manager.current = "produtos"
-
-                        MDLabel:
-                            id: açougue
-                            text: 'Açougue'
-                            adaptive_size: True
-                            color: app.cor_botao
-                            pos_hint: {'center_x': 0.5, 'y': 0.05}
+                                MDLabel:
+                                    id: mercearia
+                                    text: 'Mercearia'
+                                    adaptive_size: True
+                                    color: app.cor_botao
+                                    pos_hint: {'center_x': 0.5, 'y': 0.05}
 
 
-                MDCard:
-                    pos_hint: {'x': 0.55, 'y': 0.5}
+                        MDCard:
+                            pos_hint: {'x': 0.55, 'y': 0.5}
 
-                    MDRelativeLayout:
+                            MDRelativeLayout:
 
-                        MDIconButton:
-                            icon: "assets/higiene.png"
-                            icon_size: '100sp'
-                            pos_hint: {"center_x": 0.5, "y": 0.2}
-                            on_press:
-                                root.buscar_produtos(self, higiene)
-                                root.manager.current = "produtos"
+                                MDIconButton:
+                                    icon: "assets/drink.png"
+                                    icon_size: '100sp'
+                                    pos_hint: {"center_x": 0.5, "y": 0.2}
+                                    on_press:
+                                        root.buscar_produtos(self, bebidas)
+                                        root.manager.current = "produtos"
 
-                        MDLabel:
-                            id: higiene
-                            text: 'Higiene'
-                            adaptive_size: True
-                            color: app.cor_botao
-                            pos_hint: {'center_x': 0.5, 'y': 0.05}
-
-
-                MDCard:
-                    pos_hint: {'x': 0.55, 'y': 0.5}
-
-                    MDRelativeLayout:
-
-                        MDIconButton:
-                            icon: "assets/garbage.png"
-                            icon_size: '100sp'
-                            pos_hint: {"center_x": 0.5, "y": 0.2}
-                            on_press:
-                                root.buscar_produtos(self, limpeza)
-                                root.manager.current = "produtos"
+                                MDLabel:
+                                    id: bebidas
+                                    text: 'Bebidas'
+                                    adaptive_size: True
+                                    color: app.cor_botao
+                                    pos_hint: {'center_x': 0.5, 'y': 0.05}
 
 
-                        MDLabel:
-                            id: limpeza
-                            text: 'Limpeza'
-                            halign: 'center'
-                            adaptive_size: True
-                            color: app.cor_botao
-                            pos_hint: {'center_x': 0.5, 'y': 0.05}
+                        MDCard:
+                            pos_hint: {'x': 0.55, 'y': 0.5}
+
+                            MDRelativeLayout:
+
+                                MDIconButton:
+                                    icon: "assets/steak.png"
+                                    icon_size: '100sp'
+                                    pos_hint: {"center_x": 0.5, "y": 0.2}
+                                    on_press:
+                                        root.buscar_produtos(self, açougue)
+                                        root.manager.current = "produtos"
+
+                                MDLabel:
+                                    id: açougue
+                                    text: 'Açougue'
+                                    adaptive_size: True
+                                    color: app.cor_botao
+                                    pos_hint: {'center_x': 0.5, 'y': 0.05}
 
 
-                MDCard:
-                    pos_hint: {'x': 0.55, 'y': 0.5}
+                        MDCard:
+                            pos_hint: {'x': 0.55, 'y': 0.5}
 
-                    MDRelativeLayout:
+                            MDRelativeLayout:
 
-                        MDIconButton:
-                            icon: "assets/lamp.png"
-                            icon_size: '100sp'
-                            pos_hint: {"center_x": 0.5, "y": 0.2}
-                            on_press:
-                                root.buscar_produtos(self, utilidades)
-                                root.manager.current = "produtos"
+                                MDIconButton:
+                                    icon: "assets/higiene.png"
+                                    icon_size: '100sp'
+                                    pos_hint: {"center_x": 0.5, "y": 0.2}
+                                    on_press:
+                                        root.buscar_produtos(self, higiene)
+                                        root.manager.current = "produtos"
+
+                                MDLabel:
+                                    id: higiene
+                                    text: 'Higiene'
+                                    adaptive_size: True
+                                    color: app.cor_botao
+                                    pos_hint: {'center_x': 0.5, 'y': 0.05}
 
 
+                        MDCard:
+                            pos_hint: {'x': 0.55, 'y': 0.5}
 
-                        MDLabel:
-                            id: utilidades
-                            text: 'Utilidades'
-                            adaptive_size: True
-                            color: app.cor_botao
-                            pos_hint: {'center_x': 0.5, 'y': 0.05}
+                            MDRelativeLayout:
 
+                                MDIconButton:
+                                    icon: "assets/garbage.png"
+                                    icon_size: '100sp'
+                                    pos_hint: {"center_x": 0.5, "y": 0.2}
+                                    on_press:
+                                        root.buscar_produtos(self, limpeza)
+                                        root.manager.current = "produtos"
+
+
+                                MDLabel:
+                                    id: limpeza
+                                    text: 'Limpeza'
+                                    halign: 'center'
+                                    adaptive_size: True
+                                    color: app.cor_botao
+                                    pos_hint: {'center_x': 0.5, 'y': 0.05}
+
+
+                        MDCard:
+                            pos_hint: {'x': 0.55, 'y': 0.5}
+
+                            MDRelativeLayout:
+
+                                MDIconButton:
+                                    icon: "assets/lamp.png"
+                                    icon_size: '100sp'
+                                    pos_hint: {"center_x": 0.5, "y": 0.2}
+                                    on_press:
+                                        root.buscar_produtos(self, utilidades)
+                                        root.manager.current = "produtos"
+
+                                MDLabel:
+                                    id: utilidades
+                                    text: 'Utilidades'
+                                    adaptive_size: True
+                                    color: app.cor_botao
+                                    pos_hint: {'center_x': 0.5, 'y': 0.05}
 
 
 <Produtos>:
+    name: 'produtos'
 
     on_enter:
         root.catalogo_produtos()
 
     FloatLayout:
-        size_hint: (1, 0.93)
+        size_hint: (1, 1)
 
     Image:
         source: 'assets/foto5.png'
@@ -500,10 +435,9 @@
             size_hint: 0.05, 0.05
             pos_hint: {'x': 0.1, 'y': 0.9}
             on_press:
-                root.manager.current = "pesquisar"
+                root.manager.current = "tela1"
 
-
-       # MDLabel:
+        #MDLabel:
            # text: root.categoria
             #font_size: '22dp'
             #halign: 'center'
@@ -541,8 +475,6 @@
                     id: lista_produtos
                     spacing: 3
 
-
-
         MDFillRoundFlatIconButton:
             text: 'Adicionar'
             pos_hint: {'center_x': 0.5, 'y': 0.1}
@@ -553,13 +485,14 @@
             text_color: "white"
             on_press:
                 root.adicionar_itens()
-                root.manager.current = "lista_atual"
-
+                root.manager.current = "tela1"
 
 WindowManager:
 
     Inicio:
 
     Principal:
+
+    Produtos:
 
 
