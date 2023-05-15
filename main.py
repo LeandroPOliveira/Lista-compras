@@ -16,7 +16,7 @@ from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFlatButton, MDIconButton
 from kivymd.uix.dialog import MDDialog
-from kivy.metrics import dp
+from kivy.metrics import sp
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.swiper import MDSwiperItem
 from kivymd.uix.menu import MDDropdownMenu
@@ -48,7 +48,10 @@ class Principal(Screen):
         self.resultado = None
         self.categoria = None
         self.lista = []
-        Clock.schedule_once(self.minhas_listas, 2)
+        with open('tabela_atual.txt', 'r', encoding='UTF-8') as atual:
+            self.tabela = atual.readlines()
+            self.lista_em_uso = self.tabela[0]
+        Clock.schedule_once(self.carregar_lista, 1)
 
     def carregar_lista(self, cond_extra=None):
         self.ids.lista.clear_widgets()
@@ -70,7 +73,7 @@ class Principal(Screen):
                                    ),
                     IconRightWidget(icon='assets/x.ico', icon_size='14sp', on_press=self.remover_item,
                                     text=f"{item[1]}"),
-                    text=f"[size=22dp]{item[1]}[/size]", theme_text_color='Custom', text_color=MinhaLista().cor_botao,
+                    text=f"[size=22sp]{item[1]}[/size]", theme_text_color='Custom', text_color=MinhaLista().cor_botao,
                     bg_color=MinhaLista().cor_branca,
                     radius=[0, 10, 0, 10], on_press=self.editar_item
                 )
@@ -81,6 +84,9 @@ class Principal(Screen):
                 item.children[1].children[0].children[0].color = MinhaLista().cor_marcada
                 item.text = f'[s]{item.text}[/s]'
                 item.text_color = MinhaLista().cor_marcada
+
+        with open('tabela_atual.txt', 'w', encoding='UTF-8') as atual:
+            atual.write(self.lista_em_uso)
 
     def editar_item(self, instance):
         self.status_check = instance.children[1].children[0].children[0].state
@@ -102,9 +108,9 @@ class Principal(Screen):
             content_cls=MDBoxLayout(
                 self.entr_prod, self.entr_qtd,
                 orientation="vertical",
-                spacing="0dp",
+                spacing="0sp",
                 size_hint_y=None,
-                height="100dp",
+                height="100sp",
             ),
             buttons=[
                 MDFlatButton(
@@ -137,7 +143,7 @@ class Principal(Screen):
             self.itens_a_adicionar.append(entrada)
             self.itens_a_remover.append(self.formato)
 
-            self.editar.text = f'[size=22dp]{entrada}[/size]'
+            self.editar.text = f'[size=22sp]{entrada}[/size]'
 
     def novo_item(self):
         self.entr_prod = MDTextField(hint_text='Produto')
@@ -148,9 +154,9 @@ class Principal(Screen):
             content_cls=MDBoxLayout(
                 self.entr_prod, self.entr_qtd,
                 orientation="vertical",
-                spacing="0dp",
+                spacing="0sp",
                 size_hint_y=None,
-                height="150dp",
+                height="150sp",
             ),
             buttons=[
                 MDFlatButton(
@@ -187,7 +193,7 @@ class Principal(Screen):
                                    ),
                     IconRightWidget(icon='assets/x.ico', icon_size='14sp', on_press=self.remover_item,
                                     text=f"{entrada}"),
-                    text=f"[size=22dp]{entrada}[/size]", theme_text_color='Custom', text_color=MinhaLista().cor_botao,
+                    text=f"[size=22sp]{entrada}[/size]", theme_text_color='Custom', text_color=MinhaLista().cor_botao,
                     bg_color=MinhaLista().cor_branca,
                     radius=[0, 10, 0, 10], on_press=self.editar_item
                 ), dict_index)
@@ -251,7 +257,7 @@ class Principal(Screen):
                 self.lista_dict[item.children[1].children[0].text] = 0
                 item.children[1].children[0].children[0].active = False
                 item.children[1].children[0].children[0].color = MinhaLista().cor_marcada_check
-                item.text = f'[size=22dp]{item.children[1].children[0].text}[/size]'
+                item.text = f'[size=22sp]{item.children[1].children[0].text}[/size]'
                 item.text_color = MinhaLista().cor_botao
 
     def ordenar_crescente(self):
@@ -269,18 +275,18 @@ class Principal(Screen):
             {
                 "viewclass": "OneLineListItem",
                 "text": "Salvar lista",
-                "height": dp(56),
+                "height": sp(56),
                 "on_release": self.salvar_lista,
             }, {
                 "viewclass": "OneLineListItem",
                 "text": "Ordem crescente",
-                "height": dp(56),
+                "height": sp(56),
                 "on_release": self.ordenar_crescente,
             },
             {
                 "viewclass": "OneLineListItem",
                 "text": "Ordem decrescente",
-                "height": dp(56),
+                "height": sp(56),
                 "on_release": self.ordenar_decrescente,
             }
         ]
@@ -324,14 +330,14 @@ class Principal(Screen):
                                                                      icon='list-box-outline',
                                                                      icon_color=MinhaLista().cor_botao,
                                                                      pos_hint={'center_x': 0.5, 'y': .5},
-                                                                     icon_size='80dp',
+                                                                     icon_size='80sp',
                                                                      on_press=self.lista_selecionada,
                                                                      size_hint=(.7, .15),
                                                                      halign='center'),
                                                         MDLabel(text=linha[1],
                                                                 theme_text_color='Custom',
                                                                 text_color=MinhaLista().cor_media,
-                                                                font_size='30dp',
+                                                                font_size='30sp',
                                                                 halign='center',
                                                                 adaptive_size=True,
                                                                 pos_hint={'center_x': 0.5, 'y': .1},
@@ -361,9 +367,9 @@ class Principal(Screen):
             content_cls=MDBoxLayout(
                 self.entrada,
                 orientation="vertical",
-                spacing="12dp",
+                spacing="12sp",
                 size_hint_y=None,
-                height="60dp",
+                height="60sp",
             ),
             buttons=[
                 MDFlatButton(
@@ -397,9 +403,9 @@ class Principal(Screen):
             content_cls=MDBoxLayout(
                 self.entrada,
                 orientation="vertical",
-                spacing="12dp",
+                spacing="12sp",
                 size_hint_y=None,
-                height="60dp",
+                height="60sp",
             ),
             buttons=[
                 MDFlatButton(
@@ -484,7 +490,7 @@ class Produtos(Screen):
                                    ),
                     IconRightWidget(icon='assets/x.ico', icon_size='10sp',
                                     text=f"{item[1]}"),
-                    text=f"[size=22dp]{item[1]}[/size]", theme_text_color='Custom',
+                    text=f"[size=22sp]{item[1]}[/size]", theme_text_color='Custom',
                     text_color=MinhaLista().cor_botao,
                     bg_color=MinhaLista().cor_branca,
                     radius=[0, 10, 0, 10]

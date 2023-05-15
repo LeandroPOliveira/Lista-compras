@@ -18,7 +18,7 @@
     text: ''
 
 <MDTextField>
-    font_size:'22dp'
+    font_size:'22sp'
     line_color_focus: app.cor_botao
     text_color_focus: app.cor_media
     hint_text_color_focus: app.cor_botao
@@ -34,7 +34,7 @@
         MDLabel:
             size_hint: 0.8, 0.1
             pos_hint: {'x': 0.1, 'y': 0.35}
-            font_size: '22dp'
+            font_size: '22sp'
             text: 'MINHA'
             color: app.cor_botao
             bold: True
@@ -43,7 +43,7 @@
             size_hint: 0.8, 0.1
             pos_hint: {'x': 0.1, 'y': 0.3}
             text: 'LISTA'
-            font_size: '48dp'
+            font_size: '48sp'
             color: app.cor_escura
             bold: True
 
@@ -52,7 +52,7 @@
             pos_hint: {'x': 0.1, 'y': 0.2}
             icon: "location-enter"
             text: "Entrar"
-            font_size: '22dp'
+            font_size: '22sp'
             md_bg_color: app.cor_botao
             text_color: "white"
             line_color: app.cor_botao
@@ -91,7 +91,7 @@
 
                     MDLabel:
                         text: root.lista_em_uso
-                        font_size: '26dp'
+                        font_size: '26sp'
                         halign: 'center'
                         color:  app.cor_media
                         pos_hint: {'center_x': 0.5, 'y': 0.9}
@@ -137,7 +137,7 @@
                             MDList:
                                 id: lista
                                 spacing: 3
-                                font_size: '22dp'
+                                font_size: '22sp'
 
 
                 MDFloatingActionButton:
@@ -166,7 +166,7 @@
 
                 MDLabel:
                     text: 'Selecione'
-                    font_size: '40dp'
+                    font_size: '40sp'
                     adaptive_size: True
                     color: "white"
                     pos_hint: {'x': 0.25, 'y': 0.87}
@@ -175,7 +175,7 @@
 
                 MDLabel:
                     text: 'ou crie'
-                    font_size: '24dp'
+                    font_size: '24sp'
                     adaptive_size: True
                     color: app.cor_branca
                     pos_hint: {'x': 0.25, 'y': 0.84}
@@ -184,7 +184,7 @@
 
                 MDLabel:
                     text: 'sua'
-                    font_size: '36dp'
+                    font_size: '36sp'
                     adaptive_size: True
                     color: app.cor_botao
                     pos_hint: {'x': 0.25, 'y': 0.79}
@@ -193,7 +193,7 @@
 
                 MDLabel:
                     text: 'Lista'
-                    font_size: '60dp'
+                    font_size: '60sp'
                     adaptive_size: True
                     color: app.cor_botao
                     pos_hint: {'x': 0.45, 'y': 0.78}
@@ -212,7 +212,7 @@
                     text: 'Nova'
                     pos_hint: {'center_x': 0.5, 'y': 0.15}
                     size_hint: 0.4, 0.07
-                    font_size: '18dp'
+                    font_size: '18sp'
                     md_bg_color: app.cor_botao
                     icon: "plus"
                     text_color: app.cor_branca
@@ -238,7 +238,7 @@
 
                 MDLabel:
                     text: 'Categorias'
-                    font_size: '28dp'
+                    font_size: '28sp'
                     adaptive_size: True
                     color:  app.cor_botao
                     pos_hint: {'center_x': 0.5, 'y': 0.58}
@@ -253,7 +253,7 @@
                         id: grid_teste
                         size_hint_y: None
                         height: self.minimum_height
-                        row_default_height: '150dp'
+                        row_default_height: '150sp'
                         cols: 2
                         rows: 4
                         bar_width: 100
@@ -439,7 +439,7 @@
 
         #MDLabel:
            # text: root.categoria
-            #font_size: '22dp'
+            #font_size: '22sp'
             #halign: 'center'
             #color:  "#df2100"
             #pos_hint: {'center_x': 0.5, 'y': 0.9}
@@ -479,7 +479,7 @@
             text: 'Adicionar'
             pos_hint: {'center_x': 0.5, 'y': 0.1}
             size_hint: 0.4, 0.07
-            font_size: '16dp'
+            font_size: '16sp'
             md_bg_color: app.cor_botao
             icon: "plus"
             text_color: "white"
