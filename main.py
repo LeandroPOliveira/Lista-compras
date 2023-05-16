@@ -47,7 +47,7 @@ class Principal(Screen):
         self.itens_a_editar = []
         self.resultado = None
         self.categoria = None
-        self.lista = []
+        self.listas = []
         with open('tabela_atual.txt', 'r', encoding='UTF-8') as atual:
             self.tabela = atual.readlines()
             self.lista_em_uso = self.tabela[0]
@@ -306,15 +306,15 @@ class Principal(Screen):
         resultado.pop(1)  # Excluir tabela 'sqlite_sequence'
         resultado.pop(1)  # Excluir tabela 'produtos' utilizada como busca de itens
 
-        if len(self.lista) != 0:
-            for i in self.lista:
+        if len(self.listas) != 0:
+            for i in self.listas:
                 self.ids.swiper.remove_widget(i)
 
-        self.lista.clear()
+        self.listas.clear()
         for index, linha in enumerate(resultado):
             self.insere_swiper = MDSwiperItem()  # Criar um "swiper" para cada tabela
             self.ids.swiper.add_widget(self.insere_swiper)
-            self.lista.append(self.insere_swiper)
+            self.listas.append(self.insere_swiper)
             self.inserir_layout = MDFloatLayout()  # Adicionar layout para organizar os widgets
             self.insere_swiper.add_widget(self.inserir_layout)
 
@@ -346,10 +346,10 @@ class Principal(Screen):
                                        md_bg_color=MinhaLista().cor_branca, line_color=MinhaLista().cor_clara)
 
             self.inserir_layout.add_widget(self.label_tabela)
-            self.lista.append(self.label_tabela)
+            self.listas.append(self.label_tabela)
 
         self.insere_swiper2 = MDSwiperItem()
-        self.lista.append(self.insere_swiper2)
+        self.listas.append(self.insere_swiper2)
         self.ids.swiper.add_widget(self.insere_swiper2)
         self.ids.swiper.set_current(1)
 
@@ -435,7 +435,7 @@ class Principal(Screen):
 
         conn.commit()
         self.lista_em_uso = entrada.text
-        self.ids.navagacao.switch_tab('screen1')
+        self.ids.navegacao.switch_tab('screen1')
         self.carregar_lista()
 
     def excluir_lista(self, instance):
@@ -465,6 +465,8 @@ class Principal(Screen):
                                     radius=[20, 7, 20, 7], )
         self.dialog_data.open()
         self.minhas_listas()
+        if entrada == self.lista_em_uso:
+            self.lista_em_uso = ''
 
     def buscar_produtos(self, instance, item):
         self.categoria = item.text
