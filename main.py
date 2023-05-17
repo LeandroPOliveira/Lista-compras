@@ -110,7 +110,7 @@ class Principal(Screen):
                 orientation="vertical",
                 spacing="0sp",
                 size_hint_y=None,
-                height="100sp",
+                height="150sp",
             ),
             buttons=[
                 MDFlatButton(
@@ -211,14 +211,14 @@ class Principal(Screen):
             self.ids.lista.add_widget(instance.parent.parent)
             self.lista_dict[instance.text] = 1
             instance.children[0].color = MinhaLista().cor_marcada_check
-            instance.parent.parent.text = f'[s]{instance.text}[/s]'
+            instance.parent.parent.text = f'[s][size=22sp]{instance.text}[/size][/s]'
             instance.parent.parent.text_color = MinhaLista().cor_marcada
         else:
             self.ids.lista.remove_widget(instance.parent.parent)
             dict_index = sum(map((1).__eq__, self.lista_dict.values()))
             self.ids.lista.add_widget(instance.parent.parent, dict_index - 1)
             self.lista_dict[instance.text] = 0
-            instance.parent.parent.text = instance.text
+            instance.parent.parent.text = f'[size=22sp]{instance.text}[/size]'
             instance.parent.parent.text_color = MinhaLista().cor_botao
 
     def salvar_lista(self):
@@ -394,6 +394,8 @@ class Principal(Screen):
         cursor.execute(f'ALTER TABLE {self.nome_anterior} RENAME TO {entrada.text}')
         conn.commit()
         self.minhas_listas(dt=None)
+        if entrada.text == self.lista_em_uso:
+            self.lista_em_uso = entrada.text
 
     def criar_nova_lista(self):
         self.entrada = MDTextField()
